@@ -29,10 +29,10 @@ CREATE TABLE group_lists(
 
 CREATE TABLE images (
     photo_id int,
-    owner_name varchar(20),
-    permitted varchar(20),
-    subject varchar(20),
-    place varchar(20),
+    owner_name varchar(40),
+    permitted varchar(40),
+    subject varchar(100),
+    place varchar(100),
     when date,
     description varchar(100),
     thumbnail BLOB,

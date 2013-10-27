@@ -28,7 +28,7 @@ CREATE TABLE group_lists(
 )
 
 CREATE TABLE images (
-    photo_id int,
+    photo_id int NOT NULL PRIMARY KEY,
     owner_name varchar(40),
     permitted varchar(40),
     subject varchar(100),

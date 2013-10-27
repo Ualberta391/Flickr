@@ -35,6 +35,6 @@ CREATE TABLE images (
     place varchar(20),
     when date,
     description varchar(100),
-    thumbnail ??
-    photo ??
+    thumbnail BLOB,
+    photo BLOB
 )

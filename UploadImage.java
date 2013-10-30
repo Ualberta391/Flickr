@@ -83,9 +83,10 @@ public class UploadImage extends HttpServlet {
 		    image_obj = item;
 		} else {
 		    // Other parameters from the form
-		    // TODO: Parse out single quotes (SQL injection)
 		    String fieldname = item.getFieldName();
 		    String fieldvalue = item.getString();
+		    // Add escape character to any single quotes (to avoid SQL error)
+		    fieldvalue = fieldvalue.replace("'", "''");
 		    if (fieldname.equals("description")) {
 		        description = fieldvalue;
 		    } else if (fieldname.equals("place")) {
@@ -102,7 +103,7 @@ public class UploadImage extends HttpServlet {
 	    InputStream instream = image_obj.getInputStream();
 
 	    BufferedImage img = ImageIO.read(instream);
-	    BufferedImage thumbNail = shrink(img, 10);
+	    BufferedImage thumbNail = shrink(img, 3);
 
             // Connect to the database and create a statement
             Connection conn = getConnected(drivername,dbstring, username,password);
@@ -128,12 +129,16 @@ public class UploadImage extends HttpServlet {
 	    String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";
 	    ResultSet rset = stmt.executeQuery(cmd);
 	    rset.next();
-	    BLOB myblob = ((OracleResultSet)rset).getBLOB(9);
+	    BLOB thumb_blob = ((OracleResultSet)rset).getBLOB(8);
+	    BLOB photo_blob = ((OracleResultSet)rset).getBLOB(9);
 
 
 	    //Write the image to the blob object
-	    OutputStream outstream = myblob.getBinaryOutputStream();
-	    ImageIO.write(thumbNail, "jpg", outstream);
+	    OutputStream t_outstream = thumb_blob.getBinaryOutputStream();
+	    OutputStream p_outstream = photo_blob.getBinaryOutputStream();
+
+	    ImageIO.write(thumbNail, "jpg", t_outstream);
+	    ImageIO.write(img, "jpg", p_outstream);
 	    
 	    /*
 	    int size = myblob.getBufferSize();
@@ -143,7 +148,8 @@ public class UploadImage extends HttpServlet {
 		outstream.write(buffer, 0, length);
 	    */
 	    instream.close();
-	    outstream.close();
+	    t_outstream.close();
+	    p_outstream.close();
 	
             stmt.executeUpdate("commit");
 
@@ -156,7 +162,7 @@ public class UploadImage extends HttpServlet {
 	    response_message = ex.getMessage();
 	}
 
-	response.sendRedirect("index.html");
+	response.sendRedirect("PictureBrowse");
     }
 
     /*

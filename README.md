@@ -13,3 +13,9 @@ Major Tasks
 * Display Module
 * Search Module
 * Data Analysis Module (for admin user)
+
+Minor Tasks
+-----------
+
+* We should come up with a clever name.  Something that sounds better than "Fall 2013 CMPUT 391 Group 5 Picture Database"
+* Come up with a unifying 'style' (CSS?) for each page so that the project feels more "wholesome".

@@ -19,3 +19,5 @@ Minor Tasks
 
 * We should come up with a clever name.  Something that sounds better than "Fall 2013 CMPUT 391 Group 5 Picture Database"
 * Come up with a unifying 'style' (CSS?) for each page so that the project feels more "wholesome". -> mystyle.css
+* I've uploaded flow.xml. This shows the flow of each page. You should open this file at "https://www.draw.io" to actually view the flow.
+* 

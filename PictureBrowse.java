@@ -53,7 +53,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
 	    while (rset.next() ) {
 	        p_id = (rset.getObject(1)).toString();
 	        // specify the servlet for the image
-                out.println("<a href=\"/proj1/GetOnePic?big"+p_id+"\">");
+                out.println("<a href=\"/proj1/DisplayImage?"+p_id+"\">");
 	        // specify the servlet for the thumbnail
 	        out.println("<img src=\"/proj1/GetOnePic?"+p_id +
 	                    "\"></a>");
@@ -65,6 +65,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
 	out.println("<form action='upload_image.html'>");
 	out.println("<input type='submit' value='Add more photos'>");
 	out.println("</form>");
+	out.println("</center>");
 	out.println("</body>");
 	out.println("</html>");
     }

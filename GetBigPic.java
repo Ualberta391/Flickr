@@ -54,7 +54,9 @@ public class GetBigPic extends HttpServlet
 
 	    if ( rset.next() ) {
 	        title = rset.getString("title");
+		out.println(title);
 	        place = rset.getString("place");
+		out.println(place);
                 out.println("<html><head><title>"+title+ "</title>+</head>" +
 	                 "<body bgcolor=\"#000000\" text=\"#cccccc\">" +
 		 "<center><img src = \"/GetOnePic?"+picid+"\">" +

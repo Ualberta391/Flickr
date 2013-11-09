@@ -39,4 +39,13 @@
         <servlet-name>GetBigPic</servlet-name>
         <url-pattern>/GetBigPic</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DisplayImage</servlet-name>
+        <servlet-class>DisplayImage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DisplayImage</servlet-name>
+        <url-pattern>/DisplayImage</url-pattern>
+    </servlet-mapping>
 </web-app>

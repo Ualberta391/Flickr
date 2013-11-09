@@ -62,7 +62,7 @@ public class GetOnePic extends HttpServlet
 		input.close();
 	    } 
 	    else 
-		out.println("no picture available");
+		response.sendRedirect("img_not_found.html");
 	} catch( Exception ex ) {
 	    out.println(ex.getMessage() );
 	}

@@ -45,6 +45,7 @@ import oracle.jdbc.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import org.imgscalr.*;  // imgscalr package for fast, accurate thumbnail scaling
 
 /**
  *  The package commons-fileupload-1.0.jar is downloaded from 
@@ -103,7 +104,7 @@ public class UploadImage extends HttpServlet {
 	    InputStream instream = image_obj.getInputStream();
 
 	    BufferedImage img = ImageIO.read(instream);
-	    BufferedImage thumbNail = shrink(img, 3);
+	    BufferedImage thumbNail = shrink(img, 150);
 
             // Connect to the database and create a statement
             Connection conn = getConnected(drivername,dbstring, username,password);
@@ -178,19 +179,9 @@ public class UploadImage extends HttpServlet {
 	return( DriverManager.getConnection(dbstring,username,password));
     } 
 
-    //shrink image by a factor of n, and return the shrinked image
+    // Shrink image to a maximum size of n, keeping its proportions,
+    // and return the shrinked image.
     public static BufferedImage shrink(BufferedImage image, int n) {
-
-        int w = image.getWidth() / n;
-        int h = image.getHeight() / n;
-
-        BufferedImage shrunkImage =
-            new BufferedImage(w, h, image.getType());
-
-        for (int y=0; y < h; ++y)
-            for (int x=0; x < w; ++x)
-                shrunkImage.setRGB(x, y, image.getRGB(x*n, y*n));
-
-        return shrunkImage;
-    }
+	  return Scalr.resize(image, n);
+    }	
 }

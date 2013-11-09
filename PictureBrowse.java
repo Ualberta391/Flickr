@@ -31,6 +31,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
 	//  send out the HTML file
 	res.setContentType("text/html");
 	PrintWriter out = res.getWriter();
+    HttpSession session = request.getSession( true );
 
 	out.println("<html>");
 	out.println("<head>");
@@ -53,7 +54,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
 	    while (rset.next() ) {
 	        p_id = (rset.getObject(1)).toString();
 	        // specify the servlet for the image
-                out.println("<a href=\"/proj1/DisplayImage?"+p_id+"\">");
+            out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
 	        // specify the servlet for the thumbnail
 	        out.println("<img src=\"/proj1/GetOnePic?"+p_id +
 	                    "\"></a>");

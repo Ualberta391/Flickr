@@ -8,31 +8,8 @@
 %>
 <%@ page import="java.sql.*" %>
 
-<% Connection conn = null;
-
-   String driverName = "oracle.jdbc.driver.OracleDriver";
-   String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-
-   try {
-       //load and register the driver
-       Class drvClass = Class.forName(driverName);
-       DriverManager.registerDriver((Driver) drvClass.newInstance());
-   }
-   catch(Exception ex) {
-       out.println("<hr>" + ex.getMessage() + "<hr>");
-   }
-   try {
-       //establish the connection
-       conn = DriverManager.getConnection(dbstring,"vrscott","radiohead7");
-       conn.setAutoCommit(false);
-   }
-   catch(Exception ex) {
-       out.println("<hr>" + ex.getMessage() + "<hr>");
-   }
-   // TODO: Verify group access
-
-   String sql = "select * from images where photo_id=" + photo_id;
-   Statement stmt = null;
+<%@include file="db_login.jsp"%>
+<%
    ResultSet rset = null;
    
    String description = "";
@@ -43,8 +20,8 @@
    String permitted = "";
 
    try {
-       stmt = conn.createStatement();
-       rset = stmt.executeQuery(sql);
+       Statement stmt = conn.createStatement();
+       rset = stmt.executeQuery("select * from images where photo_id="+photo_id);
    } catch (Exception ex) {
        out.println("<hr>" + ex.getMessage() + "<hr>");
    }
@@ -59,13 +36,8 @@
    } 
    else
        response.sendRedirect("img_not_found.html");
-
-   try {
-       conn.close();
-   } catch (SQLException ex) {
-       out.println("<hr>" + ex.getMessage() + "</hr>");
-   }
 %>
+<%@include file="db_logout.jsp"%>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -82,13 +54,6 @@
 </style>
 <script>
  $(function() {
-     var description = $("#description_field"),
-     groups = $("#groups_field"),
-     place = $("#place_field"),
-     subject = $("#subject_field"),
-     time = $("#time_field"),
-     tips = $(".intro");
-
      $( "#edit-form" ).dialog({
          autoOpen: false,
          height: 300,
@@ -96,11 +61,27 @@
          modal: true,
          buttons: {
              "Update Information": function() {
-                 // Do stuff here
-                 $(this).dialog( "close" );
+                 // Use ajax to send values to EditData servlet
+                 var new_description = $("#description_field").val();
+                 var new_groups = $("#groups_field").val();
+                 var new_place = $("#place_field").val();
+                 var new_subject = $("#subject_field").val();
+                 var new_time = $("#time_field").val();
+
+                 $.ajax({url: 'EditData',
+                         data: {"description": new_description,
+                                "groups": new_groups,
+                                "place": new_place,
+                                "subject": new_subject,
+                                "time": new_time,
+                                <% out.println("\"id\": \""+photo_id+"\","); %>
+                                },
+                         type: 'POST'
+                        });
+                 location.reload();
              },
              Cancel: function() {
-                 $(this).dialog( "close" );
+                 $(this).dialog("close");
              }
          },
          close: function() {

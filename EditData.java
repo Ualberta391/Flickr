@@ -13,17 +13,17 @@ import oracle.jdbc.*;
 
 public class EditData extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
-    throws ServletException, IOException {
-    // Change the following parameters to connect to the oracle database
-    String username = "vrscott";
-    String password = "radiohead7";
-    String drivername = "oracle.jdbc.driver.OracleDriver";
-    String dbstring ="jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	throws ServletException, IOException {
+	// Change the following parameters to connect to the oracle database
+	String username = "vrscott";
+	String password = "radiohead7";
+	String drivername = "oracle.jdbc.driver.OracleDriver";
+	String dbstring ="jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 
-    String description = "";
-    String place = "";
-    String subject = "";
-    String groups = "";
+	String description = "";
+	String place = "";
+	String subject = "";
+	String groups = "";
     String time = "";
     String pic_id = "";
 
@@ -35,18 +35,20 @@ public class EditData extends HttpServlet {
         groups = request.getParameter("groups").toString();
         time = request.getParameter("time").toString();
         pic_id = request.getParameter("id").toString();
+
+        // Connect to the database and create a statement
+        Class drvClass = Class.forName(drivername);
+        DriverManager.registerDriver((Driver) drvClass.newInstance());
+        Connection conn = DriverManager.getConnection(dbstring, username, password);
+        Statement stmt = conn.createStatement();
         
-        System.out.println(pic_id);
-        
+        // Update the photo
+        stmt.executeQuery("UPDATE images set PLACE='"+place+"', PERMITTED='"+groups+
+                          "', DESCRIPTION='"+description+"', WHEN='"+time+
+                          "', SUBJECT='"+subject+"' WHERE photo_id="+pic_id);
+        conn.close();
     } catch(Exception ex) {
         System.out.println(ex.getMessage());
     }
-
-    // Connect to the database and create a statement
-    Class drvClass = Class.forName(drivername);
-    DriverManager.registerDriver((Driver) drvClass.newInstance());
-    Connection conn = DriverManager.getConnection(dbstring, username, password);
-    Statement stmt = conn.createStatement();
-
     }
 }

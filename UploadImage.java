@@ -106,8 +106,8 @@ public class UploadImage extends HttpServlet {
 	    BufferedImage img = ImageIO.read(instream);
 	    BufferedImage thumbNail = shrink(img, 150);
 
-            // Connect to the database and create a statement
-            Connection conn = getConnected(drivername,dbstring, username,password);
+        // Connect to the database and create a statement
+        Connection conn = getConnected(drivername,dbstring, username,password);
 	    Statement stmt = conn.createStatement();
 	    
 	    /*

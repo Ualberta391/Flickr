@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import java.util.*;
+import java.text.*;
 import oracle.sql.*;
 import oracle.jdbc.*;
 
@@ -25,6 +26,7 @@ public class EditData extends HttpServlet {
 	String subject = "";
 	String groups = "";
     String time = "";
+    java.sql.Date sql_date = null;
     String pic_id = "";
 
     try {
@@ -36,6 +38,10 @@ public class EditData extends HttpServlet {
         time = request.getParameter("time").toString();
         pic_id = request.getParameter("id").toString();
 
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        java.util.Date parsed = format.parse(time);
+        sql_date = new java.sql.Date(parsed.getTime());
+
         // Connect to the database and create a statement
         Class drvClass = Class.forName(drivername);
         DriverManager.registerDriver((Driver) drvClass.newInstance());
@@ -44,7 +50,7 @@ public class EditData extends HttpServlet {
         
         // Update the photo
         stmt.executeQuery("UPDATE images set PLACE='"+place+"', PERMITTED='"+groups+
-                          "', DESCRIPTION='"+description+"', WHEN='"+time+
+                          "', DESCRIPTION='"+description+"', WHEN=date'"+sql_date+
                           "', SUBJECT='"+subject+"' WHERE photo_id="+pic_id);
         conn.close();
     } catch(Exception ex) {

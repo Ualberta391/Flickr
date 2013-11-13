@@ -40,6 +40,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import java.util.*;
+import java.text.*;
 import oracle.sql.*;
 import oracle.jdbc.*;
 import java.awt.Image;
@@ -71,6 +72,7 @@ public class UploadImage extends HttpServlet {
 	String place = "";
 	String subject = "";
 	String security = "";
+    java.sql.Date sql_date = null;
 	int pic_id;
 
 	try {
@@ -96,7 +98,11 @@ public class UploadImage extends HttpServlet {
 		        subject = fieldvalue;
 		    } else if (fieldname.equals("security")) {
 		        security = fieldvalue;
-		    }
+		    } else if (fieldname.equals("time")) {
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                java.util.Date parsed = format.parse(fieldvalue);
+                sql_date = new java.sql.Date(parsed.getTime());
+            }
 		}
 	    }
 
@@ -122,7 +128,7 @@ public class UploadImage extends HttpServlet {
 
 	    stmt.execute("INSERT INTO images VALUES(" + pic_id + ",'owner_name','" + 
 						   security + "','" + subject + "','" +
-						   place + "','yesterday','" + description +
+						   place + "',date'" + sql_date + "','" + description +
 			         	           "',empty_blob(),empty_blob())");
  
 	    // to retrieve the lob_locator 

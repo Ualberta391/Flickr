@@ -97,6 +97,12 @@
      .click(function() {
          $( "#edit-form" ).dialog( "open" );
      });
+
+     $( "#time_field" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 1,
+     });
  });
 </script>
 </head>
@@ -112,6 +118,9 @@
        out.println("<br>Time photo taken: "+when+"</p>");
        %>
 <button id=edit-info>Edit Photo Information</button>
+<form action='PictureBrowse'>
+    <input type='submit' value='Return to Pictures'>
+</form>
 </center>
 <div id="edit-form" title="Edit Photo Information">
     <p class="intro">Edit any of the fields and click 'submit'.</p>

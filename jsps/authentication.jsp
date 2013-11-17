@@ -8,7 +8,7 @@
 	connect and query a database. 
 	@author  Hong-Yu Zhang, University of Alberta
     -->
-
+	<%@include file="db_login.jsp"%>
 	<%@ page import="java.sql.*" %>
 	<% if(request.getParameter("bSubmit") != ""){
 	    //get the user input from the login page
@@ -17,34 +17,10 @@
             out.println("<p>Your input User Name is "+userName+"</p>");
             out.println("<p>Your input password is "+passwd+"</p>");
 
-	    //establish the connection to the underlying database
-            Connection conn = null;
-	
-	    String driverName = "oracle.jdbc.driver.OracleDriver";
-            String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    try{
-		//load and register the driver
-        	Class drvClass = Class.forName(driverName); 
-	        DriverManager.registerDriver((Driver) drvClass.newInstance());
-            }
-	    catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-	    }
-	
-            try{
-	        //establish the connection 
-		conn = DriverManager.getConnection(dbstring,"zyap","oi2eooi278");
-        	conn.setAutoCommit(false);
-	    }
-            catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
-
 	    //select the user table from the underlying db and validate the user name and password
             Statement stmt = null;
 	    ResultSet rset = null;
-	    String sql = "select password from UserInfo where username = '"+userName+"'";
+	    String sql = "select password from users where user_name = '"+userName+"'";
 	    out.println(sql);
 
             try{
@@ -56,7 +32,9 @@
             }
 
 	    String truepwd = "";
-	
+	    
+	    //If username and password textbox is not empty when click the button "Login"
+	    if(!userName.trim().isEmpty() && !passwd.trim().isEmpty()){
             while(rset != null && rset.next())
 	        truepwd = (rset.getString(1)).trim();
 	
@@ -71,20 +49,17 @@
 			session.setAttribute("username",userName);
 			String encode = response.encodeURL("home.jsp");
 			response.sendRedirect(encode);
-
 		}
 		//If unsuccessful login
         	else{
 	            response.sendRedirect("error.html");
 		}
 		
-		//Close connection
-                try{
-                        conn.close();
-                }
-                catch(Exception ex){
-                        out.println("<hr>" + ex.getMessage() + "<hr>");
-                }
+	    }
+	    else{
+		//redirect user to error page
+		response.sendRedirect("error.html");
+	    }
         }
         else{
                 out.println("<form method=post action=login.jsp>");
@@ -93,5 +68,6 @@
                 out.println("<input type=submit name=bSubmit value=Submit>");
                 out.println("</form>");
         }%>
+        <%@include file="db_logout.jsp"%>
     </BODY>
 </HTML>

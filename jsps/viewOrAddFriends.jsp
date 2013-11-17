@@ -35,6 +35,7 @@
         
         <div id="container">
             <p class="homePage">Go back to <A class="homePage" href="home.jsp">Home Page</a></p>
+            <%@include file="db_login.jsp"%>
 	<%
 
 	if(request.getParameter("dsubmit") != null){
@@ -43,26 +44,6 @@
                 username = String.valueOf(session.getAttribute("username")); 
 	        String groupName = String.valueOf(session.getAttribute("groupname")); 
 		String friendToAdd = "";
-		Connection conn = null;
-	
-	    	String driverName = "oracle.jdbc.driver.OracleDriver";
-            	String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    	try {
-			//load and register the driver
-        		Class drvClass = Class.forName(driverName); 
-	        	DriverManager.registerDriver((Driver) drvClass.newInstance());
-            	} catch(Exception ex){
-			out.println("<hr>" + ex.getMessage() + "<hr>");
-	    	}
-	
-            	try{
-	        	//establish the connection 
-			conn = DriverManager.getConnection(dbstring,"vsawyer1","toffees1");
-        		conn.setAutoCommit(false);
-	    	} catch(Exception ex){
-			out.println("<hr>" + ex.getMessage() + "<hr>");
-            	}
 
 	    	java.util.Date utilDate = new java.util.Date();
             	java.sql.Date date = new java.sql.Date(utilDate.getTime());
@@ -122,7 +103,7 @@
 				stmt.executeUpdate(sql);
 				out.println("\nYou have successfully added " + friend + " to your group"+"</p>");
 				out.println("<a href = 'viewOrAddFriends.jsp?group="+groupName+"'>Go back to friends page</a>");
-				conn.close();
+				
 		    	} catch(Exception ex){
 					out.println("You couldn't add a friend.  Perhaps they were too awesome");
 					out.println("<form method=get target=_self>");            
@@ -139,28 +120,6 @@
 
 	    String groupName = request.getParameter("group");
             out.println("Group name: " + groupName);
-	    Connection conn = null;
-	
-	    String driverName = "oracle.jdbc.driver.OracleDriver";
-            String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    try{
-		//load and register the driver
-        	Class drvClass = Class.forName(driverName); 
-	        DriverManager.registerDriver((Driver) drvClass.newInstance());
-            }
-	    catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-	    }
-	
-            try{
-	        //establish the connection 
-		conn = DriverManager.getConnection(dbstring,"vsawyer1","toffees1");
-        	conn.setAutoCommit(false);
-	    }
-            catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
 
 	    // getting the group_id of the group selected
 
@@ -219,6 +178,7 @@
 	}
 }
 %>
+<%@include file="db_logout.jsp"%>
 
         </div>
     </body>

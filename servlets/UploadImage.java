@@ -58,7 +58,6 @@ import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 
 public class UploadImage extends HttpServlet {
-    public String response_message;
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
 	//  change the following parameters to connect to the oracle database
@@ -153,13 +152,10 @@ public class UploadImage extends HttpServlet {
 	
         stmt.executeUpdate("commit");
 
-	    response_message = description;
-
         conn.close();
 
 	} catch( Exception ex ) {
-	    System.out.println( ex.getMessage());
-	    response_message = ex.getMessage();
+	    System.out.println(ex.getMessage());
 	}
 
 	response.sendRedirect("PictureBrowse");

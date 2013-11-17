@@ -74,6 +74,10 @@ public class UploadImage extends HttpServlet {
     java.sql.Date sql_date = null;
 	int pic_id;
 
+	// Get the session (Create a new one if required)
+	HttpSession session = request.getSession( true );
+        String username1 = String.valueOf(session.getAttribute("username"));
+
 	try {
 	    //Parse the HTTP request to get the image stream
 	    DiskFileUpload fu = new DiskFileUpload();

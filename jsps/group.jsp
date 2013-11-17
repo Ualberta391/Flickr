@@ -39,7 +39,7 @@
     <!--The user can create a group
 	@author  Valerie Sawyer
     -->
-
+	<%@include file="db_login.jsp"%>
 	<% 
 	String groupName = "";
 	String friendToAdd = "";
@@ -54,30 +54,6 @@
 	    session.setAttribute("username",username);
             groupName = (request.getParameter("groupname")).trim();
             out.println("<p>Group name is "+ groupName +"</p>");
-          
-	    //establish the connection to the underlying database
-            Connection conn = null;
-	
-	    String driverName = "oracle.jdbc.driver.OracleDriver";
-            String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    try{
-		//load and register the driver
-        	Class drvClass = Class.forName(driverName); 
-	        DriverManager.registerDriver((Driver) drvClass.newInstance());
-            }
-	    catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-	    }
-	
-            try{
-	        //establish the connection 
-		conn = DriverManager.getConnection(dbstring,"vsawyer1","toffees1");
-        	conn.setAutoCommit(false);
-	    }
-            catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
 
 	    java.util.Date utilDate = new java.util.Date();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
@@ -97,11 +73,8 @@
 		out.println("You couldn't create a group.  You already have a group with that name.");
             }
             session.setAttribute("groupname",groupName);
-            conn.close();
 
-	    
-          
-            
         }%>
+        <%@include file="db_logout.jsp"%>
     </BODY>
 </HTML>

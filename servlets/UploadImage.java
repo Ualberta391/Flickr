@@ -147,22 +147,15 @@ public class UploadImage extends HttpServlet {
 	    ImageIO.write(thumbNail, "jpg", t_outstream);
 	    ImageIO.write(img, "jpg", p_outstream);
 	    
-	    /*
-	    int size = myblob.getBufferSize();
-	    byte[] buffer = new byte[size];
-	    int length = -1;
-	    while ((length = instream.read(buffer)) != -1)
-		outstream.write(buffer, 0, length);
-	    */
 	    instream.close();
 	    t_outstream.close();
 	    p_outstream.close();
 	
-            stmt.executeUpdate("commit");
+        stmt.executeUpdate("commit");
 
 	    response_message = description;
 
-            conn.close();
+        conn.close();
 
 	} catch( Exception ex ) {
 	    System.out.println( ex.getMessage());

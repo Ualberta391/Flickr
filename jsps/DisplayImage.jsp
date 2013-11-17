@@ -16,8 +16,9 @@
    String place = "";
    String owner_name = "";
    String subject = "";
-   String when = "";
+   String timing = "";
    String permitted = "";
+   String group_id = "";
 
    try {
        Statement stmt = conn.createStatement();
@@ -31,11 +32,24 @@
        place = rset.getString("PLACE");
        owner_name = rset.getString("OWNER_NAME");
        subject = rset.getString("SUBJECT");
-       when = rset.getString("WHEN");
-       permitted = rset.getString("PERMITTED");
+       timing = rset.getString("TIMING");
+       group_id = rset.getString("PERMITTED");
    } 
    else
        response.sendRedirect("img_not_found.html");
+
+   try {
+       Statement group_stmt = conn.createStatement();
+       rset = group_stmt.executeQuery("select group_name from groups where group_id="+group_id);
+   } catch (Exception ex) {
+       out.println("<hr>" + ex.getMessage() + "<hr>");
+   }
+
+   if (rset.next()) {
+       permitted = rset.getString("GROUP_NAME");
+   } else {
+       permitted = "none";
+   }
 %>
 <%@include file="db_logout.jsp"%>
 
@@ -89,7 +103,7 @@
              <% out.println("$(\"#groups_field\").val('"+permitted+"');"); %>
              <% out.println("$(\"#place_field\").val('"+place+"');"); %>
              <% out.println("$(\"#subject_field\").val('"+subject+"');"); %>
-             <% out.println("$(\"#time_field\").val('"+when+"');"); %>
+             <% out.println("$(\"#time_field\").val('"+timing+"');"); %>
          }
      });
      $( "#edit-info" )
@@ -115,7 +129,7 @@
        out.println("<br>Owner: "+owner_name);
        out.println("<br>Subject: "+subject);
        out.println("<br>Groups: "+permitted);
-       out.println("<br>Time photo taken: "+when+"</p>");
+       out.println("<br>Time photo taken: "+timing+"</p>");
        %>
 <button id=edit-info>Edit Photo Information</button>
 <form action='PictureBrowse'>
@@ -135,7 +149,7 @@
         <label for="groups_field">Groups</label>
         <% out.println("<input type='text' name='groups_field' id='groups_field' value='"+permitted+"' class='text ui-widget-content ui-corner-all' />"); %>
         <label for="time_field">Time photo taken</label>
-        <% out.println("<input type='text' name='time_field' id='time_field' value='"+when+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <% out.println("<input type='text' name='time_field' id='time_field' value='"+timing+"' class='text ui-widget-content ui-corner-all' />"); %>
     </fieldset>
     </form>
 </div>

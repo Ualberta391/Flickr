@@ -2,6 +2,31 @@
 <html>
 <head>
 <title>Upload image to online storage!</title>
+
+<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
+
+<%@include file="db_login.jsp"%>
+<%
+    ResultSet rset = null;
+
+    ArrayList<String> group_names = new ArrayList<String>();
+    ArrayList<String> group_ids = new ArrayList<String>();
+
+    try {
+        Statement stmt = conn.createStatement();
+        rset = stmt.executeQuery("select group_id, group_name from groups");
+    } catch (Exception ex) {
+        out.println("<hr>" + ex.getMessage() + "<hr>");
+    }
+
+    while (rset.next()) {
+        group_ids.add(rset.getString("GROUP_ID"));
+        group_names.add(rset.getString("GROUP_NAME"));
+    }
+%>
+<%@include file="db_logout.jsp"%>
+
 <link rel="stylesheet" type="text/css" href="mystyle.css">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -26,21 +51,21 @@ $(function() {
             <%
                 //If there is such attribute as username, this means the user entered this page through
                 //correct navigation (logging in) and is suppose to be here
-                if(request.getSession(false).getAttribute("username") != null){
-                    String username = String.valueOf(session.getAttribute("username"));
-                    out.println("<p id='username'>You are logged in as "+username+"</p>");
+    //            if(request.getSession(false).getAttribute("username") != null){
+      //              String username = String.valueOf(session.getAttribute("username"));
+        //            out.println("<p id='username'>You are logged in as "+username+"</p>");
                     
-                    String encode = response.encodeURL("logout.jsp");
-                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
+          //          String encode = response.encodeURL("logout.jsp");
+            //        out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
                     
-                }
+              //  }
                 //If user entered this page without logging in or after logging out, redirect user back to main.jsp
-                else{
-                    response.sendRedirect("main.jsp");
-                }
+               // else{
+                //    response.sendRedirect("main.jsp");
+                //}
                 
                 
-                String encode = response.encodeURL("UploadImage");
+                //String encode = response.encodeURL("UploadImage");
             %>
         </div>
 
@@ -49,7 +74,7 @@ $(function() {
 <Fieldset>
 <legend>Upload</legend>
 Please input or select the path of the image!
-<form name="upload-image" method="POST" enctype="multipart/form-data" action=<%=encode%>>
+<form name="upload-image" method="POST" enctype="multipart/form-data" action=UploadImage>
 <table>
   <tr>
     <th>File path: </th>
@@ -69,7 +94,11 @@ Please input or select the path of the image!
   </tr>
   <tr>
     <th>Security: </th>
-    <td><input name="security" type="textfield" value=""></td>
+    <td><select name="security">
+        <% for (int i = 0; i < group_ids.size(); i += 1) { 
+               out.println("<option value='"+group_ids.get(i)+"'>"+group_names.get(i)+"</option>");
+           } %>
+    </select></td>
   </tr>
   <tr>
     <th>Date: </th>

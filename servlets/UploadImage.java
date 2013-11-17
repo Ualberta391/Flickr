@@ -76,7 +76,7 @@ public class UploadImage extends HttpServlet {
 
 	// Get the session (Create a new one if required)
 	HttpSession session = request.getSession( true );
-        String username1 = String.valueOf(session.getAttribute("username"));
+        String pic_owner = String.valueOf(session.getAttribute("username"));
 
 	try {
 	    //Parse the HTTP request to get the image stream
@@ -129,7 +129,7 @@ public class UploadImage extends HttpServlet {
 	    //Insert an empty blob into the table first. Note that you have to 
 	    //use the Oracle specific function empty_blob() to create an empty blob
 
-	    stmt.execute("INSERT INTO images VALUES(" + pic_id + ",'owner_name','" + 
+	    stmt.execute("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + ",'" + 
 						   security + "','" + subject + "','" +
 						   place + "',date'" + sql_date + "','" + description +
 			         	           "',empty_blob(),empty_blob())");

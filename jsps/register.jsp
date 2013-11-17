@@ -16,6 +16,7 @@
 	
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*"%>
+	<%@ include file="db_login.jsp"%>
 	<% if(request.getParameter("aSubmit") != ""){
 	    //get the user input from the login page
             String username = (request.getParameter("username")).trim();
@@ -35,32 +36,6 @@
             out.println("<p>Your input Email is "+email+"</p>");
 	    out.println("<p>Your input Phone is "+phone+"</p>");
 	    */
-
-	    //establish the connection to the underlying database
-            Connection conn = null;
-	 
-	    String driverName = "oracle.jdbc.driver.OracleDriver";
-            String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    try{
-		//load and register the driver
-        	Class drvClass = Class.forName(driverName); 
-	        DriverManager.registerDriver((Driver) drvClass.newInstance());
-            }
-	    catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-	    }
-	
-            try{
-	        //establish the connection 
-		conn = DriverManager.getConnection(dbstring,"zyap","oi2eooi278");
-        	conn.setAutoCommit(false);
-	    }
-            catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
-
-
 
             Statement stmt = null;
 	    //ResultSet rset = null;
@@ -130,17 +105,9 @@
 		//out.println("You couldn't create an account with us");
             }
 
-	    
-	    
-	    
-	    //Close connection
-            try{
-                conn.close();
-            }
-            catch(Exception ex){
-                out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
+
         }%>
+        <%@ include file="db_logout.jsp"%>
 	
 	</div>
     </BODY>

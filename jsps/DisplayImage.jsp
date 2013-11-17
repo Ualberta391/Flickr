@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <title>Image Display</title>
-<% String photo_id = request.getParameter("id"); 
-//       String username = String.valueOf(session.getAttribute("username"));
+<% String photo_id = request.getParameter("id");
+// String username = String.valueOf(session.getAttribute("username"));
 %>
 <%@ page import="java.sql.*" %>
 
@@ -34,7 +34,7 @@
        subject = rset.getString("SUBJECT");
        timing = rset.getString("TIMING");
        group_id = rset.getString("PERMITTED");
-   } 
+   }
    else
        response.sendRedirect("img_not_found.html");
 
@@ -121,6 +121,33 @@
 </script>
 </head>
 <body>
+        <div id = "header">
+            <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
+             
+            <%
+                //If there is such attribute as username, this means the user entered this page through
+                //correct navigation (logging in) and is suppose to be here
+                if(request.getSession(false).getAttribute("username") != null){
+                    String username = String.valueOf(session.getAttribute("username"));
+                    out.println("<p id='username'>You are logged in as "+username+"</p>");
+                    
+                    String encode = response.encodeURL("logout.jsp");
+                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
+                    
+                }
+                //If user entered this page without logging in or after logging out, redirect user back to main.jsp
+                else{
+                    response.sendRedirect("main.jsp");
+                }
+            %>
+        </div>
+        
+<div id="container">
+<%
+out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response.encodeURL("home.jsp")+"'>Home Page</a></p>");
+%>
+
 <center>
        <%
        out.println("<img src=\"/proj1/GetOnePic?big"+photo_id+"\">");
@@ -130,15 +157,19 @@
        out.println("<br>Subject: "+subject);
        out.println("<br>Groups: "+permitted);
        out.println("<br>Time photo taken: "+timing+"</p>");
+       
+        String encodeEdit = response.encodeURL("EditData");
+       String encodePic = response.encodeURL("PictureBrowse");
+       
        %>
 <button id=edit-info>Edit Photo Information</button>
-<form action='PictureBrowse'>
+<form action=<%=encodePic%>>
     <input type='submit' value='Return to Pictures'>
 </form>
 </center>
 <div id="edit-form" title="Edit Photo Information">
     <p class="intro">Edit any of the fields and click 'submit'.</p>
-    <form method="POST" action="EditData">
+    <form method="POST" action=<%=encodeEdit%>>
     <fieldset>
         <label for="description_field">Description</label>
         <% out.println("<input type='text' name='description_field' id='description_field' value='"+description+"' class='text ui-widget-content ui-corner-all' />"); %>
@@ -152,6 +183,7 @@
         <% out.println("<input type='text' name='time_field' id='time_field' value='"+timing+"' class='text ui-widget-content ui-corner-all' />"); %>
     </fieldset>
     </form>
+</div>
 </div>
 </body>
 </html>

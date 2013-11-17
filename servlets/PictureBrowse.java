@@ -88,7 +88,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
          conn.close();
         } catch ( Exception ex ){ out.println( ex.toString() );}
     
-        out.println("<form action='upload_image.html'>");
+        out.println("<form action='UploadImage.jsp'>");
         out.println("<input type='submit' value='Add more photos'>");
         out.println("</form>");
         out.println("</center>");

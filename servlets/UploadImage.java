@@ -129,11 +129,11 @@ public class UploadImage extends HttpServlet {
 	    //Insert an empty blob into the table first. Note that you have to 
 	    //use the Oracle specific function empty_blob() to create an empty blob
 
-	    stmt.execute("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + ",'" + 
+	    stmt.executeQuery("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + "','" +
 						   security + "','" + subject + "','" +
 						   place + "',date'" + sql_date + "','" + description +
 			         	           "',empty_blob(),empty_blob())");
- 
+
 	    // to retrieve the lob_locator 
 	    // Note that you must use "FOR UPDATE" in the select statement
 	    String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";

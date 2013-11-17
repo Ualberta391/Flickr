@@ -50,7 +50,7 @@ public class EditData extends HttpServlet {
         
         // Update the photo
         stmt.executeQuery("UPDATE images set PLACE='"+place+"', PERMITTED='"+groups+
-                          "', DESCRIPTION='"+description+"', WHEN=date'"+sql_date+
+                          "', DESCRIPTION='"+description+"', TIMING=date'"+sql_date+
                           "', SUBJECT='"+subject+"' WHERE photo_id="+pic_id);
         conn.close();
     } catch(Exception ex) {

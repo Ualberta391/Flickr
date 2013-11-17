@@ -1,42 +1,96 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Home</title>
         <link rel="stylesheet" type="text/css" href="mystyle.css">
     </head>
 
-    <body>
+    <body> 
+        <div id = "header">
+            <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
+             
+            <%
+                //If there is such attribute as username, this means the user entered this page through
+                //correct navigation (logging in) and is suppose to be here
+                if(request.getSession(false).getAttribute("username") != null){
+                    String username = String.valueOf(session.getAttribute("username"));
+                    out.println("<p id='username'>You are logged in as "+username+"</p>");
+                    
+                    String encode = response.encodeURL("logout.jsp");
+                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
+                    
+                }
+                //If user entered this page without logging in or after logging out, redirect user back to main.jsp
+                else{
+                    response.sendRedirect("main.jsp");
+                }
+            %>
+        </div>
+        
         <div id="container">
-            <div id = "header">
-                <!--<h1 >CMPUT 391</h1>
-                <p>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</p>
-                -->
-                <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
-                <marquee behavior="scroll" direction="left">Creators: Scott Vig, Valerie Sawyer, Zhan Yap</marquee>
-                
-                
-                <%
-                    //If there is such attribute as username, this means the user entered this page through
-                    //correct navigation (logging in) and is suppose to be here
-                    if(request.getSession(false).getAttribute("username") != null){
-                        String username = String.valueOf(session.getAttribute("username"));
-                        out.println("<p id='username'>"+username+"</p>");
-                        
-                        String encode = response.encodeURL("logout.jsp");
-                        out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>Logout</a>");
-                    }
-                    //If user entered this page without logging in, redirect user back to main.jsp
-                    else{
-                        response.sendRedirect("main.jsp");
-                    }
-                %>
-                
-                
-            </div>
+            <div id="subContainer">
+            <Fieldset>
+            <legend>Actions</legend>
             
-            <div class="home">
-                    <p>You have successfully login</p>
+            <%
+            
+            String createGroup = response.encodeURL("createGroup.jsp");
+            String upload = response.encodeURL("upload_image.jsp");
+            String view = response.encodeURL("PictureBrowse");
+            String search = response.encodeURL("search.jsp");
+            String data = response.encodeURL("data.jsp");
+            
+            
+            out.println("<TABLE>");
+            
+            out.println("<TR VALIGN=TOP ALIGN=LEFT>");
+            out.println("<TD>");
+            out.println("<form ACTION='"+createGroup+"' METHOD='link'>");
+            out.println("<INPUT TYPE='submit' NAME='createSubmit' VALUE='Create group'>");
+            out.println("</form>");
+            out.println("</TD>");
+            out.println("</TR>");
+            
+            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
+            out.println("<TD>");            
+            out.println("<form ACTION='"+upload+"' METHOD='link'>");
+            out.println("<INPUT TYPE='submit' NAME='uploadSubmit' VALUE='Upload Pictures'>");
+            out.println("</form>");
+            out.println("</TD>");            
+            out.println("</TR>");            
+            
+            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
+            out.println("<TD>");            
+            out.println("<form ACTION='"+view+"' METHOD='link'>");
+            out.println("<INPUT TYPE='submit' NAME='viewSubmit' VALUE='View Pictures'>");
+            out.println("</form>");
+            out.println("</TD>");
+            out.println("</TR>");            
+            
+            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
+            out.println("<TD>");            
+            out.println("<form ACTION='"+search+"' METHOD='link'>");
+            out.println("<INPUT TYPE='submit' NAME='searchSubmit' VALUE='Search Pictures'>");
+            out.println("</form>");
+            out.println("</TD>");
+            out.println("</TR>");            
+            
+            if((String.valueOf(session.getAttribute("username"))).equals("admin")){
+                out.println("<TR VALIGN=TOP ALIGN=LEFT>");
+                out.println("<TD>");                
+                out.println("<form ACTION='"+data+"' METHOD='link'>");
+                out.println("<INPUT TYPE='submit' NAME='dataSubmit' VALUE='View Data'>");
+                out.println("</form>");
+                out.println("</TD>");
+                out.println("</TR>");                
+            }
+            out.println("</TABLE>");
+            %>
+            
+
+            </fieldset>
             </div>
-        </div>    
+        </div>
     </body>
-    
 </html>

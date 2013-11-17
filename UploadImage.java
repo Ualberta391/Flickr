@@ -103,8 +103,8 @@ public class UploadImage extends HttpServlet {
                 java.util.Date parsed = format.parse(fieldvalue);
                 sql_date = new java.sql.Date(parsed.getTime());
             }
-		}
 	    }
+        }
 
 	    //Get the image stream
 	    InputStream instream = image_obj.getInputStream();

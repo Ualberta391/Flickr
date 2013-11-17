@@ -35,29 +35,9 @@
         <div id="container">
             <p class="homePage">Go back to <A class="homePage" href="home.jsp">Home Page</a></p>
             
+           <%@include file="db_login.jsp"%> 
            <% 
-	    Connection conn = null;
-	
-	    String driverName = "oracle.jdbc.driver.OracleDriver";
-            String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	
-	    try{
-		//load and register the driver
-        	Class drvClass = Class.forName(driverName); 
-	        DriverManager.registerDriver((Driver) drvClass.newInstance());
-            }
-	    catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-	    }
-	
-            try{
-	        //establish the connection 
-		conn = DriverManager.getConnection(dbstring,"vsawyer1","toffees1");
-        	conn.setAutoCommit(false);
-	    }
-            catch(Exception ex){
-		out.println("<hr>" + ex.getMessage() + "<hr>");
-            }
+	    
  	    
 	    // listing the groups of the user
 	    String sql = "select group_name from groups where '"+username+"' = user_name";
@@ -117,6 +97,7 @@
 
 
 %>
+<%@include file="db_logout.jsp"%>
             
         </div>
     </body>

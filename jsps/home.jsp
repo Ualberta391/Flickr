@@ -35,11 +35,11 @@
             
             <%
             
-            String createGroup = response.encodeURL("createGroup.jsp");
-            String upload = response.encodeURL("upload_image.jsp");
+            String createGroup = response.encodeURL("CreateGroup.jsp");
+            String upload = response.encodeURL("UploadImage.jsp");
             String view = response.encodeURL("PictureBrowse");
-            String search = response.encodeURL("search.jsp");
-            String data = response.encodeURL("data.jsp");
+            String search = response.encodeURL("Search.jsp");
+            String data = response.encodeURL("Data.jsp");
             
             
             out.println("<TABLE>");

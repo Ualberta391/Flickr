@@ -6,19 +6,24 @@
 <% String photo_id = request.getParameter("id");
 // String username = String.valueOf(session.getAttribute("username"));
 %>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.text.*, java.util.*" %>
 
 <%@include file="db_login.jsp"%>
 <%
    ResultSet rset = null;
+   ResultSet rset2 = null;
+   ResultSet rset3 = null;
    
    String description = "";
    String place = "";
    String owner_name = "";
    String subject = "";
    String timing = "";
-   String permitted = "";
+   String permitted = "none";
    String group_id = "";
+
+   ArrayList<String> group_names = new ArrayList<String>();
+   ArrayList<String> group_ids = new ArrayList<String>();
 
    try {
        Statement stmt = conn.createStatement();
@@ -32,23 +37,34 @@
        place = rset.getString("PLACE");
        owner_name = rset.getString("OWNER_NAME");
        subject = rset.getString("SUBJECT");
-       timing = rset.getString("TIMING");
+       java.util.Date d_timing = rset.getDate("TIMING");
+       SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");  
+       timing = df.format(d_timing);  
        group_id = rset.getString("PERMITTED");
    }
    else
        response.sendRedirect("img_not_found.html");
 
    try {
-       Statement group_stmt = conn.createStatement();
-       rset = group_stmt.executeQuery("select group_name from groups where group_id="+group_id);
+       Statement permitted_stmt = conn.createStatement();
+       rset2 = permitted_stmt.executeQuery("select group_name from groups where group_id="+group_id);
+       if (rset2.next()) {
+           permitted = rset2.getString("GROUP_NAME");
+       }
    } catch (Exception ex) {
        out.println("<hr>" + ex.getMessage() + "<hr>");
    }
 
-   if (rset.next()) {
-       permitted = rset.getString("GROUP_NAME");
-   } else {
-       permitted = "none";
+   try {
+       Statement groups_stmt = conn.createStatement();
+       rset3 = groups_stmt.executeQuery("select group_id, group_name from groups");
+   } catch (Exception ex) {
+       out.println("<hr>" + ex.getMessage() + "</hr>");
+   }
+
+   while (rset3.next()) {
+       group_ids.add(rset3.getString("GROUP_ID"));
+       group_names.add(rset3.getString("GROUP_NAME"));
    }
 %>
 <%@include file="db_logout.jsp"%>
@@ -70,7 +86,7 @@
  $(function() {
      $( "#edit-form" ).dialog({
          autoOpen: false,
-         height: 300,
+         height: 465,
          width: 350,
          modal: true,
          buttons: {
@@ -100,10 +116,10 @@
          },
          close: function() {
              <% out.println("$(\"#description_field\").val('"+description+"');"); %>
-             <% out.println("$(\"#groups_field\").val('"+permitted+"');"); %>
              <% out.println("$(\"#place_field\").val('"+place+"');"); %>
              <% out.println("$(\"#subject_field\").val('"+subject+"');"); %>
              <% out.println("$(\"#time_field\").val('"+timing+"');"); %>
+             $("#groups_field").val('private');
          }
      });
      $( "#edit-info" )
@@ -158,7 +174,7 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response
        out.println("<br>Groups: "+permitted);
        out.println("<br>Time photo taken: "+timing+"</p>");
        
-        String encodeEdit = response.encodeURL("EditData");
+       String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse");
        
        %>
@@ -177,8 +193,18 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response
         <% out.println("<input type='text' name='place_field' id='place_field' value='"+place+"' class='text ui-widget-content ui-corner-all' />"); %>
         <label for="subject_field">Subject</label>
         <% out.println("<input type='text' name='subject_field' id='subject_field' value='"+subject+"' class='text ui-widget-content ui-corner-all' />"); %>
-        <label for="groups_field">Groups</label>
-        <% out.println("<input type='text' name='groups_field' id='groups_field' value='"+permitted+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <label for="groups_label">Groups</label>
+        <select name="security" id="groups_field">
+        <% for (int i = 0; i < group_ids.size(); i += 1) {
+            if (group_names.get(i).equals(permitted)) {
+                out.println("<option selected='true' value='"+group_ids.get(i) +
+                            "'>"+group_names.get(i)+"</option>");
+            } else {
+                out.println("<option value='" + group_ids.get(i) +
+                            "'>"+group_names.get(i)+"</option>");
+            }
+        } %>
+        </select>
         <label for="time_field">Time photo taken</label>
         <% out.println("<input type='text' name='time_field' id='time_field' value='"+timing+"' class='text ui-widget-content ui-corner-all' />"); %>
     </fieldset>

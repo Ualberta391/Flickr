@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload image to online storage!</title>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<script>
+$(function() {
+    $( "#time" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 1,
+    });
+});
+</script>
+</head>
+<body>
+
+        <div id = "header">
+            <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
+             
+            <%
+                //If there is such attribute as username, this means the user entered this page through
+                //correct navigation (logging in) and is suppose to be here
+                if(request.getSession(false).getAttribute("username") != null){
+                    String username = String.valueOf(session.getAttribute("username"));
+                    out.println("<p id='username'>You are logged in as "+username+"</p>");
+                    
+                    String encode = response.encodeURL("logout.jsp");
+                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
+                    
+                }
+                //If user entered this page without logging in or after logging out, redirect user back to main.jsp
+                else{
+                    response.sendRedirect("main.jsp");
+                }
+                
+                
+                String encode = response.encodeURL("UploadImage");
+            %>
+        </div>
+
+<div id="container">
+<div id="subContainer" style="width:400px">
+<Fieldset>
+<legend>Upload</legend>
+Please input or select the path of the image!
+<form name="upload-image" method="POST" enctype="multipart/form-data" action=<%=encode%>>
+<table>
+  <tr>
+    <th>File path: </th>
+    <td><input name="file-path" type="file" size="30" ></input></td>
+  </tr>
+  <tr>
+    <th>Description: </th>
+    <td><input name="description" type="textfield" value=""></td>
+  </tr>
+  <tr>
+    <th>Place: </th>
+    <td><input name="place" type="textfield" value=""></td>
+  </tr>
+  <tr>
+    <th>Subject: </th>
+    <td><input name="subject" type="textfield" value=""></td>
+  </tr>
+  <tr>
+    <th>Security: </th>
+    <td><input name="security" type="textfield" value=""></td>
+  </tr>
+  <tr>
+    <th>Date: </th>
+    <td><input id="time" name="time" type="textfield" value=""></td>
+  </tr>
+  <tr>
+    <td><input type="submit" name=".submit"
+     value="Upload"></td>
+  </tr>
+</table>
+</form>
+</fieldset>
+</div>
+</div>
+</body>
+</html>

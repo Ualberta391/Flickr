@@ -22,27 +22,27 @@
                 <TABLE>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Username:</B></TD>
-                        <TD><INPUT TYPE="text" NAME="username" MAXLENGTH="20" VALUE="Username"><BR></TD>
+                        <TD><INPUT TYPE="text" NAME="username" MAXLENGTH="24" VALUE="Username"><BR></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Password:</B></TD>
-                        <TD><INPUT TYPE="password" NAME="password" MAXLENGTH="20" VALUE="Password"></TD>
+                        <TD><INPUT TYPE="password" NAME="password" MAXLENGTH="24" VALUE="Password"></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>First Name:</B></TD>
-                        <TD><INPUT TYPE="text" NAME="first" MAXLENGTH="20" VALUE="First Name"></TD>
+                        <TD><INPUT TYPE="text" NAME="first" MAXLENGTH="24" VALUE="First Name"></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Last Name:</B></TD>
-                        <TD><INPUT TYPE="text" NAME="last" MAXLENGTH="20" VALUE="Last Name"></TD>
+                        <TD><INPUT TYPE="text" NAME="last" MAXLENGTH="24" VALUE="Last Name"></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Address:</B></TD>
-                        <TD><INPUT TYPE="text" NAME="address" MAXLENGTH="20" VALUE="Address"></TD>
+                        <TD><INPUT TYPE="text" NAME="address" MAXLENGTH="128" VALUE="Address"></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Email:</B></TD>
-                        <TD><INPUT TYPE="text" NAME="email" MAXLENGTH="20" VALUE="Email"></TD>
+                        <TD><INPUT TYPE="text" NAME="email" MAXLENGTH="128" VALUE="Email"></TD>
                     </TR>
                     <TR VALIGN=TOP ALIGN=LEFT>
                         <TD><B>Phone:</B></TD>
@@ -84,9 +84,5 @@
         %>
         
     </div>
-    
-
-
-    
 </body>
 </html>

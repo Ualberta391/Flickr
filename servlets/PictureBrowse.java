@@ -33,7 +33,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
         PrintWriter out = response.getWriter();
     HttpSession session = request.getSession( true );
 
-         out.println("<html>");
+        out.println("<html>");
         out.println("<head>");
         out.println("<title> Photo List </title>");
         out.println("<link rel='stylesheet' type='text/css' href='mystyle.css'>");
@@ -70,23 +70,81 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
          * to execute the given query
          */
         try {
-         String query = "select photo_id from images";
-         Connection conn = getConnected();
-         Statement stmt = conn.createStatement();
-         ResultSet rset = stmt.executeQuery(query);
-         String p_id = "";
+         	String query = "select photo_id from images";
+         	Connection conn = getConnected();
+         	Statement stmt = conn.createStatement();
+         	ResultSet rset = stmt.executeQuery(query);
+         	String p_id = "";
+	 	String ownername = "";
+	 	int permitted = 0;
+        	String username = String.valueOf(session.getAttribute("username"));
+		out.println(username);
+         	while (rset.next() ) {
+         		p_id = (rset.getObject(1)).toString();
+			//getting the user who uploaded the image
+			String sql = "select owner_name from images where '"+p_id+"' = photo_id";
+       			try{
+       				stmt = conn.createStatement();
+				//Execute the select statement
+				ResultSet ownerSet = stmt.executeQuery(sql);
+	       			if (ownerSet.next())
+	  				ownername  = ownerSet.getString(1);
+	       			else
+					out.println("no owner exists");
+			}catch(Exception ex){
+				out.println("<hr>" + ex.getMessage() + "<hr>");
+			}	        
+	
 
-         while (rset.next() ) {
-         p_id = (rset.getObject(1)).toString();
-         // specify the servlet for the image
-            out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
-         // specify the servlet for the thumbnail
-         out.println("<img src=\"/proj1/GetOnePic?"+p_id +
-         "\"></a>");
-         }
-         stmt.close();
-         conn.close();
-        } catch ( Exception ex ){ out.println( ex.toString() );}
+
+       			// checking if the user is permitted to see the image
+       			sql = "select permitted from images where '"+p_id+"' = photo_id";
+       			try{
+       				stmt = conn.createStatement();
+				//Execute the select statement
+				ResultSet permittedSet = stmt.executeQuery(sql);
+	       			if (permittedSet.next())
+	  				permitted = permittedSet.getInt(1);
+	       			else
+					out.println("permitted could not be found");
+	
+			}catch(Exception ex){
+				out.println("<hr>" + ex.getMessage() + "<hr>");
+			}
+			if(ownername.equals(username) || permitted == 1){
+				// specify the servlet for the image
+         	  		 out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
+         			// specify the servlet for the thumbnail
+         			out.println("<img src=\"/proj1/GetOnePic?"+p_id +
+         			"\"></a>");
+			}
+			else{
+				sql = "select friend_id from group_lists where '"+permitted+"' = group_id";
+        			try{
+       					stmt = conn.createStatement();
+					//Execute the select statement
+	       				ResultSet friend_id_Set = stmt.executeQuery(sql);
+	       				while (friend_id_Set.next()){
+	  					if(friend_id_Set.getString(1).equals(username)){
+							// specify the servlet for the image
+         	  		 			out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
+         						// specify the servlet for the thumbnail
+         						out.println("<img src=\"/proj1/GetOnePic?"+p_id +
+         						"\"></a>");
+							break;
+						}
+					}
+	
+				}catch(Exception ex){
+				out.println("<hr>" + ex.getMessage() + "<hr>");
+				}
+			}
+				
+		}
+         	stmt.close();
+         	conn.close();
+      	} catch ( Exception ex ){ 
+			out.println( ex.toString() );}
     
         out.println("<form action='UploadImage.jsp'>");
         out.println("<input type='submit' value='Add more photos'>");

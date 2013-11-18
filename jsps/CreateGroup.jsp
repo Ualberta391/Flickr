@@ -76,7 +76,7 @@
             out.println("<TABLE>");
             out.println("<TR VALIGN=TOP ALIGN=LEFT>");
             out.println("<TD><B>Create a new group:</B></TD>");
-            out.println("<TD><INPUT TYPE='text' NAME='groupname' MAXLENGTH='20' VALUE='Group name'><BR></TD>");
+            out.println("<TD><INPUT TYPE='text' NAME='groupname' MAXLENGTH='24' VALUE='Group name'><BR></TD>");
             out.println("</TR>");
 	
             out.println("</TABLE>");

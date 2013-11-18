@@ -43,7 +43,7 @@
 		
 		try{
 		    Statement stmt = conn.createStatement();
-		    String viewOrAddFriends = response.encodeURL("viewOrAddFriends.jsp");  
+		    
 		    //Execute the select statement
 		    ResultSet groupSet = stmt.executeQuery(sql);
 		    out.println("<TABLE border='1'>");
@@ -75,8 +75,8 @@
 		out.println("</center>");
 	        out.println("</div>");
 		
-		String group = response.encodeURL("group.jsp");  
-		out.println("<form NAME='GroupForm' ACTION='"+group+"' METHOD='post'>");
+		String encodeGroup = response.encodeURL("group.jsp");  
+		out.println("<form NAME='GroupForm' ACTION='"+encodeGroup+"' METHOD='post'>");
 		out.println("<TABLE>");
 		out.println("<TR VALIGN=TOP ALIGN=LEFT>");
 		out.println("<TD><B>Create a new group:</B></TD>");
@@ -86,6 +86,9 @@
 		out.println("<INPUT TYPE='submit' NAME='cSubmit' VALUE='Submit'>");
 		out.println("</form>");
 		
+		
+		
+		///////////////////////////////////////////////////////////////Do you need the code below? Its commented out
 		// listing the groups the user is a part of
 		/*String sql = "select group_id from groups_list where '"+username+"' = user_name"; 
 		
@@ -98,7 +101,7 @@
   			String groupName = groupSet.getString(1);
 			session.setAttribute("groupName", groupName);
 			out.println("<a href = 'viewOrAddFriends.jsp?group="+groupName+"'>"+groupName+"</a>");
-			    
+			
             		//out.println("</form>");
 		    }
 		}catch(Exception ex){

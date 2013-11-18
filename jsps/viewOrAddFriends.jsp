@@ -9,8 +9,9 @@
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*" %>
         <div id = "header">
-            <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
-            <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
+           <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
+	    
             <%
 		String username = "";
 		String group = "";

@@ -9,9 +9,8 @@
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*" %>
         <div id = "header">
-            <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
-            <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
-             
+            <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
             <%
 		String username = "";
                 //If there is such attribute as username, this means the user entered this page through
@@ -34,7 +33,8 @@
         
         <div id="container">
             <p class="homePage">Go back to <A class="homePage" href="home.jsp">Home Page</a></p>
-            
+            <div id="subContainer" style="width:500px">
+	    <center>
            <%@include file="db_login.jsp"%> 
            <% 
 	    
@@ -47,18 +47,29 @@
 		String viewOrAddFriends = response.encodeURL("viewOrAddFriends.jsp");  
 		//Execute the select statement
 		ResultSet groupSet = stmt.executeQuery(sql);
+		out.println("<TABLE border='1'>");
+		out.println("<TR VALIGN=TOP ALIGN=LEFT>");
+		out.println("<TD>");
+		out.println("List of Groups");
+		out.println("</TD>");
+		out.println("</TR>");
        		while (groupSet.next()){
   			String groupName = groupSet.getString(1);
 			session.setAttribute("groupName", groupName);
+			out.println("<TR VALIGN=TOP ALIGN=LEFT>");
+			out.println("<TD>");
 			out.println("<a href = 'viewOrAddFriends.jsp?group="+groupName+"'>"+groupName+"</a>");
-           
+			out.println("</TD>");
+			out.println("</TR>");
             		//out.println("</form>");
 		}
+		out.println("</TABLE>");
 		}catch(Exception ex){
 			out.println("<hr>" + ex.getMessage() + "<hr>");
 			out.println("List of groups could not be shown");
             	}
-
+		out.println("</center>");
+	        out.println("</div>");
 		
             String group = response.encodeURL("group.jsp");  
             out.println("<form NAME='GroupForm' ACTION='"+group+"' METHOD='post'>");
@@ -93,12 +104,8 @@
 			out.println("<hr>" + ex.getMessage() + "<hr>");
 			out.println("List of groups could not be shown");
             	}*/
-
-
-
-%>
-<%@include file="db_logout.jsp"%>
-            
+		%>
+		<%@include file="db_logout.jsp"%>
         </div>
     </body>
 </html>

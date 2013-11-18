@@ -10,8 +10,8 @@
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*" %>
         <div id = "header">
-            <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
-            <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
+           <!--Dont worry about the code below (its for testing)-->
+            <p>&nbsp;</p>
              
             <%
 		String username = "";
@@ -53,7 +53,7 @@
 	    username = String.valueOf(session.getAttribute("username")); 
 	    session.setAttribute("username",username);
             groupName = (request.getParameter("groupname")).trim();
-            out.println("<p>Group name is "+ groupName +"</p>");
+            out.println("<p>You have successfully create the group '"+ groupName +"'</p>");
 
 	    java.util.Date utilDate = new java.util.Date();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
@@ -66,8 +66,9 @@
 		
 		//Execute update into the database
 		stmt.executeUpdate(sql);
-		out.println("\nYou have successfully created a group");
-		out.println("<a href = 'viewOrAddFriends.jsp?group="+groupName+"'>Add friends</a>");
+		out.println("\nWould you like to add");
+		out.println("<a id= 'friend' href = 'viewOrAddFriends.jsp?group="+groupName+"'>friends</a>");
+		out.println("to your group?");
             }
 	    catch(Exception ex){
 		out.println("You couldn't create a group.  You already have a group with that name.");

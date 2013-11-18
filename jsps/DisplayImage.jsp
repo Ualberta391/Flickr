@@ -38,8 +38,8 @@
        owner_name = rset.getString("OWNER_NAME");
        subject = rset.getString("SUBJECT");
        java.util.Date d_timing = rset.getDate("TIMING");
-       SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");  
-       timing = df.format(d_timing);  
+       SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+       timing = df.format(d_timing);
        group_id = rset.getString("PERMITTED");
    }
    else
@@ -166,6 +166,7 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response
 
 <center>
        <%
+       String username = String.valueOf(session.getAttribute("username"));
        out.println("<img src=\"/proj1/GetOnePic?big"+photo_id+"\">");
        out.println("<p>Description: "+description);
        out.println("<br>Place: "+place);
@@ -176,9 +177,11 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response
        
        String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse");
+ 	if(username.equals(owner_name))
+		out.println("<button id=edit-info>Edit Photo Information</button>");
        
        %>
-<button id=edit-info>Edit Photo Information</button>
+
 <form action=<%=encodePic%>>
     <input type='submit' value='Return to Pictures'>
 </form>

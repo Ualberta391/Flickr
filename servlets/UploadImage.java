@@ -66,23 +66,23 @@ public class UploadImage extends HttpServlet {
 	String drivername = "oracle.jdbc.driver.OracleDriver";
 	String dbstring ="jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	FileItem image_obj = null;
-
+        
 	String description = "";
 	String place = "";
 	String subject = "";
 	String security = "";
-    java.sql.Date sql_date = null;
+        java.sql.Date sql_date = null;
 	int pic_id;
-
+        
 	// Get the session (Create a new one if required)
 	HttpSession session = request.getSession( true );
         String pic_owner = String.valueOf(session.getAttribute("username"));
-
+        
 	try {
 	    //Parse the HTTP request to get the image stream
 	    DiskFileUpload fu = new DiskFileUpload();
 	    List<FileItem> items = fu.parseRequest(request);
-
+            
 	    for (FileItem item : items) {
 	        if (!item.isFormField()) {
 		    // Item is the uploaded file
@@ -102,71 +102,72 @@ public class UploadImage extends HttpServlet {
 		    } else if (fieldname.equals("security")) {
 		        security = fieldvalue;
 		    } else if (fieldname.equals("time")) {
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                java.util.Date parsed = format.parse(fieldvalue);
-                sql_date = new java.sql.Date(parsed.getTime());
-            }
+                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                    java.util.Date parsed = format.parse(fieldvalue);
+                    sql_date = new java.sql.Date(parsed.getTime());
+                }
 	    }
         }
-
-	    //Get the image stream
-	    InputStream instream = image_obj.getInputStream();
-
-	    BufferedImage img = ImageIO.read(instream);
-	    BufferedImage thumbNail = shrink(img, 150);
-
+       
+	//Get the image stream
+	InputStream instream = image_obj.getInputStream();
+        
+	BufferedImage img = ImageIO.read(instream);
+	BufferedImage thumbNail = shrink(img, 150);
+        
         // Connect to the database and create a statement
         Connection conn = getConnected(drivername,dbstring, username,password);
-	    Statement stmt = conn.createStatement();
-	    
-	    /*
-	     *  First, to generate a unique pic_id using an SQL sequence
-	     */
-	    ResultSet rset1 = stmt.executeQuery("SELECT pic_id_sequence.nextval from dual");
-	    rset1.next();
-	    pic_id = rset1.getInt(1);
-
-	    //Insert an empty blob into the table first. Note that you have to 
-	    //use the Oracle specific function empty_blob() to create an empty blob
-
-	    stmt.executeQuery("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + "','" +
+	Statement stmt = conn.createStatement();
+	
+	/*
+	 *  First, to generate a unique pic_id using an SQL sequence
+	 */
+	ResultSet rset1 = stmt.executeQuery("SELECT pic_id_sequence.nextval from dual");
+	rset1.next();
+	pic_id = rset1.getInt(1);
+        
+	//Insert an empty blob into the table first. Note that you have to 
+	//use the Oracle specific function empty_blob() to create an empty blob
+        
+	stmt.executeQuery("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + "','" +
 						   security + "','" + subject + "','" +
 						   place + "',date'" + sql_date + "','" + description +
 			         	           "',empty_blob(),empty_blob())");
-
-	    // to retrieve the lob_locator 
-	    // Note that you must use "FOR UPDATE" in the select statement
-	    String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";
-	    ResultSet rset = stmt.executeQuery(cmd);
-	    rset.next();
-	    BLOB thumb_blob = ((OracleResultSet)rset).getBLOB(8);
-	    BLOB photo_blob = ((OracleResultSet)rset).getBLOB(9);
-
-
-	    //Write the image to the blob object
-	    OutputStream t_outstream = thumb_blob.getBinaryOutputStream();
-	    OutputStream p_outstream = photo_blob.getBinaryOutputStream();
-
-	    ImageIO.write(thumbNail, "jpg", t_outstream);
-	    ImageIO.write(img, "jpg", p_outstream);
-	    
-	    instream.close();
-	    t_outstream.close();
-	    p_outstream.close();
+        
+        // to retrieve the lob_locator 
+        // Note that you must use "FOR UPDATE" in the select statement
+        String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";
+        ResultSet rset = stmt.executeQuery(cmd);
+        rset.next();
+        BLOB thumb_blob = ((OracleResultSet)rset).getBLOB(8);
+        BLOB photo_blob = ((OracleResultSet)rset).getBLOB(9);
+        
+        //Write the image to the blob object
+        OutputStream t_outstream = thumb_blob.getBinaryOutputStream();
+        OutputStream p_outstream = photo_blob.getBinaryOutputStream();
+        
+        ImageIO.write(thumbNail, "jpg", t_outstream);
+        ImageIO.write(img, "jpg", p_outstream);
+        
+        instream.close();
+        t_outstream.close();
+        p_outstream.close();
 	
         stmt.executeUpdate("commit");
-
+        
         conn.close();
-
+        
 	} catch( Exception ex ) {
 	    System.out.println(ex.getMessage());
 	}
-
-	response.sendRedirect("PictureBrowse");
+        
+        //Encode PictureBrowse servlet
+        String encodePictureBrowse = response.encodeURL("PictureBrowse");
+	response.sendRedirect(encodePictureBrowse);
     }
 
     /*
-      /*   To connect to the specified database
+    *   To connect to the specified database
     */
     private static Connection getConnected( String drivername,
 					    String dbstring,

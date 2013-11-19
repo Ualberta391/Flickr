@@ -106,11 +106,16 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
                     out.println("<hr>" + ex.getMessage() + "<hr>");
                 }
                 //If the image is uploaded by the current user or the picture is public
-                if(ownername.equals(username) || permitted == 1){
-                    // specify the servlet for the image
-                    out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
-                    // specify the servlet for the thumbnail
-                    out.println("<img src=\"/proj1/GetOnePic?"+p_id +"\"></a>");
+                if(ownername.equals(username) || permitted == 1){  
+                    //Encode display.jsp link
+                    String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");
+                    String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;
+                    out.println("<a href='"+encodeDisplay2+"'>");
+                    
+                    //Encode the servlet GetOnePic
+                    String encodeOne1 = response.encodeURL("GetOnePic");
+                    String encodeOne2 = "/proj1/"+encodeOne1+"?"+p_id;
+                    out.println("<img src='"+encodeOne2+"'></a>");
                 }
                 else{
                     sql = "select friend_id from group_lists where '"+permitted+"' = group_id";
@@ -121,10 +126,16 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
                         while (friend_id_Set.next()){
                             //If you are a friend to the owner of the picture, you can view it as well
                             if(friend_id_Set.getString(1).equals(username)){
-                                // specify the servlet for the image
-                                out.println("<a href=\"/proj1/DisplayImage.jsp?id="+p_id+"\">");
-                                // specify the servlet for the thumbnail
-                                out.println("<img src=\"/proj1/GetOnePic?"+p_id +"\"></a>");
+                                //Encode display.jsp link
+                                String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");
+                                String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;
+                                out.println("<a href='"+encodeDisplay2+"'>");
+                                
+                                //Encode the servlet GetOnePic
+                                String encodeOne1 = response.encodeURL("GetOnePic");
+                                String encodeOne2 = "/proj1/"+encodeOne1+"?"+p_id;
+                                out.println("<img src='"+encodeOne2+"'></a>");
+                                
                                 break;
                             }
                         }

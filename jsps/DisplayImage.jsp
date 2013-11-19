@@ -156,12 +156,14 @@
                 else{
                     response.sendRedirect("main.jsp");
                 }
+                 //Encode the homePage link
+		String encodeHomePage = response.encodeURL("home.jsp");
             %>
         </div>
         
 <div id="container">
 <%
-out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response.encodeURL("home.jsp")+"'>Home Page</a></p>");
+out.println("<p class='homePage'>Go back to <A class='homePage' href='"+encodeHomePage+"'>Home Page</a></p>");
 %>
 
 <center>

@@ -104,8 +104,9 @@
                                 "place": new_place,
                                 "subject": new_subject,
                                 "time": new_time,
-                                <% out.println("\"id\": \""+photo_id+"\","); %>
+                                "id": <%= photo_id %>
                                 },
+                         async: false,
                          type: 'POST'
                         });
                  location.reload();
@@ -115,11 +116,10 @@
              }
          },
          close: function() {
-             <% out.println("$(\"#description_field\").val('"+description+"');"); %>
-             <% out.println("$(\"#place_field\").val('"+place+"');"); %>
-             <% out.println("$(\"#subject_field\").val('"+subject+"');"); %>
-             <% out.println("$(\"#time_field\").val('"+timing+"');"); %>
-             $("#groups_field").val('private');
+             $("#description_field").val('<%= description %>');
+             $("#place_field").val('<%= place %>');
+             $("#subject_field").val('<%= subject %>');
+             $("#time_field").val('<%= timing %>');
          }
      });
      $( "#edit-info" )
@@ -138,9 +138,7 @@
 </head>
 <body>
         <div id = "header">
-            <!--Dont worry about the code below (its for testing)-->
             <p>&nbsp;</p>
-             
             <%
                 //If there is such attribute as username, this means the user entered this page through
                 //correct navigation (logging in) and is suppose to be here
@@ -157,31 +155,30 @@
                     response.sendRedirect("main.jsp");
                 }
                  //Encode the homePage link
-		String encodeHomePage = response.encodeURL("home.jsp");
+                 String encodeHomePage = response.encodeURL("home.jsp");
             %>
         </div>
         
 <div id="container">
-<%
-out.println("<p class='homePage'>Go back to <A class='homePage' href='"+encodeHomePage+"'>Home Page</a></p>");
-%>
+<p class='homePage'>Go back to <A class='homePage' href='<%= encodeHomePage %>'>Home Page</a></p>
 
 <center>
+       <img src="/proj1/GetOnePic?big<%= photo_id %>">
+       <p>Description: <%= description %>
+       <br>Place: <%= place %>
+       <br>Owner: <%= owner_name %>
+       <br>Subject: <%= subject %>
+       <br>Groups: <%= permitted %>
+       <br>Time photo taken: <%= timing %>
+       </p>
+
        <%
        String username = String.valueOf(session.getAttribute("username"));
-       out.println("<img src=\"/proj1/GetOnePic?big"+photo_id+"\">");
-       out.println("<p>Description: "+description);
-       out.println("<br>Place: "+place);
-       out.println("<br>Owner: "+owner_name);
-       out.println("<br>Subject: "+subject);
-       out.println("<br>Groups: "+permitted);
-       out.println("<br>Time photo taken: "+timing+"</p>");
-       
+
        String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse");
- 	if(username.equals(owner_name))
-		out.println("<button id=edit-info>Edit Photo Information</button>");
-       
+ 	   if(username.equals(owner_name))
+	       out.println("<button id=edit-info>Edit Photo Information</button>");
        %>
 
 <form action=<%=encodePic%>>
@@ -193,11 +190,11 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+encodeHo
     <form method="POST" action=<%=encodeEdit%>>
     <fieldset>
         <label for="description_field">Description</label>
-        <% out.println("<input type='text' name='description_field' id='description_field' value='"+description+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <input type='text' name='description_field' id='description_field' value='<%= description %>' class='text ui-widget-content ui-corner-all' />
         <label for="place_field">Place</label>
-        <% out.println("<input type='text' name='place_field' id='place_field' value='"+place+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <input type='text' name='place_field' id='place_field' value='<%= place %>' class='text ui-widget-content ui-corner-all' />
         <label for="subject_field">Subject</label>
-        <% out.println("<input type='text' name='subject_field' id='subject_field' value='"+subject+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <input type='text' name='subject_field' id='subject_field' value='<%= subject %>' class='text ui-widget-content ui-corner-all' />
         <label for="groups_label">Groups</label>
         <select name="security" id="groups_field">
         <% for (int i = 0; i < group_ids.size(); i += 1) {
@@ -211,7 +208,7 @@ out.println("<p class='homePage'>Go back to <A class='homePage' href='"+encodeHo
         } %>
         </select>
         <label for="time_field">Time photo taken</label>
-        <% out.println("<input type='text' name='time_field' id='time_field' value='"+timing+"' class='text ui-widget-content ui-corner-all' />"); %>
+        <input type='text' name='time_field' id='time_field' value='<%= timing %>' class='text ui-widget-content ui-corner-all' />
     </fieldset>
     </form>
 </div>

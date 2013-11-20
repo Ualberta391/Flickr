@@ -106,7 +106,7 @@ public class PictureBrowse extends HttpServlet implements SingleThreadModel {
                     out.println("<hr>" + ex.getMessage() + "<hr>");
                 }
                 //If the image is uploaded by the current user, the picture is public, or the user is admin the user can view the photo
-                if(ownername.equals(username) || permitted == 1 || ownername.equals("admin"){  
+                if(ownername.equals(username) || permitted == 1 || ownername.equals("admin")){  
                     //Encode display.jsp link
                     String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");
                     String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;

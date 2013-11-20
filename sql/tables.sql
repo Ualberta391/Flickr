@@ -43,6 +43,8 @@ CREATE TABLE groups (
 
 INSERT INTO groups values(1,null,'public', sysdate);
 INSERT INTO groups values(2,null,'private',sysdate);
+INSERT INTO users values('admin','password',sysdate);
+INSERT INTO persons values('admin','admin','admin','admin address','admin@admin.ca','1234567890');
 
 CREATE TABLE group_lists (
    group_id    int,

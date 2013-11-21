@@ -81,7 +81,7 @@ public class GetOnePic extends HttpServlet
      */
     private Connection getConnected() throws Exception {
 
-	String username = "vrscott";
+	String username = "c391g5";
 	String password = "radiohead7";
         /* one may replace the following for the specified database */
 	String drivername = "oracle.jdbc.driver.OracleDriver";

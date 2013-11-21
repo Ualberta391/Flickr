@@ -13,7 +13,7 @@
    }
    try {
        //establish the connection
-       conn = DriverManager.getConnection(dbstring,"vrscott","radiohead7");
+       conn = DriverManager.getConnection(dbstring,"c391g5","radiohead7");
        conn.setAutoCommit(false);
        }
    catch(Exception ex) {

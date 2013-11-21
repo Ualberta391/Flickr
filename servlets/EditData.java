@@ -16,7 +16,7 @@ public class EditData extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
 	// Change the following parameters to connect to the oracle database
-	String username = "vrscott";
+	String username = "c391g5";
 	String password = "radiohead7";
 	String drivername = "oracle.jdbc.driver.OracleDriver";
 	String dbstring ="jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";

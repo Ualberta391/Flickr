@@ -84,13 +84,27 @@
                             <TR VALIGN=TOP ALIGN=LEFT>
                                 <TD><B>To:</B></TD>
                                 <TD><input type="text" id="to" name="to"/></TD>
-                            </TR>  
+                            </TR>
+                            
+                            <TR VALIGN=TOP ALIGN=LEFT>
+                                <TD><B>Most recent first :</B></TD>
+                                <TD><input type="radio" id="mrf" name="rank"/></TD>
+                            </TR>
+                            
+                            <TR VALIGN=TOP ALIGN=LEFT>
+                                <TD><B>Most recent last :</B></TD>
+                                <TD><input type="radio" id="mrl" name="rank"/></TD>
+                            </TR>
+                            
+                            <TR VALIGN=TOP ALIGN=LEFT>
+                                <TD><B>Default :</B></TD>
+                                <TD><input type="radio" id="mrl" name="rank" checked/></TD>
+                            </TR>
                         </TABLE>
                         <input type="submit" name="dateSubmit" value="Search">
                     </Fieldset>
                 </form>
             </div>
-            
         </div>
     </body>
 </html>

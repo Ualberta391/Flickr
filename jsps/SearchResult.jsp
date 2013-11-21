@@ -29,65 +29,38 @@
         </div>
         
         <div id="container">
-
+            <%@include file="db_login.jsp"%>
             <%
-            out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response.encodeURL("home.jsp")+"'>Home Page</a></p>");
-
-                //Just to confirm date is correct  
-               if(request.getParameter("dateSubmit") != ""){
-                  String from = request.getParameter("from");
-                  String to = request.getParameter("to");
+                out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response.encodeURL("home.jsp")+"'>Home Page</a></p>");
                 
-            //Convert string to sql date format (need to be used for date comparison)
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            java.util.Date parsedf = format.parse(from);
-            java.util.Date parsedt = format.parse(to);
-
-            out.println("from "+parsedf+" to "+parsedt);
-               }
-               
-                //Logging into database
-                String m_url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-                String m_driverName = "oracle.jdbc.driver.OracleDriver";
+                String dFrom = request.getParameter("from");
+                String dTo = request.getParameter("to");
                 
-                String m_userName = "vrscott"; //supply username
-                String m_password = "radiohead7"; //supply password
+                //Convert string to java.util.date format and then back into the correct string date format for comparison
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                java.util.Date parsedf = format.parse(dFrom);
+                java.util.Date parsedt = format.parse(dTo);
+                DateFormat df = new SimpleDateFormat("dd-MMM-yy");  
+                String from = df.format(parsedf);
+                String to = df.format(parsedt);
                 
-                String addItemError = "";
+                out.println(".......from "+from+" to "+to);
                 
-                Connection m_con;
-                Statement stmt;
-                
-                try
-                {
-                    Class drvClass = Class.forName(m_driverName);
-                    DriverManager.registerDriver((Driver)
-                    drvClass.newInstance());
-                    m_con = DriverManager.getConnection(m_url, m_userName, m_password);
-                  
-                } 
-                catch(Exception e)
-                {      
-                    out.print("Error displaying data: ");
-                    out.println(e.getMessage());
-                    return;
-                }
-               
                 //Attempting to search for the pictures
                 try{
                     //If the user clicked the button search
                     if(request.getParameter("dateSubmit") != ""){
                         //If user entered something to query
                         if(!(request.getParameter("query").equals(""))){
-                            PreparedStatement doSearch = m_con.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing FROM images i WHERE  CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) ORDER BY RANK DESC");
+                            PreparedStatement doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY RANK DESC");
                             
                             doSearch.setString(1, request.getParameter("query"));
                             doSearch.setString(2, request.getParameter("query"));
                             doSearch.setString(3, request.getParameter("query"));
+                            doSearch.setString(4, from);
+                            doSearch.setString(5, to);
                             
                             ResultSet rset2 = doSearch.executeQuery();
-                            
-                            
                             
                             //Printing the result table for confirmation
                             out.println("<table border=1>");
@@ -100,8 +73,6 @@
                             out.println("</tr>");
                             
                             while(rset2.next()){
-
-                            java.sql.Date ddd = rset2.getDate(5);
                                    
                                     out.println("<tr>");
                                     out.println("<td>"); 
@@ -114,7 +85,7 @@
                                     out.println(rset2.getString(4)); 
                                     out.println("</td>");
                                     out.println("<td>"); 
-                                    out.println(ddd); 
+                                    out.println(rset2.getDate(5)); 
                                     out.println("</td>");
                                     out.println("<td>");
                                     out.println(rset2.getObject(1));
@@ -128,15 +99,13 @@
                             out.println("<br><b>Please enter text for quering</b>");
                         }
                     }
-                    m_con.close();
                 }catch(SQLException e){
                     out.println("SQLException: " +
                     e.getMessage());
-                    m_con.rollback();
+                    conn.rollback();
                 }
-               
-               
             %>
+            <%@include file="db_logout.jsp"%>
         </div>
     </body>
 </html>

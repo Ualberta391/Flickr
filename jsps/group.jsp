@@ -48,9 +48,6 @@
 		    //int i = 1;
 		    //group_id = i;
 		    
-		    //get the user input from the login page
-		    username = String.valueOf(session.getAttribute("username")); //////////////////////////////////////////////////////////
-		    session.setAttribute("username",username);/////////////////////////////////////////////////////////////////////////////Maybe you meant session.setAttribute("groupName",groupName)?????
 		    groupName = (request.getParameter("groupname")).trim();
 		    out.println("<p>You have successfully create the group '"+ groupName +"'</p>");
 		    

@@ -31,21 +31,28 @@
         <div id="container">
             <%@include file="db_login.jsp"%>
             <%
+                int dateFlag=0;
+                String dFrom="";
+                String dTo="";
+                String from="";
+                String to="";
+                
+                if(request.getParameter("from")!="" && request.getParameter("to")!=""){
+                    dateFlag=1;
+                    dFrom = request.getParameter("from");
+                    dTo = request.getParameter("to");
+                    
+                    //Convert string to java.util.date format and then back into the correct string date format for comparison
+                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                    java.util.Date parsedf = format.parse(dFrom);
+                    java.util.Date parsedt = format.parse(dTo);
+                    DateFormat df = new SimpleDateFormat("dd-MMM-yy");  
+                    from = df.format(parsedf);
+                    to = df.format(parsedt);
+                }
                 out.println("<p class='homePage'>Go back to <A class='homePage' href='"+response.encodeURL("home.jsp")+"'>Home Page</a></p>");
                 out.println("<center>");
                 out.println("<h2>Search Result of '"+request.getParameter("query")+"'</h2>");
-                String dFrom = request.getParameter("from");
-                String dTo = request.getParameter("to");
-                
-                //Convert string to java.util.date format and then back into the correct string date format for comparison
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                java.util.Date parsedf = format.parse(dFrom);
-                java.util.Date parsedt = format.parse(dTo);
-                DateFormat df = new SimpleDateFormat("dd-MMM-yy");  
-                String from = df.format(parsedf);
-                String to = df.format(parsedt);
-                
-                //out.println(".......from "+from+" to "+to);
                 
                 //Attempting to search for the pictures
                 try{
@@ -53,13 +60,24 @@
                     if(request.getParameter("dateSubmit") != ""){
                         //If user entered something to query
                         if(!(request.getParameter("query").equals(""))){
-                            PreparedStatement doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY RANK DESC");
+                            PreparedStatement doSearch=null;
                             
-                            doSearch.setString(1, request.getParameter("query"));
-                            doSearch.setString(2, request.getParameter("query"));
-                            doSearch.setString(3, request.getParameter("query"));
-                            doSearch.setString(4, from);
-                            doSearch.setString(5, to);
+                            //If the user entered a time period constraint in the search
+                            if(dateFlag==1){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY RANK DESC");
+                                
+                                doSearch.setString(1, request.getParameter("query"));
+                                doSearch.setString(2, request.getParameter("query"));
+                                doSearch.setString(3, request.getParameter("query"));
+                                doSearch.setString(4, from);
+                                doSearch.setString(5, to);
+                            }else{
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0)  ORDER BY RANK DESC");
+                                
+                                doSearch.setString(1, request.getParameter("query"));
+                                doSearch.setString(2, request.getParameter("query"));
+                                doSearch.setString(3, request.getParameter("query"));
+                            }
                             
                             ResultSet rset2 = doSearch.executeQuery();
                             

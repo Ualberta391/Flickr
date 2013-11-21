@@ -47,7 +47,7 @@ public class UploadImage extends HttpServlet {
 	HttpSession session = request.getSession( true );
         String pic_owner = String.valueOf(session.getAttribute("username"));
         
-	try {
+	try { 
 	    //Parse the HTTP request to get the image stream
 	    DiskFileUpload fu = new DiskFileUpload();
 	    List<FileItem> items = fu.parseRequest(request);

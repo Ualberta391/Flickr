@@ -107,7 +107,7 @@ public class UploadImage extends HttpServlet {
             if (sql_date != null)
                 insert_sql += "date'" + sql_date + "','";
             else
-                insert_sql += sql_date + ",'";
+                insert_sql += "sysdate,'";
             insert_sql += description + "',empty_blob(),empty_blob())";
             stmt.executeQuery(insert_sql);
             

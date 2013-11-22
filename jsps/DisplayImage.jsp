@@ -43,7 +43,7 @@
        group_id = rset.getString("PERMITTED");
    }
    else
-       response.sendRedirect("img_not_found.html");
+       response.sendRedirect("img_not_found.jsp");
 
    try {
        Statement permitted_stmt = conn.createStatement();
@@ -134,6 +134,17 @@
         numberOfMonths: 1,
      });
  });
+
+function deleteImage() {
+    if (confirm("Are you sure you want to delete this image?") == true) {
+        $.ajax({url: 'DeleteImage',
+                data: {"id": <%= photo_id %>},
+                async: false,
+                type: 'POST'
+               });
+        window.location.replace("/proj1/PictureBrowse");
+    }
+}
 </script>
 </head>
 <body>
@@ -177,9 +188,10 @@
 
        String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse");
- 	   if(username.equals(owner_name))
-	       out.println("<button id=edit-info>Edit Photo Information</button>");
-       %>
+ 	   if(username.equals(owner_name)) { %>
+	       <button id=edit-info>Edit Photo Information</button>
+           <button onclick="deleteImage()">Delete Photo</button>
+       <% } %>
 
 <form action=<%=encodePic%>>
     <input type='submit' value='Return to Pictures'>

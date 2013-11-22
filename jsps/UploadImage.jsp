@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Upload image to online storage!</title>
+        <title>Upload images to online storage!</title>
         <%@ page import="java.util.*" %>
         <%@ page import="java.sql.*" %>
         <%@include file="db_login.jsp"%>
@@ -72,13 +72,13 @@
             <div id="subContainer" style="width:400px">
                 <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
                 <Fieldset>
-                    <legend>Upload</legend>
-                    Please input or select the path of the image!
+                    <legend>Upload Image(s)</legend>
+                    Please input or select the path of the image(s)
                     <form name="upload-image" method="POST" enctype="multipart/form-data" action=<%=encodeUpload%>>
                         <table>
                             <tr>
-                                <th>File path: </th>
-                                <td><input name="file-path" type="file" size="30" ></input></td>
+                                <th>File path(s): </th>
+                                <td><input name="file-path" type="file" size="30" multiple></input></td>
                             </tr>
                             <tr>
                                 <th>Description: </th>

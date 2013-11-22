@@ -34,7 +34,9 @@ public class UploadImage extends HttpServlet {
 	String password = "radiohead7";
 	String drivername = "oracle.jdbc.driver.OracleDriver";
 	String dbstring ="jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	FileItem image_obj = null;
+    List<FileItem> image_files = new ArrayList<FileItem>();
+    List<BufferedImage> images = new ArrayList<BufferedImage>();
+    List<BufferedImage> thumbnails = new ArrayList<BufferedImage>();
         
 	String description = "";
 	String place = "";
@@ -55,7 +57,7 @@ public class UploadImage extends HttpServlet {
 	    for (FileItem item : items) {
 	        if (!item.isFormField()) {
 		    // Item is the uploaded file
-		    image_obj = item;
+		    image_files.add(item);
 		} else {
 		    // Other parameters from the form
 		    String fieldname = item.getFieldName();
@@ -71,9 +73,7 @@ public class UploadImage extends HttpServlet {
 		    } else if (fieldname.equals("security")) {
 		        security = fieldvalue;
 		    } else if (fieldname.equals("time")) {
-                System.out.println(String.valueOf(fieldvalue.isEmpty()));
                 if (!fieldvalue.isEmpty()) {
-                    System.out.println(fieldvalue);
                     SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
                     java.util.Date parsed = format.parse(fieldvalue);
                     sql_date = new java.sql.Date(parsed.getTime());
@@ -82,54 +82,55 @@ public class UploadImage extends HttpServlet {
 	    }
         }
            
-        //Get the image stream
-        InputStream instream = image_obj.getInputStream();
-            
-        BufferedImage img = ImageIO.read(instream);
-        BufferedImage thumbNail = shrink(img, 150);
-            
         // Connect to the database and create a statement
         Connection conn = getConnected(drivername,dbstring, username,password);
         Statement stmt = conn.createStatement();
-        
-        /*
-         *  First, to generate a unique pic_id using an SQL sequence
-         */
-        ResultSet rset1 = stmt.executeQuery("SELECT pic_id_sequence.nextval from dual");
-        rset1.next();
-        pic_id = rset1.getInt(1);
+
+        //Get the image stream
+        for (FileItem image_file : image_files) {
+            InputStream instream = image_file.getInputStream();
             
-        //Insert an empty blob into the table first. Note that you have to 
-        //use the Oracle specific function empty_blob() to create an empty blob
-        String insert_sql = ("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + 
-                             "'," + security + ",'" + subject + "','" + place + "',");
-        if (sql_date != null)
-            insert_sql += "date'" + sql_date + "','";
-        else
-            insert_sql += sql_date + ",'";
-        insert_sql += description + "',empty_blob(),empty_blob())";
-        System.out.println(insert_sql); 
-        stmt.executeQuery(insert_sql);
+            BufferedImage img = ImageIO.read(instream);
+            BufferedImage thumbNail = shrink(img, 150);
+                
+            /*
+             *  First, to generate a unique pic_id using an SQL sequence
+             */
+            ResultSet rset1 = stmt.executeQuery("SELECT pic_id_sequence.nextval from dual");
+            rset1.next();
+            pic_id = rset1.getInt(1);
+                
+            //Insert an empty blob into the table first. Note that you have to 
+            //use the Oracle specific function empty_blob() to create an empty blob
+            String insert_sql = ("INSERT INTO images VALUES(" + pic_id + ",'" + pic_owner + 
+                                 "'," + security + ",'" + subject + "','" + place + "',");
+            if (sql_date != null)
+                insert_sql += "date'" + sql_date + "','";
+            else
+                insert_sql += sql_date + ",'";
+            insert_sql += description + "',empty_blob(),empty_blob())";
+            stmt.executeQuery(insert_sql);
+            
+            // to retrieve the lob_locator 
+            // Note that you must use "FOR UPDATE" in the select statement
+            String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";
+            ResultSet rset = stmt.executeQuery(cmd);
+            rset.next();
+            BLOB thumb_blob = ((OracleResultSet)rset).getBLOB(8);
+            BLOB photo_blob = ((OracleResultSet)rset).getBLOB(9);
+            
+            //Write the image to the blob object
+            OutputStream t_outstream = thumb_blob.getBinaryOutputStream();
+            OutputStream p_outstream = photo_blob.getBinaryOutputStream();
+            
+            ImageIO.write(thumbNail, "jpg", t_outstream);
+            ImageIO.write(img, "jpg", p_outstream);
+            
+            instream.close();
+            t_outstream.close();
+            p_outstream.close();
+        }
         
-        // to retrieve the lob_locator 
-        // Note that you must use "FOR UPDATE" in the select statement
-        String cmd = "SELECT * FROM images WHERE photo_id = "+pic_id+" FOR UPDATE";
-        ResultSet rset = stmt.executeQuery(cmd);
-        rset.next();
-        BLOB thumb_blob = ((OracleResultSet)rset).getBLOB(8);
-        BLOB photo_blob = ((OracleResultSet)rset).getBLOB(9);
-        
-        //Write the image to the blob object
-        OutputStream t_outstream = thumb_blob.getBinaryOutputStream();
-        OutputStream p_outstream = photo_blob.getBinaryOutputStream();
-        
-        ImageIO.write(thumbNail, "jpg", t_outstream);
-        ImageIO.write(img, "jpg", p_outstream);
-        
-        instream.close();
-        t_outstream.close();
-        p_outstream.close();
-	
         stmt.executeUpdate("commit");
         
         conn.close();
@@ -138,8 +139,8 @@ public class UploadImage extends HttpServlet {
 	    System.out.println(ex.getMessage());
 	}
         
-        //Encode PictureBrowse servlet
-        String encodePictureBrowse = response.encodeURL("PictureBrowse");
+    //Encode PictureBrowse servlet
+    String encodePictureBrowse = response.encodeURL("PictureBrowse");
 	response.sendRedirect(encodePictureBrowse);
     }
 

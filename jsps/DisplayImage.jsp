@@ -72,21 +72,13 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="mystyle.css">
-<style>
-   body { font-size: 62.5%; }
-   label, input { display:block; }
-   input.text { margin-bottom:12px; width:95%; padding: .4em; }
-   fieldset { padding:0; border:0; margin-top:25px; }
-   h1 { font-size: 1.2em; margin: .6em 0; }
-   .ui-dialog .ui-state-error { padding: .3em; }
-   .intro { border: 1px solid transparent; padding: 0.3em; }
-</style>
+
 <script>
  $(function() {
      $( "#edit-form" ).dialog({
          autoOpen: false,
-         height: 465,
-         width: 350,
+         height: 620,
+         width: 400,
          modal: true,
          buttons: {
              "Update Information": function() {
@@ -174,6 +166,7 @@ function deleteImage() {
 
 <center>
        <img src="/proj1/GetOnePic?big<%= photo_id %>">
+        <div id="info">
        <p>Description: <%= description %>
        <br>Place: <%= place %>
        <br>Owner: <%= owner_name %>
@@ -181,14 +174,15 @@ function deleteImage() {
        <br>Groups: <%= permitted %>
        <br>Time photo taken: <%= timing %>
        </p>
+       </div>
 
        <%
        String username = String.valueOf(session.getAttribute("username"));
 
        String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse.jsp");
- 	   if(username.equals(owner_name)) { %>
-	       <button id=edit-info>Edit Photo Information</button>
+          if(username.equals(owner_name)) { %>
+         <button id=edit-info>Edit Photo Information</button>
            <button onclick="deleteImage()">Delete Photo</button>
        <% } %>
 
@@ -200,26 +194,70 @@ function deleteImage() {
     <p class="intro">Edit any of the fields and click 'submit'.</p>
     <form method="POST" action=<%=encodeEdit%>>
     <fieldset>
-        <label for="description_field">Description</label>
-        <input type='text' name='description_field' id='description_field' value='<%= description %>' class='text ui-widget-content ui-corner-all' />
-        <label for="place_field">Place</label>
-        <input type='text' name='place_field' id='place_field' value='<%= place %>' class='text ui-widget-content ui-corner-all' />
-        <label for="subject_field">Subject</label>
-        <input type='text' name='subject_field' id='subject_field' value='<%= subject %>' class='text ui-widget-content ui-corner-all' />
-        <label for="groups_label">Groups</label>
-        <select name="security" id="groups_field">
-        <% for (int i = 0; i < group_ids.size(); i += 1) {
-            if (group_names.get(i).equals(permitted)) {
-                out.println("<option selected='true' value='"+group_ids.get(i) +
-                            "'>"+group_names.get(i)+"</option>");
-            } else {
-                out.println("<option value='" + group_ids.get(i) +
-                            "'>"+group_names.get(i)+"</option>");
-            }
-        } %>
-        </select>
-        <label for="time_field">Time photo taken</label>
-        <input type='text' name='time_field' id='time_field' value='<%= timing %>' class='text ui-widget-content ui-corner-all' />
+            <TABLE>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <label for="description_field">Description</label>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <input type='text' name='description_field' id='description_field' value='<%= description %>' class='text ui-widget-content ui-corner-all' />
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <label for="place_field">Place</label>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <input type='text' name='place_field' id='place_field' value='<%= place %>' class='text ui-widget-content ui-corner-all' />
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <label for="subject_field">Subject</label>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <input type='text' name='subject_field' id='subject_field' value='<%= subject %>' class='text ui-widget-content ui-corner-all' />
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <label for="groups_label">Groups</label>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <select name="security" id="groups_field">
+                     <%
+                        for (int i = 0; i < group_ids.size(); i += 1) {
+                           if (group_names.get(i).equals(permitted)) {
+                              out.println("<option selected='true' value='"+group_ids.get(i) +
+                              "'>"+group_names.get(i)+"</option>");
+                           }else {
+                              out.println("<option value='" + group_ids.get(i) +
+                              "'>"+group_names.get(i)+"</option>");
+                           }
+                        }
+                     %>
+                     </select>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <label for="time_field">Time photo taken</label>
+                  </TD>
+               </TR>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                  <TD>
+                     <input type='text' name='time_field' id='time_field' value='<%= timing %>' class='text ui-widget-content ui-corner-all' />
+                  </TD>
+               </TR>
+            </TABLE>
     </fieldset>
     </form>
 </div>

@@ -45,7 +45,7 @@
                             <TD><INPUT TYPE="number" NAME="phone" MAXLENGTH="10" VALUE="000000000" onkeypress="return isNumberKey(event)"></TD>
                         </TR>
                     </TABLE>
-                        <INPUT TYPE="submit" NAME="aSubmit" VALUE="REGISTER">
+                        <INPUT TYPE="submit" ID="buttonstyle" NAME="aSubmit" VALUE="Register">
                     </Fieldset>
                 </form>
             </div>
@@ -64,7 +64,7 @@
                             <TD><INPUT TYPE="password" NAME="password" VALUE="Password"></TD>
                         </TR>
                     </TABLE>
-                        <INPUT TYPE="submit" NAME="bSubmit" VALUE="LOGIN">
+                        <INPUT TYPE="submit" ID="buttonstyle" NAME="bSubmit" VALUE="Login">
                     </Fieldset>
                 </form>
             </div>

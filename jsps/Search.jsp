@@ -110,7 +110,7 @@
                                 <TD><input type="radio" value="Default" name="rank" checked/></TD>
                             </TR>
                         </TABLE>
-                        <input type="submit" name="dateSubmit" value="Search">
+                        <input type="submit" id="buttonstyle" name="dateSubmit" value="Search">
                     </Fieldset>
                 </form>
             </div>

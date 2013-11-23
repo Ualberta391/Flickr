@@ -34,61 +34,46 @@
             <legend>Actions</legend>
             
             <%
-            
             String createGroup = response.encodeURL("CreateGroup.jsp");
             String upload = response.encodeURL("UploadImage.jsp");
             String view = response.encodeURL("PictureBrowse.jsp");
             String search = response.encodeURL("Search.jsp");
             String data = response.encodeURL("Data.jsp");
-            
-            
-            out.println("<TABLE>");
-            
-            out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-            out.println("<TD>");
-            out.println("<form ACTION='"+createGroup+"' METHOD='link'>");
-            out.println("<INPUT TYPE='submit' NAME='createSubmit' VALUE='Create group'>");
-            out.println("</form>");
-            out.println("</TD>");
-            out.println("</TR>");
-            
-            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
-            out.println("<TD>");            
-            out.println("<form ACTION='"+upload+"' METHOD='link'>");
-            out.println("<INPUT TYPE='submit' NAME='uploadSubmit' VALUE='Upload Pictures'>");
-            out.println("</form>");
-            out.println("</TD>");            
-            out.println("</TR>");            
-            
-            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
-            out.println("<TD>");            
-            out.println("<form ACTION='"+view+"' METHOD='link'>");
-            out.println("<INPUT TYPE='submit' NAME='viewSubmit' VALUE='View Pictures'>");
-            out.println("</form>");
-            out.println("</TD>");
-            out.println("</TR>");            
-            
-            out.println("<TR VALIGN=TOP ALIGN=LEFT>");            
-            out.println("<TD>");            
-            out.println("<form ACTION='"+search+"' METHOD='link'>");
-            out.println("<INPUT TYPE='submit' NAME='searchSubmit' VALUE='Search Pictures'>");
-            out.println("</form>");
-            out.println("</TD>");
-            out.println("</TR>");            
-            
-            if((String.valueOf(session.getAttribute("username"))).equals("admin")){
-                out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-                out.println("<TD>");                
-                out.println("<form ACTION='"+data+"' METHOD='link'>");
-                out.println("<INPUT TYPE='submit' NAME='dataSubmit' VALUE='View Data'>");
-                out.println("</form>");
-                out.println("</TD>");
-                out.println("</TR>");                
-            }
-            out.println("</TABLE>");
             %>
+            <TABLE>
             
+            <TR VALIGN=TOP ALIGN=LEFT><TD>
+            <form ACTION='<%= createGroup %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='createSubmit' VALUE='Create group'>
+            </form>
+            </TD></TR>
+            
+            <TR VALIGN=TOP ALIGN=LEFT><TD>      
+            <form ACTION='<%= upload %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='uploadSubmit' VALUE='Upload Pictures'>
+            </form>
+            </TD></TR>
+            
+            <TR VALIGN=TOP ALIGN=LEFT><TD>
+            <form ACTION='<%= view %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='viewSubmit' VALUE='View Pictures'>
+            </form>
+            </TD></TR>
+            
+            <TR VALIGN=TOP ALIGN=LEFT><TD>            
+            <form ACTION='<%= search %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='searchSubmit' VALUE='Search Pictures'>
+            </form>
+            </TD></TR>
 
+            <% if((String.valueOf(session.getAttribute("username"))).equals("admin")){ %>
+                <TR VALIGN=TOP ALIGN=LEFT><TD>
+                <form ACTION='<%= data %>' METHOD='link'>
+                <INPUT TYPE='submit' ID="buttonstyle" NAME='dataSubmit' VALUE='View Data'>
+                </form>
+                </TD></TR>
+            <% } %>
+            </TABLE>
             </fieldset>
             </div>
         </div>

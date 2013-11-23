@@ -190,11 +190,11 @@ function deleteImage() {
        String encodePic = response.encodeURL("PictureBrowse.jsp");
        if(username.equals(owner_name)) { %>
            <button id=edit-info>Edit Photo Information</button>
-           <button onclick="deleteImage()">Delete Photo</button>
+           <button id="buttonstyle" onclick="deleteImage()">Delete Photo</button>
     <% } %>
 
 <form action=<%=encodePic%>>
-    <input type='submit' value='Return to Pictures'>
+    <input type='submit' ID="buttonstyle" value='Return to Pictures'>
 </form>
 </center>
 <div id="edit-form" title="Edit Photo Information">

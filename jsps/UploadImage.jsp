@@ -107,7 +107,7 @@
                                 <td><input id="time" name="time" type="textfield" value=""></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" name=".submit" value="Upload"></td>
+                                <td><input type="submit" ID="buttonstyle" name=".submit" value="Upload"></td>
                             </tr>
                         </table>
                     </form>

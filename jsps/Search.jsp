@@ -87,18 +87,26 @@
                             </TR>
                             
                             <TR VALIGN=TOP ALIGN=LEFT>
+                                <TD><p>&nbsp;</p></TD>
+                            </TR>
+                            
+                            <TR VALIGN=TOP ALIGN=LEFT>
+                                <TD>Display Image Option</TD>
+                            </TR>
+                            
+                            <TR VALIGN=TOP ALIGN=LEFT>
                                 <TD><B>Most recent first :</B></TD>
-                                <TD><input type="radio" id="mrf" name="rank"/></TD>
+                                <TD><input type="radio" value="Most Recent First" name="rank"/></TD>
                             </TR>
                             
                             <TR VALIGN=TOP ALIGN=LEFT>
                                 <TD><B>Most recent last :</B></TD>
-                                <TD><input type="radio" id="mrl" name="rank"/></TD>
+                                <TD><input type="radio" value="Most Recent Last" name="rank"/></TD>
                             </TR>
                             
                             <TR VALIGN=TOP ALIGN=LEFT>
                                 <TD><B>Default :</B></TD>
-                                <TD><input type="radio" id="mrl" name="rank" checked/></TD>
+                                <TD><input type="radio" value="Default" name="rank" checked/></TD>
                             </TR>
                         </TABLE>
                         <input type="submit" name="dateSubmit" value="Search">

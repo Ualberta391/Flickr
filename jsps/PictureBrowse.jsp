@@ -17,6 +17,7 @@
     Statement stmt2 = conn.createStatement();
     ResultSet rset = stmt1.executeQuery("select photo_id from images");
     while (rset.next()) {
+        is_friend = false;
         pic_id = rset.getObject(1).toString();
         ResultSet rset2 = stmt2.executeQuery("select owner_name, permitted from images where photo_id="+pic_id);
         if (rset2.next()) {

@@ -31,7 +31,17 @@
         <div id="container">
             <%@include file="db_login.jsp"%>
             <%
-                //imgOption=0 represents "default display image option"
+                //The list of valid picture ids that the specific user is allowed to view
+                List<String> valid_ids = new ArrayList<String>();
+                String pic_id="";
+                String owner_name="";
+                boolean is_friend=false;
+                int permitted =0;
+                
+                Statement stmt1 = conn.createStatement();
+                Statement stmt2 = conn.createStatement();
+                
+                //imgOption=0 represents "default display image option based on score"
                 //imgOption=1 represents "most recent first"
                 //imgOption=2 represents "most recent last"
                 int imgOption=0;
@@ -45,7 +55,9 @@
                 String from="";
                 String to="";
                 
-                //Check for empty query and empty time constraint
+                String username = String.valueOf(session.getAttribute("username"));
+                
+                //Check for both empty query and empty time constraint
                 int check=0;
                 
                 //If the user did enter a time constraint
@@ -129,9 +141,9 @@
                         }
                         //If the user did not enter anything to query but entered a time period constraint
                         else if((request.getParameter("query").equals("")) && dateFlag==1){
-                            //If the user selected "default"
+                            //If the user selected "default", in this case because there is no query, this will automatically be rank from date ascending
                             if(imgOption==0){
-                                doSearch = conn.prepareStatement("SELECT permitted, subject,description,place,timing,photo_id FROM images i where i.timing BETWEEN ? AND ? ORDER BY RANK DESC");
+                                doSearch = conn.prepareStatement("SELECT permitted, subject,description,place,timing,photo_id FROM images i where i.timing BETWEEN ? AND ? ORDER BY TIMING ASC");
                             }
                             //If the user selected "most recent first"
                             else if(imgOption==1){
@@ -147,20 +159,44 @@
                             
                             check =1;
                         }
-                        //If the user did not enter any query or time period constraint
+                        //If the user did not enter any query and time period constraint
                         else{
-                            out.println("Please enter either a query or time period");
+                            out.println("Please enter either a query and/or time period");
+                            check =0;
                         }
-                            
-                            
-                        //If the user did not enter a query or time period constraint, cannot enter this loop
+                        
+                        //If the user did enter a query and/or time period constraint
                         if(check==1){
                             ResultSet rset2 = doSearch.executeQuery();
                             
-                            String p_id = "";
-                            
+                            //Get all pictures based on search query and/or time period constraint
                             while(rset2.next()){
-                                p_id = (rset2.getObject(6)).toString();
+                                is_friend=false;
+                                pic_id = (rset2.getObject(6)).toString();
+                                
+                                //Determine if you're the owner
+                                ResultSet rset3 = stmt1.executeQuery("select owner_name, permitted from images where photo_id="+pic_id);
+                                if(rset3.next()){
+                                    owner_name = rset3.getString(1);
+                                    permitted = rset3.getInt(2);
+                                }
+                                
+                                //Determine if you're the friend
+                                ResultSet rset4 = stmt2.executeQuery("select friend_id from group_lists where group_id="+permitted);
+                                while (rset4.next()) {
+                                    if (rset4.getString(1).equals(username)){
+                                        is_friend = true;
+                                    }
+                                }
+                                
+                                if (owner_name.equals(username) || permitted == 1 || username.equals("admin") || is_friend){
+                                    valid_ids.add(pic_id);
+                                }
+                            }
+                            stmt1.close();
+                            stmt2.close();
+                            
+                            for(String p_id : valid_ids){  
                                 //Encode display.jsp link
                                 String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");
                                 String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;
@@ -170,9 +206,7 @@
                                 String encodeOne1 = response.encodeURL("GetOnePic");
                                 String encodeOne2 = "/proj1/"+encodeOne1+"?"+p_id;
                                 out.println("<img src='"+encodeOne2+"'></a>");
-                                
-                                out.println("score "+rset2.getObject(1).toString());
-                            } 
+                            }
                             out.println("</center>");
                         }
                     }

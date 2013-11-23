@@ -4,28 +4,38 @@
 <link rel='stylesheet' type='text/css' href='mystyle.css'>
 <%@include file="db_login.jsp"%>
 <%
-    List<String> valid_ids = new ArrayList<String>();
+    List<String> valid_ids = new ArrayList<String>(); // For all images
+    List<String> top_ids = new ArrayList<String>(); // For the top 5 images
+
     String encodeUpload = response.encodeURL("UploadImage.jsp");
+    String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");    
+    String encodeGet1 = response.encodeURL("GetOnePic");
 
     String username = String.valueOf(session.getAttribute("username"));
     String pic_id = "";
     String owner_name = "";
+    String sql = "";
     int permitted = 0;
     boolean is_friend = false;
+    int top_count = 0;
+    int last_count = 0;
 
-    Statement stmt1 = conn.createStatement();
-    Statement stmt2 = conn.createStatement();
-    ResultSet rset = stmt1.executeQuery("select photo_id from images");
-    while (rset.next()) {
+    // Get all photos that are able to be seen by the current user
+    Statement photo_id_stmt = conn.createStatement();
+    Statement access_control_stmt = conn.createStatement();
+    ResultSet ids_rset = photo_id_stmt.executeQuery("select photo_id from images");
+    while (ids_rset.next()) {
         is_friend = false;
-        pic_id = rset.getObject(1).toString();
-        ResultSet rset2 = stmt2.executeQuery("select owner_name, permitted from images where photo_id="+pic_id);
-        if (rset2.next()) {
-            owner_name = rset2.getString(1);
-            permitted = rset2.getInt(2);
+        pic_id = ids_rset.getObject(1).toString();
+        sql = "select owner_name, permitted from images where photo_id=" + pic_id;
+        ResultSet ctrl_rset = access_control_stmt.executeQuery(sql);
+        if (ctrl_rset.next()) {
+            owner_name = ctrl_rset.getString(1);
+            permitted = ctrl_rset.getInt(2);
         }
-
-        ResultSet rset3 = stmt2.executeQuery("select friend_id from group_lists where group_id="+permitted);
+        
+        sql = "select friend_id from group_lists where group_id=" + permitted;
+        ResultSet rset3 = access_control_stmt.executeQuery(sql);
         while (rset3.next()) {
             if (rset3.getString(1).equals(username))
                 is_friend = true;
@@ -33,8 +43,33 @@
         if (owner_name.equals(username) || permitted == 1 || username.equals("admin") || is_friend)
             valid_ids.add(pic_id);
     }
-    stmt1.close();
-    stmt2.close();
+    photo_id_stmt.close();
+    access_control_stmt.close();
+
+    // Get the top 5 photos that are able to be seen by the current user
+    Statement top_pics_stmt = conn.createStatement();
+    sql = ("select photo_id, count(photo_id) from picture_hits group by " +
+           "photo_id order by count(photo_id) desc");
+    ResultSet top_pics_rset = top_pics_stmt.executeQuery(sql);
+    while (top_count < 5 && top_pics_rset.next())  {
+        pic_id = top_pics_rset.getString(1);
+        if (valid_ids.contains(pic_id)) {
+            top_ids.add(pic_id);
+            last_count = top_pics_rset.getInt(2);
+            top_count += 1;
+        }
+    }
+
+    // In case of a tie, display all tied images
+    while (top_pics_rset.next()) {
+        pic_id = top_pics_rset.getString(1);
+        if (top_pics_rset.getInt(2) == last_count) { 
+            if (valid_ids.contains(pic_id))
+                top_ids.add(pic_id);
+        } else {
+            break;
+        }
+    }
 %>
 <%@ page import="java.sql.*, java.text.*, java.util.*" %>
 <%@include file="db_logout.jsp"%>
@@ -58,15 +93,23 @@
 <p class='homePage'>Go back to <A class='homePage' href='<%= encodeHomePage %>'>Home Page</a></p>
 <center>
 <h3> Top 5 Images </h3>
+<% for (String top_id : top_ids) {
+     // Encode DisplayImage.jsp link
+    String encodeDisplay2 = encodeDisplay1+"?id="+top_id;
+    out.println("<a href='"+encodeDisplay2+"'>");
+
+    // Encode the GetOnePic servlet
+    String encodeGet2 = encodeGet1+"?"+top_id;
+    out.println("<img src='"+encodeGet2+"'></a>");
+    }
+%>
 <h3> All Images </h3>
 <% for (String p_id : valid_ids) { 
     // Encode DisplayImage.jsp link
-    String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");    
     String encodeDisplay2 = encodeDisplay1+"?id="+p_id;
     out.println("<a href='"+encodeDisplay2+"'>");
 
     // Encode the GetOnePic servlet
-    String encodeGet1 = response.encodeURL("GetOnePic");
     String encodeGet2 = encodeGet1+"?"+p_id;
     out.println("<img src='"+encodeGet2+"'></a>");
     }

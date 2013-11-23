@@ -70,3 +70,9 @@ CREATE TABLE images (
    FOREIGN KEY(owner_name) REFERENCES users,
    FOREIGN KEY(permitted) REFERENCES groups
 );
+
+CREATE table picture_hits (
+   photo_id int,
+   viewer_name varchar(24),
+   PRIMARY KEY(int, viewer_name)
+);

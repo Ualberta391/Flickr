@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <title>Image Display</title>
 <% String photo_id = request.getParameter("id");
+   String username = String.valueOf(session.getAttribute("username"));
 %>
 <%@ page import="java.sql.*, java.text.*, java.util.*" %>
 
@@ -23,6 +24,15 @@
 
    ArrayList<String> group_names = new ArrayList<String>();
    ArrayList<String> group_ids = new ArrayList<String>();
+
+   // Add user to picture_hit table if they aren't already in it
+   try { 
+       Statement hit_stmt = conn.createStatement();
+       String sql = "insert into picture_hits values("+photo_id+",'"+username+"')";
+       hit_stmt.executeUpdate(sql);
+   } catch (Exception ex) {
+       // Value is already in the table, do nothing
+   }
 
    try {
        Statement stmt = conn.createStatement();
@@ -145,7 +155,6 @@ function deleteImage() {
                 //If there is such attribute as username, this means the user entered this page through
                 //correct navigation (logging in) and is suppose to be here
                 if(request.getSession(false).getAttribute("username") != null){
-                    String username = String.valueOf(session.getAttribute("username"));
                     out.println("<p id='username'>You are logged in as "+username+"</p>");
                     
                     String encode = response.encodeURL("logout.jsp");
@@ -177,14 +186,12 @@ function deleteImage() {
        </div>
 
        <%
-       String username = String.valueOf(session.getAttribute("username"));
-
        String encodeEdit = response.encodeURL("EditData");
        String encodePic = response.encodeURL("PictureBrowse.jsp");
-          if(username.equals(owner_name)) { %>
-         <button id=edit-info>Edit Photo Information</button>
+       if(username.equals(owner_name)) { %>
+           <button id=edit-info>Edit Photo Information</button>
            <button onclick="deleteImage()">Delete Photo</button>
-       <% } %>
+    <% } %>
 
 <form action=<%=encodePic%>>
     <input type='submit' value='Return to Pictures'>

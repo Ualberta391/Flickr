@@ -31,12 +31,24 @@
         <div id="container">
             <%@include file="db_login.jsp"%>
             <%
+                //imgOption=0 represents "default display image option"
+                //imgOption=1 represents "most recent first"
+                //imgOption=2 represents "most recent last"
+                int imgOption=0;
+                
+                //dateFlag is 0 if the user did not specify a time constraint in the search
+                //dateFlag is 1 if the user did specify a time constraint in the search
                 int dateFlag=0;
+                
                 String dFrom="";
                 String dTo="";
                 String from="";
                 String to="";
                 
+                //Check for empty query and empty time constraint
+                int check=0;
+                
+                //If the user did enter a time constraint
                 if(request.getParameter("from")!="" && request.getParameter("to")!=""){
                     dateFlag=1;
                     dFrom = request.getParameter("from");
@@ -58,34 +70,97 @@
                 try{
                     //If the user clicked the button search
                     if(request.getParameter("dateSubmit") != ""){
-                        //If user entered something to query
-                        if(!(request.getParameter("query").equals(""))){
-                            PreparedStatement doSearch=null;
-                            
-                            //If the user entered a time period constraint in the search
-                            if(dateFlag==1){
+                        
+                        PreparedStatement doSearch=null;
+                        
+                        //Checking what display image option the user chose
+                        String displayImgValue = request.getParameter("rank");
+                        if(displayImgValue.equals("Default")){
+                            imgOption=0;
+                        }else if(displayImgValue.equals("Most Recent First")){
+                            imgOption=1;
+                        }else if(displayImgValue.equals("Most Recent Last")){
+                            imgOption=2;
+                        }
+                        
+                        //If user entered something to query and a time period constraint
+                        if(!(request.getParameter("query").equals("")) && dateFlag==1){
+                            //If the user selected "default"
+                            if(imgOption==0){
                                 doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY RANK DESC");
-                                
-                                doSearch.setString(1, request.getParameter("query"));
-                                doSearch.setString(2, request.getParameter("query"));
-                                doSearch.setString(3, request.getParameter("query"));
-                                doSearch.setString(4, from);
-                                doSearch.setString(5, to);
-                            }else{
-                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0)  ORDER BY RANK DESC");
-                                
-                                doSearch.setString(1, request.getParameter("query"));
-                                doSearch.setString(2, request.getParameter("query"));
-                                doSearch.setString(3, request.getParameter("query"));
+                            }
+                            //If the user selected "most recent first"
+                            else if(imgOption==1){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY TIMING DESC");
+                            }
+                            //If the user selected "most recent last"
+                            else if(imgOption==2){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0) WHERE (timing between ? and ?)  ORDER BY TIMING ASC");
                             }
                             
+                            doSearch.setString(1, request.getParameter("query"));
+                            doSearch.setString(2, request.getParameter("query"));
+                            doSearch.setString(3, request.getParameter("query"));
+                            doSearch.setString(4, from);
+                            doSearch.setString(5, to);
+                            
+                            check=1;
+                        }
+                        //If the user entered something to query but not a time period constraint
+                        else if(!(request.getParameter("query").equals("")) && dateFlag==0){
+                            //If the user selected "default"
+                            if(imgOption==0){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0)  ORDER BY RANK DESC");
+                            }
+                            //If the user selected "most recent first"
+                            else if(imgOption==1){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0)  ORDER BY TIMING DESC");
+                            }
+                            //If the user selected "most recent last"
+                            else if(imgOption==2){
+                                doSearch = conn.prepareStatement("SELECT * FROM (SELECT 6*SCORE(1) + 3*SCORE(2) + SCORE(3) AS RANK, subject, description, place, timing, photo_id FROM images i WHERE CONTAINS(i.subject, ?, 1)>0 OR CONTAINS(i.place, ?, 2)>0 OR CONTAINS(i.description, ?, 3)>0)  ORDER BY TIMING ASC");
+                            }
+                            
+                            doSearch.setString(1, request.getParameter("query"));
+                            doSearch.setString(2, request.getParameter("query"));
+                            doSearch.setString(3, request.getParameter("query"));
+                            
+                            check=1;
+                        }
+                        //If the user did not enter anything to query but entered a time period constraint
+                        else if((request.getParameter("query").equals("")) && dateFlag==1){
+                            //If the user selected "default"
+                            if(imgOption==0){
+                                doSearch = conn.prepareStatement("SELECT permitted, subject,description,place,timing,photo_id FROM images i where i.timing BETWEEN ? AND ? ORDER BY RANK DESC");
+                            }
+                            //If the user selected "most recent first"
+                            else if(imgOption==1){
+                                doSearch = conn.prepareStatement("SELECT permitted, subject,description,place,timing,photo_id FROM images i where i.timing BETWEEN ? AND ? ORDER BY TIMING DESC");
+                            }
+                            //If the user selected "most recent last"
+                            else if(imgOption==2){
+                                doSearch = conn.prepareStatement("SELECT permitted, subject,description,place,timing,photo_id FROM images i where i.timing BETWEEN ? AND ? ORDER BY TIMING ASC");
+                            }
+                            
+                            doSearch.setString(1, from);
+                            doSearch.setString(2, to);
+                            
+                            check =1;
+                        }
+                        //If the user did not enter any query or time period constraint
+                        else{
+                            out.println("Please enter either a query or time period");
+                        }
+                            
+                            
+                        //If the user did not enter a query or time period constraint, cannot enter this loop
+                        if(check==1){
                             ResultSet rset2 = doSearch.executeQuery();
                             
                             String p_id = "";
                             
                             while(rset2.next()){
                                 p_id = (rset2.getObject(6)).toString();
-
                                 //Encode display.jsp link
                                 String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");
                                 String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;
@@ -95,11 +170,10 @@
                                 String encodeOne1 = response.encodeURL("GetOnePic");
                                 String encodeOne2 = "/proj1/"+encodeOne1+"?"+p_id;
                                 out.println("<img src='"+encodeOne2+"'></a>");
+                                
+                                out.println("score "+rset2.getObject(1).toString());
                             } 
                             out.println("</center>");
-                        }
-                        else{
-                            out.println("<br><b>Please enter text for quering</b>");
                         }
                     }
                 }catch(SQLException e){

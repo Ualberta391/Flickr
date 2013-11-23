@@ -13,6 +13,7 @@
    ResultSet rset = null;
    ResultSet rset2 = null;
    ResultSet rset3 = null;
+   String sql = "";
    
    String description = "";
    String place = "";
@@ -25,10 +26,15 @@
    ArrayList<String> group_names = new ArrayList<String>();
    ArrayList<String> group_ids = new ArrayList<String>();
 
+   group_ids.add("1");
+   group_ids.add("2");
+   group_names.add("public");
+   group_names.add("private");
+
    // Add user to picture_hit table if they aren't already in it
    try { 
        Statement hit_stmt = conn.createStatement();
-       String sql = "insert into picture_hits values("+photo_id+",'"+username+"')";
+       sql = "insert into picture_hits values("+photo_id+",'"+username+"')";
        hit_stmt.executeUpdate(sql);
    } catch (Exception ex) {
        // Value is already in the table, do nothing
@@ -56,7 +62,8 @@
 
    try {
        Statement permitted_stmt = conn.createStatement();
-       rset2 = permitted_stmt.executeQuery("select group_name from groups where group_id="+group_id);
+       sql = "select group_name from groups where group_id="+group_id;
+       rset2 = permitted_stmt.executeQuery(sql);
        if (rset2.next()) {
            permitted = rset2.getString("GROUP_NAME");
        }
@@ -66,7 +73,12 @@
 
    try {
        Statement groups_stmt = conn.createStatement();
-       rset3 = groups_stmt.executeQuery("select group_id, group_name from groups");
+       sql = ("select g.group_id, g.group_name " +
+              "from groups g, group_lists gl " +
+              "where g.group_id = gl.group_id " +
+              "and (g.user_name = '" + username +
+              "' or gl.friend_id = '" + username + "')");
+       rset3 = groups_stmt.executeQuery(sql);
    } catch (Exception ex) {
        out.println("<hr>" + ex.getMessage() + "</hr>");
    }
@@ -245,7 +257,7 @@ function deleteImage() {
                            if (group_names.get(i).equals(permitted)) {
                               out.println("<option selected='true' value='"+group_ids.get(i) +
                               "'>"+group_names.get(i)+"</option>");
-                           }else {
+                           } else {
                               out.println("<option value='" + group_ids.get(i) +
                               "'>"+group_names.get(i)+"</option>");
                            }

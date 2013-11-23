@@ -33,8 +33,11 @@ public class DeleteImage extends HttpServlet {
         
         // Delete the image
         stmt.executeUpdate("DELETE FROM images WHERE photo_id=" + pic_id);
-        stmt.executeUpdate("commit");
 
+        // Also delete from picture_hits since the photo doesn't exist anymore
+        stmt.executeUpdate("DELETE FROM picture_hits WHERE photo_id=" + pic_id);
+
+        stmt.executeUpdate("commit");
         conn.close();
     } catch(Exception ex) {
         System.out.println(ex.getMessage());

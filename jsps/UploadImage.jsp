@@ -6,14 +6,24 @@
         <%@ page import="java.sql.*" %>
         <%@include file="db_login.jsp"%>
         <%
+            String username = String.valueOf(session.getAttribute("username"));
             ResultSet rset = null;
             
             ArrayList<String> group_names = new ArrayList<String>();
             ArrayList<String> group_ids = new ArrayList<String>();
-            
+            group_ids.add("1");
+            group_ids.add("2");
+            group_names.add("public");
+            group_names.add("private");
+
+            String sql = ("select g.group_id, g.group_name " +
+                          "from groups g, group_lists gl " +
+                          "where g.group_id = gl.group_id " +
+                          "and (g.user_name = '" + username +
+                          "' or gl.friend_id = '" + username + "')");
             try {
                 Statement stmt = conn.createStatement();
-                rset = stmt.executeQuery("select group_id, group_name from groups");
+                rset = stmt.executeQuery(sql);
             } catch (Exception ex) {
                 out.println("<hr>" + ex.getMessage() + "<hr>");
             }
@@ -46,9 +56,8 @@
             <p>&nbsp;</p>
             <%
                 //If there is such attribute as username, this means the user entered this page through
-                //correct navigation (logging in) and is suppose to be here
+                //correct navigation (logging in) and is supposed to be here
                 if(request.getSession(false).getAttribute("username") != null){
-                    String username = String.valueOf(session.getAttribute("username"));
                     out.println("<p id='username'>You are logged in as "+username+"</p>");
                     
                     String encode = response.encodeURL("logout.jsp");

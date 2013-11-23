@@ -76,7 +76,7 @@ body {
 #searching{
   background: #ffffff;
   margin: 5%;
-  width: 300px;
+  width: 400px;
   padding: 5px;
   
   float:bottom;
@@ -148,6 +148,11 @@ input[type=submit]{
   width:10em;
 }
 
+#editInfo{
+  width : 15em;
+  font-size:75%;
+}
+
 #edit-form{
     font-size: 62.5%;
     display:block; 
@@ -156,4 +161,17 @@ input[type=submit]{
     font-size: 1.2em; margin: .6em 0; 
    padding: .3em; 
     border: 1px solid transparent; padding: 0.3em;
+}
+
+#info{
+  background: #ffffff;
+  margin: 5%;
+  width: 300px;
+  padding: 10px;
+  
+  text-align: center;
+  /* Creating the rounded edges*/
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }

@@ -12,16 +12,6 @@
         <servlet-name>UploadImage</servlet-name>
         <url-pattern>/UploadImage</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PictureBrowse</servlet-name>
-        <servlet-class>PictureBrowse</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PictureBrowse</servlet-name>
-        <url-pattern>/PictureBrowse</url-pattern>
-    </servlet-mapping>
-
     <servlet>
         <servlet-name>GetOnePic</servlet-name>
         <servlet-class>GetOnePic</servlet-class>
@@ -38,5 +28,13 @@
     <servlet-mapping>
         <servlet-name>EditData</servlet-name>
         <url-pattern>/EditData</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteImage</servlet-name>
+        <servlet-class>DeleteImage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteImage</servlet-name>
+        <url-pattern>/DeleteImage</url-pattern>
     </servlet-mapping>
 </web-app>

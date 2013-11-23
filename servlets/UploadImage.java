@@ -140,7 +140,7 @@ public class UploadImage extends HttpServlet {
 	}
         
     //Encode PictureBrowse servlet
-    String encodePictureBrowse = response.encodeURL("PictureBrowse");
+    String encodePictureBrowse = response.encodeURL("PictureBrowse.jsp");
 	response.sendRedirect(encodePictureBrowse);
     }
 

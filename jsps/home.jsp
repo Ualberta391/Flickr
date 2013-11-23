@@ -37,7 +37,7 @@
             
             String createGroup = response.encodeURL("CreateGroup.jsp");
             String upload = response.encodeURL("UploadImage.jsp");
-            String view = response.encodeURL("PictureBrowse");
+            String view = response.encodeURL("PictureBrowse.jsp");
             String search = response.encodeURL("Search.jsp");
             String data = response.encodeURL("Data.jsp");
             

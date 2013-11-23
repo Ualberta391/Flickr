@@ -22,7 +22,7 @@
                 else{
                     response.sendRedirect("main.jsp");
                 }
-                String encodePictureBrowse = response.encodeURL("PictureBrowse");
+                String encodePictureBrowse = response.encodeURL("PictureBrowse.jsp");
             %>
         </div>
         

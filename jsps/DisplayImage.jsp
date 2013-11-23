@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <title>Image Display</title>
 <% String photo_id = request.getParameter("id");
-// String username = String.valueOf(session.getAttribute("username"));
 %>
 <%@ page import="java.sql.*, java.text.*, java.util.*" %>
 
@@ -142,7 +141,7 @@ function deleteImage() {
                 async: false,
                 type: 'POST'
                });
-        window.location.replace("/proj1/PictureBrowse");
+        window.location.replace("/proj1/PictureBrowse.jsp");
     }
 }
 </script>
@@ -187,7 +186,7 @@ function deleteImage() {
        String username = String.valueOf(session.getAttribute("username"));
 
        String encodeEdit = response.encodeURL("EditData");
-       String encodePic = response.encodeURL("PictureBrowse");
+       String encodePic = response.encodeURL("PictureBrowse.jsp");
  	   if(username.equals(owner_name)) { %>
 	       <button id=edit-info>Edit Photo Information</button>
            <button onclick="deleteImage()">Delete Photo</button>

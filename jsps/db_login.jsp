@@ -1,3 +1,4 @@
+<!-- Script to run to log into the database and create a connection object -->
 <% Connection conn = null;
 
    String driverName = "oracle.jdbc.driver.OracleDriver";

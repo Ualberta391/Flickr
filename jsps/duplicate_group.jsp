@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Image Not Found</title>
+        <title>Duplicate Group!</title>
         <link rel="stylesheet" type="text/css" href="mystyle.css">
     </head>
     <body> 
     <%@include file="add_header.jsp"%>
-    <% String encodePictureBrowse = response.encodeUrl("PictureBrowse.jsp"); %>
+    <% String encodeGroupInfo = response.encodeURL("GroupInfo.jsp"); %>
     <div id="container">
         <div id="error">
             <Fieldset>
                 <legend>Error</legend>
-                <h2><b>Image not found!</b></h2>
-                <form action=<%=encodePictureBrowse%>>
-                    <input id="buttonstyle" type='submit' value='Back to Picture List'>
+                <h2><b>Cannot create group!<br> Name already exists</b></h2>
+                <form action=<%=encodeGroupInfo%>>
+                    <input id="buttonstyle" type='submit' value='Back to Groups List'>
                 </form>
             </Fieldset>
         </div>

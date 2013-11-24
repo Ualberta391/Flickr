@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Displays the relevant groups for the current user -->
 <html>
 <head>
     <title>Home</title>

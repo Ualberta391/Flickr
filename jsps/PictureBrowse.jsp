@@ -1,3 +1,4 @@
+<!-- Module to display the images in the database, with the top 5 images appearing first -->
 <html>
 <head>
 <title>Photo List</title>

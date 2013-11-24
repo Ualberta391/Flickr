@@ -1,3 +1,5 @@
+<!-- Specifies a form for the current user to input new data for their
+     personal information -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +51,7 @@
     <div id="edit">
         <form NAME="EditForm" ACTION=<%=encodeUpdateInfo%> METHOD="post">
         <Fieldset>
-        <legend>Edit</legend>
+        <legend>Edit Your Personal Information</legend>
         <TABLE>
             <TR VALIGN=TOP ALIGN=LEFT>
                 <TD><B>First Name:</B></TD>

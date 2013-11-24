@@ -125,7 +125,7 @@
 		out.println("</center>");
 	        out.println("</div>");
 		
-		String encodeGroup = response.encodeURL("CreateGroup.jsp");  
+		String encodeGroup = response.encodeURL("createGroup.jsp");  
 		out.println("<form NAME='GroupForm' ACTION='"+encodeGroup+"' METHOD='post'>");
 		out.println("<TABLE>");
 		out.println("<TR VALIGN=TOP ALIGN=LEFT>");

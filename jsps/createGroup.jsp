@@ -38,7 +38,7 @@
 		    //Encode the CreateInfo.jsp page
 		    String encodeGroupInfo = response.encodeURL("GroupInfo.jsp");
 		    
-		    String sql = "Insert into groups values (group_seq.NEXTVAL,'"+username+"','"+groupName+"', DATE'"+date+"')";
+		    String sql = "Insert into groups values (group_seq.NEXTVAL,'"+session_user+"','"+groupName+"', DATE'"+date+"')";
 		    try{
 			stmt = conn.createStatement();
 			

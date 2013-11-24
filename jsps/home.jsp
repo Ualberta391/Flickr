@@ -34,17 +34,18 @@
             <legend>Actions</legend>
             
             <%
-            String createGroup = response.encodeURL("CreateGroup.jsp");
+            String groupInfo = response.encodeURL("GroupInfo.jsp");
             String upload = response.encodeURL("UploadImage.jsp");
             String view = response.encodeURL("PictureBrowse.jsp");
             String search = response.encodeURL("Search.jsp");
             String data = response.encodeURL("olap.jsp");
+            String edit = response.encodeURL("EditPersonalInformation.jsp");
             %>
             <TABLE>
             
             <TR VALIGN=TOP ALIGN=LEFT><TD>
-            <form ACTION='<%= createGroup %>' METHOD='link'>
-            <INPUT TYPE='submit' ID="buttonstyle" NAME='createSubmit' VALUE='Create group'>
+            <form ACTION='<%= groupInfo %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='createSubmit' VALUE='Group Info'>
             </form>
             </TD></TR>
             
@@ -63,6 +64,12 @@
             <TR VALIGN=TOP ALIGN=LEFT><TD>            
             <form ACTION='<%= search %>' METHOD='link'>
             <INPUT TYPE='submit' ID="buttonstyle" NAME='searchSubmit' VALUE='Search Pictures'>
+            </form>
+            </TD></TR>
+
+            <TR VALIGN=TOP ALIGN=LEFT><TD>            
+            <form ACTION='<%= edit %>' METHOD='link'>
+            <INPUT TYPE='submit' ID="buttonstyle" NAME='personalInfo' VALUE='Edit Personal Information'>
             </form>
             </TD></TR>
 

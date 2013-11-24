@@ -198,70 +198,70 @@ function deleteImage() {
     <p class="intro">Edit any of the fields and click 'submit'.</p>
     <form method="POST" action=<%=encodeEdit%>>
     <fieldset>
-            <TABLE>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <label for="description_field">Description</label>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <input type='text' name='description_field' id='description_field' value='<%= description %>' class='text ui-widget-content ui-corner-all' />
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <label for="place_field">Place</label>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <input type='text' name='place_field' id='place_field' value='<%= place %>' class='text ui-widget-content ui-corner-all' />
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <label for="subject_field">Subject</label>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <input type='text' name='subject_field' id='subject_field' value='<%= subject %>' class='text ui-widget-content ui-corner-all' />
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <label for="groups_label">Groups</label>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <select name="security" id="groups_field">
-                     <% // Only allow the user to select groups that they are a part of
-                        for (int i = 0; i < group_ids.size(); i += 1) {
-                           if (group_names.get(i).equals(permitted)) {
-                              out.println("<option selected='true' value='"+group_ids.get(i) +
-                              "'>"+group_names.get(i)+"</option>");
-                           } else {
-                              out.println("<option value='" + group_ids.get(i) +
-                              "'>"+group_names.get(i)+"</option>");
-                           }
-                        }
-                     %>
-                     </select>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <label for="time_field">Time photo taken</label>
-                  </TD>
-               </TR>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                  <TD>
-                     <input type='text' name='time_field' id='time_field' value='<%= timing %>' class='text ui-widget-content ui-corner-all' />
-                  </TD>
-               </TR>
-            </TABLE>
+        <TABLE>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <label for="description_field">Description</label>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <input type='text' name='description_field' id='description_field' value='<%= description %>' class='text ui-widget-content ui-corner-all' />
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <label for="place_field">Place</label>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <input type='text' name='place_field' id='place_field' value='<%= place %>' class='text ui-widget-content ui-corner-all' />
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <label for="subject_field">Subject</label>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <input type='text' name='subject_field' id='subject_field' value='<%= subject %>' class='text ui-widget-content ui-corner-all' />
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <label for="groups_label">Groups</label>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <select name="security" id="groups_field">
+                 <% // Only allow the user to select groups that they are a part of
+                    for (int i = 0; i < group_ids.size(); i += 1) {
+                       if (group_names.get(i).equals(permitted)) {
+                          out.println("<option selected='true' value='"+group_ids.get(i) +
+                          "'>"+group_names.get(i)+"</option>");
+                       } else {
+                          out.println("<option value='" + group_ids.get(i) +
+                          "'>"+group_names.get(i)+"</option>");
+                       }
+                    }
+                 %>
+                 </select>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <label for="time_field">Time photo taken</label>
+              </TD>
+           </TR>
+           <TR VALIGN=TOP ALIGN=LEFT>
+              <TD>
+                 <input type='text' name='time_field' id='time_field' value='<%= timing %>' class='text ui-widget-content ui-corner-all' />
+              </TD>
+           </TR>
+        </TABLE>
     </fieldset>
     </form>
 </div>

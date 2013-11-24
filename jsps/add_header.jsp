@@ -20,4 +20,4 @@
     //Encode the homePage link
     String encodeHomePage = response.encodeURL("home.jsp");
 %>
-    </div>
+</div>

@@ -1,120 +1,86 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Home</title>
-        <link rel="stylesheet" type="text/css" href="mystyle.css">
-    </head>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body> 
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@include file="db_login.jsp"%> 
+<%@include file="add_header.jsp"%>
+<% 
+    String encodeCreateGroup = response.encodeURL("createGroup.jsp");
+    ArrayList<String> created_groups = new ArrayList<String>();
+    ArrayList<String> friend_of_groups = new ArrayList<String>();
 
-    <body> 
-	<%@ page import="java.sql.*" %>
-	<%@ page import="java.util.*" %>
-    <%@include file="add_header.jsp"%>
-    <div id="container">
-        <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
+    // Get the list of groups that the user has created
+    String sql = "select group_name from groups where user_name='" + session_user + "'";
+    try {
+        Statement stmt = conn.createStatement();
+
+        //Execute the select statement
+        ResultSet groupSet = stmt.executeQuery(sql);
+        while (groupSet.next())
+            created_groups.add(groupSet.getString(1));
+    } catch(Exception ex) {
+        out.println("<hr>" + ex.getMessage() + "<hr>");
+        out.println("List of groups could not be shown");
+    }
+     
+    // Get the group_ids of the groups that the user is a part of
+    sql = ("select g.group_name from groups g, group_lists gl " +
+           "where g.group_id = gl.group_id " +
+           "and friend_id='" + session_user + "'");
+    try { 
+        Statement stmt = conn.createStatement();
+        ResultSet groupIdSet = stmt.executeQuery(sql);
+        while (groupIdSet.next()) 
+            friend_of_groups.add(groupIdSet.getString(1));
+    } catch (Exception ex) {
+
+    }
+%>
+<div id="container">
+    <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
     <div id="subContainer" style="width:500px">
-	    <center>
-	    <%@include file="db_login.jsp"%> 
-	    <% 
-		String otherGroupName = "";
-		String otherGroups = "";
-		// listing the groups of the user
-		String sql = "select group_name from groups where '"+session_user+"' = user_name";
-		
-		try{
-		    Statement stmt = conn.createStatement();
-		    
-		    //Execute the select statement
-		    ResultSet groupSet = stmt.executeQuery(sql);
-		    out.println("<TABLE border='1'>");
-		    out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-		    out.println("<TD>");
-		    out.println("List of Groups you created");
-		    out.println("</TD>");
-		    out.println("</TR>");
-		    while (groupSet.next()){
-  			String groupName = groupSet.getString(1);
-			session.setAttribute("groupName", groupName);
-			
-			//Encode the viewOrAddFriends.jsp page
-			String friends = "viewOrAddFriends.jsp"+"?group="+groupName;
-			String encodeAddFriends = response.encodeURL(friends);
-			
-			out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-			out.println("<TD>");
-			out.println("<a href = '"+encodeAddFriends+"'>"+groupName+"</a>");
-			out.println("</TD>");
-			out.println("</TR>");
-		    }
-		    out.println("</TABLE>");
-		}catch(Exception ex){
-		    out.println("<hr>" + ex.getMessage() + "<hr>");
-		    out.println("List of groups could not be shown");
-            	}
+        <center>
+        <TABLE border='1'>
+        <TR VALIGN=TOP ALIGN=LEFT>
+            <TD>List of Groups You Created</TD>
+        </TR>
+        <% for (String created_group_name : created_groups) {
+               String friends = "viewOrAddFriends.jsp?group=" + created_group_name;
+               String encodeAddFriends = response.encodeURL(friends); %>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                   <TD><a href='<%=encodeAddFriends%>'><%=created_group_name%></a></TD>
+               </TR>
+        <%}%>
+        </TABLE>
 
-
-		// Getting the group_ids of the groups the user is a part of
-		sql = "select group_id from group_lists where '"+session_user+"' = friend_id"; 
-	        ArrayList<Integer> groupIdArray = new ArrayList<Integer>();
-		
-		try{
-		    Statement stmt = conn.createStatement();
-		    //Execute the select statement
-		    ResultSet groupIdSet = stmt.executeQuery(sql);
-		    while (groupIdSet.next()){
-  			Integer groupId = groupIdSet.getInt(1);
-			groupIdArray.add(groupId);
-	
-		    }
-		}catch(Exception ex){
-			out.println("<hr>" + ex.getMessage() + "<hr>");
-			out.println("group ids could not be added to array");
-            	}
-
-		// displaying the groups the user is a part of
-		out.println("<TABLE border='1'>");
-		out.println("<TR VALIGN=TOP ALIGN=Right>");
-		out.println("<TD>");
-		out.println("List of Groups you are a part of");
-		out.println("</TD>");
-		out.println("</TR>");
-		
-		for(Integer groupId: groupIdArray){
-			sql = "select group_name from groups where '"+groupId+"' = group_id";
-			try{
-		    		Statement stmt = conn.createStatement();
-				ResultSet groupNameSet = stmt.executeQuery(sql);
-		    		if (groupNameSet.next())
-					otherGroupName = groupNameSet.getString(1);
-				else 
-					out.println("no group name found with group id " + groupId);
-				String groupNameString = groupId.toString();		
-				otherGroups = "showNotice.jsp"+"?group="+groupNameString;
-				String encodeAddGroups = response.encodeURL(otherGroups);							
-				out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-				out.println("<TD>");
-				out.println("<a href = '"+encodeAddGroups+"'>"+otherGroupName+"</a>");
-				out.println("</TD>");
-				out.println("</TR>");
-			}catch(Exception ex){
-		    		out.println("<hr>" + ex.getMessage() + "<hr>");
-		    		out.println("List of the groups you are a part of could not be shown");}
-		}
-		out.println("</center>");
-	        out.println("</div>");
-		
-		String encodeGroup = response.encodeURL("createGroup.jsp");  
-		out.println("<form NAME='GroupForm' ACTION='"+encodeGroup+"' METHOD='post'>");
-		out.println("<TABLE>");
-		out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-		out.println("<TD><B>Create a new group:</B></TD>");
-		out.println("<TD><INPUT TYPE='text' NAME='groupname' MAXLENGTH='24' VALUE='Group name'><BR></TD>");
-		out.println("</TR>");
-		out.println("</TABLE>");
-		out.println("<INPUT TYPE='submit' NAME='cSubmit' VALUE='Submit'>");
-		out.println("</form>");
-
-	    %>
-	    <%@include file="db_logout.jsp"%>
-        </div>
-    </body>
+        <TABLE border='1'>
+        <TR VALIGN=TOP ALIGN=Right>
+            <TD>List of Groups you are a part of</TD>
+        </TR>
+        <% for (String group_name : friend_of_groups) {
+               String friend_groups = "showNotice.jsp?group=" + group_name;
+               String encodeSeeNotices = response.encodeURL(friend_groups); %>
+               <TR VALIGN=TOP ALIGN=LEFT>
+                   <TD><a href='<%=encodeSeeNotices%>'><%=group_name%></a></TD>
+               </TR>
+        <%}%>
+        </center>
+    </div>
+    <form NAME='GroupForm' ACTION='<%=encodeCreateGroup%>' METHOD='post'>
+        <TABLE>
+            <TR VALIGN=TOP ALIGN=LEFT>
+                <TD><B>Create a new group:</B></TD>
+                <TD><INPUT TYPE='text' NAME='groupname' MAXLENGTH='24' VALUE='Group name'><BR></TD>
+            </TR>
+        </TABLE>
+        <INPUT TYPE='submit' NAME='cSubmit' VALUE='Submit'>
+    </form>
+    <%@include file="db_logout.jsp"%>
+    </div>
+</body>
 </html>

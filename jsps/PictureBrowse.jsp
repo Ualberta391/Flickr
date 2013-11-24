@@ -3,15 +3,16 @@
 <title>Photo List</title>
 <link rel='stylesheet' type='text/css' href='mystyle.css'>
 <%@include file="db_login.jsp"%>
-<%
-    List<String> valid_ids = new ArrayList<String>(); // For all images
-    List<String> top_ids = new ArrayList<String>(); // For the top 5 images
+<%  // Initialize lists of valid photo_ids and top photo_ids
+    List<String> valid_ids = new ArrayList<String>();
+    List<String> top_ids = new ArrayList<String>();
 
+    // Encode the redirect URLs
     String encodeUpload = response.encodeURL("UploadImage.jsp");
     String encodeDisplay1 = response.encodeURL("DisplayImage.jsp");    
     String encodeGet1 = response.encodeURL("GetOnePic");
-
     String username = String.valueOf(session.getAttribute("username"));
+
     String pic_id = "";
     String owner_name = "";
     String sql = "";
@@ -40,7 +41,8 @@
             if (rset3.getString(1).equals(username))
                 is_friend = true;
         }
-        if (owner_name.equals(username) || permitted == 1 || username.equals("admin") || is_friend)
+        if (owner_name.equals(username) || permitted == 1 || 
+            username.equals("admin") || is_friend)
             valid_ids.add(pic_id);
     }
     photo_id_stmt.close();
@@ -75,20 +77,7 @@
 <%@include file="db_logout.jsp"%>
 </head>
 <body>
-    <div id='header'>
-    <p>&nbsp;</p>
-    <% if (request.getSession(false).getAttribute("username") != null) {
-           out.println("<p id='username'>You are logged in as "+username+"</p>");
-
-           String encode = response.encodeURL("logout.jsp");
-           out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
-       } else {
-           response.sendRedirect("main.jsp");
-       }
-       String encodeHomePage = response.encodeURL("home.jsp");
-    %>
-    </div>
-
+<%@include file="add_header.jsp"%>
 <div id="container">
 <p class='homePage'>Go back to <A class='homePage' href='<%= encodeHomePage %>'>Home Page</a></p>
 <form action="<%= encodeUpload %>">

@@ -51,77 +51,52 @@
         </script>
     </head>
     <body>
-        <div id = "header">
-            <!--Dont worry about the code below (its for testing)-->
-            <p>&nbsp;</p>
-            <%
-                //If there is such attribute as username, this means the user entered this page through
-                //correct navigation (logging in) and is supposed to be here
-                if(request.getSession(false).getAttribute("username") != null){
-                    out.println("<p id='username'>You are logged in as "+username+"</p>");
-                    
-                    String encode = response.encodeURL("logout.jsp");
-                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
-                    
-                }
-                //If user entered this page without logging in or after logging out, redirect user back to main.jsp
-                else{
-                    response.sendRedirect("main.jsp");
-                }
-                
-                //Encode the uploadImage servlet
-                String encodeUpload = response.encodeURL("UploadImage");
-                
-                //Encode the homePage link
-		String encodeHomePage = response.encodeURL("home.jsp");
-            %>
+    <%@include file="add_header.jsp"%>
+    <div id="container">
+        <div id="subContainer" style="width:400px">
+            <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
+            <Fieldset>
+                <legend>Upload Image(s)</legend>
+                Please input or select the path of the image(s)
+                <form name="upload-image" method="POST" enctype="multipart/form-data" action=<%=encodeUpload%>>
+                    <table>
+                        <tr>
+                            <th>File path(s): </th>
+                            <td><input name="file-path" type="file" size="30" multiple></input></td>
+                        </tr>
+                        <tr>
+                            <th>Description: </th>
+                            <td><input name="description" type="textfield" value=""></td>
+                        </tr>
+                        <tr>
+                            <th>Place: </th>
+                            <td><input name="place" type="textfield" value=""></td>
+                        </tr>
+                        <tr>
+                            <th>Subject: </th>
+                            <td><input name="subject" type="textfield" value=""></td>
+                        </tr>
+                        <tr>
+                            <th>Security: </th>
+                            <td><select name="security">
+                            <%
+                                for (int i = 0; i < group_ids.size(); i += 1) { 
+                                    out.println("<option value='"+group_ids.get(i)+"'>"+group_names.get(i)+"</option>");
+                                }
+                            %>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <th>Date: </th>
+                            <td><input id="time" name="time" type="textfield" value=""></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" ID="buttonstyle" name=".submit" value="Upload"></td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
         </div>
-        
-        <div id="container">
-            <div id="subContainer" style="width:400px">
-                <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
-                <Fieldset>
-                    <legend>Upload Image(s)</legend>
-                    Please input or select the path of the image(s)
-                    <form name="upload-image" method="POST" enctype="multipart/form-data" action=<%=encodeUpload%>>
-                        <table>
-                            <tr>
-                                <th>File path(s): </th>
-                                <td><input name="file-path" type="file" size="30" multiple></input></td>
-                            </tr>
-                            <tr>
-                                <th>Description: </th>
-                                <td><input name="description" type="textfield" value=""></td>
-                            </tr>
-                            <tr>
-                                <th>Place: </th>
-                                <td><input name="place" type="textfield" value=""></td>
-                            </tr>
-                            <tr>
-                                <th>Subject: </th>
-                                <td><input name="subject" type="textfield" value=""></td>
-                            </tr>
-                            <tr>
-                                <th>Security: </th>
-                                <td><select name="security">
-                                <%
-                                    for (int i = 0; i < group_ids.size(); i += 1) { 
-                                        out.println("<option value='"+group_ids.get(i)+"'>"+group_names.get(i)+"</option>");
-                                    }
-                                %>
-                                </select></td>
-                            </tr>
-                            <tr>
-                                <th>Date: </th>
-                                <td><input id="time" name="time" type="textfield" value=""></td>
-                            </tr>
-                            <tr>
-                                <td><input type="submit" ID="buttonstyle" name=".submit" value="Upload"></td>
-                            </tr>
-                        </table>
-                    </form>
-                </fieldset>
-            </div>
-        </div>
+    </div>
     </body>
 </html>

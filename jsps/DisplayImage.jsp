@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <title>Image Display</title>
-<% String photo_id = request.getParameter("id");
+<% // Get the current photo_id and session username
+   String photo_id = request.getParameter("id");
    String username = String.valueOf(session.getAttribute("username"));
 %>
 <%@ page import="java.sql.*, java.text.*, java.util.*" %>
@@ -23,6 +24,7 @@
    String permitted = "none";
    String group_id = "";
 
+   // Initialize a list of group names and group IDs and add the defaults (public/private)
    ArrayList<String> group_names = new ArrayList<String>();
    ArrayList<String> group_ids = new ArrayList<String>();
 
@@ -40,6 +42,7 @@
        // Value is already in the table, do nothing
    }
 
+   // Get the description details associated with the image
    try {
        Statement stmt = conn.createStatement();
        rset = stmt.executeQuery("select * from images where photo_id="+photo_id);
@@ -57,10 +60,11 @@
        timing = df.format(d_timing);
        group_id = rset.getString("PERMITTED");
    }
-   else
+   else // User manually tried to access an image that doesn't exist
        response.sendRedirect("img_not_found.jsp");
 
-   try {
+   // Translate the group_id to a group_name for display
+   try { 
        Statement permitted_stmt = conn.createStatement();
        sql = "select group_name from groups where group_id="+group_id;
        rset2 = permitted_stmt.executeQuery(sql);
@@ -71,6 +75,7 @@
        out.println("<hr>" + ex.getMessage() + "<hr>");
    }
 
+   // Get the list of group names and IDs that the current user is a part of
    try {
        Statement groups_stmt = conn.createStatement();
        sql = ("select g.group_id, g.group_name " +
@@ -94,8 +99,8 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="mystyle.css">
-
 <script>
+// Javascript for displaying the Edit Image Data modal form
  $(function() {
      $( "#edit-form" ).dialog({
          autoOpen: false,
@@ -140,7 +145,7 @@
      .click(function() {
          $( "#edit-form" ).dialog( "open" );
      });
-
+// Javascript for the calendar app
      $( "#time_field" ).datepicker({
         defaultDate: "+1w",
         changeMonth: true,
@@ -148,6 +153,7 @@
      });
  });
 
+// Javascript for deleting an image, using the DeleteImage servlet
 function deleteImage() {
     if (confirm("Are you sure you want to delete this image?") == true) {
         $.ajax({url: 'DeleteImage',
@@ -161,54 +167,33 @@ function deleteImage() {
 </script>
 </head>
 <body>
-        <div id = "header">
-            <p>&nbsp;</p>
-            <%
-                //If there is such attribute as username, this means the user entered this page through
-                //correct navigation (logging in) and is suppose to be here
-                if(request.getSession(false).getAttribute("username") != null){
-                    out.println("<p id='username'>You are logged in as "+username+"</p>");
-                    
-                    String encode = response.encodeURL("logout.jsp");
-                    out.println("<A id='signout' href='"+response.encodeURL (encode)+"'>(Logout)</a>");
-                    
-                }
-                //If user entered this page without logging in or after logging out, redirect user back to main.jsp
-                else{
-                    response.sendRedirect("main.jsp");
-                }
-                 //Encode the homePage link
-                 String encodeHomePage = response.encodeURL("home.jsp");
-            %>
-        </div>
-        
+<%@include file="add_header.jsp"%>
 <div id="container">
 <p class='homePage'>Go back to <A class='homePage' href='<%= encodeHomePage %>'>Home Page</a></p>
-
 <center>
-       <img src="/proj1/GetOnePic?big<%= photo_id %>">
-        <div id="info">
-       <p>Description: <%= description %>
-       <br>Place: <%= place %>
-       <br>Owner: <%= owner_name %>
-       <br>Subject: <%= subject %>
-       <br>Groups: <%= permitted %>
-       <br>Time photo taken: <%= timing %>
-       </p>
-       </div>
+    <img src="/proj1/GetOnePic?big<%= photo_id %>">
+    <div id="info">
+    <p>Description: <%= description %>
+    <br>Place: <%= place %>
+    <br>Owner: <%= owner_name %>
+    <br>Subject: <%= subject %>
+    <br>Groups: <%= permitted %>
+    <br>Time photo taken: <%= timing %></p>
+    </div>
 
-       <%
-       String encodeEdit = response.encodeURL("EditData");
-       String encodePic = response.encodeURL("PictureBrowse.jsp");
-       if(username.equals(owner_name)) { %>
-           <button id=edit-info>Edit Photo Information</button>
-           <button id="buttonstyle" onclick="deleteImage()">Delete Photo</button>
-    <% } %>
-
-<form action=<%=encodePic%>>
-    <input type='submit' ID="buttonstyle" value='Return to Pictures'>
-</form>
+   <%
+   String encodeEdit = response.encodeURL("EditData");
+   String encodePic = response.encodeURL("PictureBrowse.jsp");
+   if(username.equals(owner_name)) { %>
+       <button id=edit-info>Edit Photo Information</button>
+       <button id="buttonstyle" onclick="deleteImage()">Delete Photo</button>
+ <% } %>
+    <form action=<%=encodePic%>>
+        <input type='submit' ID="buttonstyle" value='Return to Pictures'>
+    </form>
 </center>
+
+<!-- HTML for the Edit-Data form -->
 <div id="edit-form" title="Edit Photo Information">
     <p class="intro">Edit any of the fields and click 'submit'.</p>
     <form method="POST" action=<%=encodeEdit%>>
@@ -252,7 +237,7 @@ function deleteImage() {
                <TR VALIGN=TOP ALIGN=LEFT>
                   <TD>
                      <select name="security" id="groups_field">
-                     <%
+                     <% // Only allow the user to select groups that they are a part of
                         for (int i = 0; i < group_ids.size(); i += 1) {
                            if (group_names.get(i).equals(permitted)) {
                               out.println("<option selected='true' value='"+group_ids.get(i) +

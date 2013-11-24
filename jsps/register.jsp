@@ -88,7 +88,6 @@
             }
         }%>
         <%@ include file="db_logout.jsp"%>
-	
 	</div>
     </BODY>
 </HTML>

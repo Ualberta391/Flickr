@@ -44,6 +44,7 @@
 	    if(request.getParameter("dsubmit") != null){
 		int skip = 0;
 		String friend = (request.getParameter("friends")).trim();
+		String notice = (request.getParameter("notice")).trim();
                 username = String.valueOf(session.getAttribute("username")); 
 	        String groupName = String.valueOf(session.getAttribute("groupname")); 
 		String friendToAdd = "";
@@ -72,7 +73,8 @@
 			    out.println(friend + " does not exist");
 			}
 			out.println("<form method=get target=_self>");            
-		    	out.println("Add a new friend: <input type=text name=friends maxlength=24><br>");         
+		    	out.println("Add a new friend: <input type=text name=friends maxlength=24><br>");   
+			out.println("Type a notice: <input type=text name=notice maxlength=24><br>");         
             		out.println("<input type=submit value=Submit name = dsubmit>");
 		    }
 		}catch(Exception ex){
@@ -106,7 +108,7 @@
 		    String friends = "viewOrAddFriends.jsp"+"?group="+groupName;
 		    String encodeAddFriends = response.encodeURL(friends);
 		    
-		    sql = "Insert into group_lists values ('"+groupID+"','"+friendToAdd+"', DATE'"+date+"', 'notice')";
+		    sql = "Insert into group_lists values ('"+groupID+"','"+friendToAdd+"', DATE'"+date+"', '"+notice+"')";
 		    try{
 			stmt = conn.createStatement();
 			//Execute update into the database
@@ -116,15 +118,21 @@
 		    } catch(Exception ex){
 			out.println("You couldn't add a friend.  Perhaps they were too awesome or they are already your friend");
 			out.println("<form method=get target=_self>");            
-			out.println("Add a new friend: <input type=text name=friends maxlength=24><br>");         
+			out.println("Add a new friend: <input type=text name=friends maxlength=24><br>");  
+			out.println("Enter a notice to show your friend: <input type=text name=notice maxlength=24><br>");             
 		    	out.println("<input type=submit value=Submit name = dsubmit>");
 		    }
 		}  
 	    }
 	    else if(request.getParameter("cSubmit") != ""){
 		String groupName = request.getParameter("group");
+		String delete = response.encodeURL("deleteGroup.jsp");
 		out.println("Group name: " + groupName);
-		
+
+            	out.println("<form ACTION='"+delete+"' METHOD='link'>");
+           	out.println("<INPUT TYPE='submit' NAME='fromviewOrAddFriends' VALUE='Delete group'>");
+            	out.println("</form>");            
+
 		// getting the group_id of the group selected
 		String sql = "select group_id from groups where group_name = '"+groupName+"' AND user_name = '"+username+"'";
 		
@@ -140,7 +148,7 @@
 		    out.println("<hr>" + ex.getMessage() + "<hr>");
 		    out.println("could not get group id");
 		}
-		
+		session.setAttribute("groupID", groupID);
 		// listing the friends the user added to their group
 		sql = "select friend_id from group_lists where '"+groupID+"' = group_id";
 		
@@ -156,13 +164,21 @@
 			out.println("<th>friends</th>");
 			out.println("</tr>");
 			out.println("<tr>");
+			out.println("<td>");
 			String friendName = friendSet.getString(1);
-			out.println("<td>" + friendName + "</td>");
+			String encodeFriend = "editFriend.jsp"+"?friend="+friendName;
+		        String encodeFriendURL = response.encodeURL(encodeFriend);
+		        out.println("<a href = '"+encodeFriendURL+"'>"+friendName+"</a>");
+			out.println("</td>");
 			out.println("</tr>");
 			while (friendSet.next()){
 			    out.println("<tr>");
+			    out.println("<td>");
 			    friendName = friendSet.getString(1);
-			    out.println("<td>" + friendName + "</td>");
+		            encodeFriend = "editFriend.jsp"+"?friend="+friendName;
+		            encodeFriendURL = response.encodeURL(encodeFriend);
+		            out.println("<a href = '"+encodeFriendURL+"'>"+friendName+"</a>");
+			    out.println("</td>");
 			    out.println("</tr>");
 			}
 		    }
@@ -176,8 +192,12 @@
 		out.println("</table>");
 		session.setAttribute("groupname",groupName);
 		out.println("<form method=get target=_self>");            
-		out.println("Add a new friend: <input type=text name=friends maxlength=20><br>");         
+		out.println("Add a new friend: <input type=text name=friends maxlength=20><br>");      
+		out.println("Type a notice: <input type=text name=notice maxlength=24><br>");      
 		out.println("<input type=submit value=Submit name = dsubmit>");
+		out.println("<br>");
+                String encode = response.encodeURL("GroupInfo.jsp");
+                out.println("<A id='delete' href='"+response.encodeURL (encode)+"'>Go back to group page</a>");
 	    }
 	    %>
 	    <%@include file="db_logout.jsp"%>

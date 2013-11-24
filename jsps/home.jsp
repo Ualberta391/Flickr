@@ -38,7 +38,7 @@
             String upload = response.encodeURL("UploadImage.jsp");
             String view = response.encodeURL("PictureBrowse.jsp");
             String search = response.encodeURL("Search.jsp");
-            String data = response.encodeURL("Data.jsp");
+            String data = response.encodeURL("olap.jsp");
             %>
             <TABLE>
             

@@ -5,7 +5,6 @@
     <title>Notice</title>
     <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
 </head>
-
 <body> 
     <%@ page import="java.sql.*" %>
     <%@ page import="java.util.*" %>

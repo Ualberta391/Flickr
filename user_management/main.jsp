@@ -17,7 +17,8 @@
 </head>
 <body>
     <div id = "header">
-        <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
+        <marquee behavior="scroll" direction="left"><img src="/proj1/media/stupidKid.jpg"></marquee>
+        <marquee behavior="scroll" direction="left"><b><h1>Thumbs-Up Storage</h1></b></marquee>
         <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
     </div>
     <div id="container">

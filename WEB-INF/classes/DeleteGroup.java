@@ -32,6 +32,9 @@ public class DeleteGroup extends HttpServlet {
             Connection conn = DriverManager.getConnection(dbstring, username, password);
             Statement stmt = conn.createStatement();
             
+            // First update all pictures in that group to take the "Private" group
+            stmt.executeUpdate("UPDATE images SET permitted=2 WHERE permitted=" + group_id);
+
             // Delete the group
             stmt.executeUpdate("DELETE FROM group_lists WHERE group_id=" + group_id);
             stmt.executeUpdate("DELETE FROM groups WHERE group_id=" + group_id);

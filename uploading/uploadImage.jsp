@@ -11,7 +11,9 @@
         String encodeUpload = response.encodeURL("/proj1/uploading/UploadImage");
 
         String username = String.valueOf(session.getAttribute("username"));
+        Statement stmt = conn.createStatement();
         ResultSet rset = null;
+        String sql = "";
         
         // Initialize the list of group names and IDs, and add the defaults (public, private)
         ArrayList<String> group_names = new ArrayList<String>();
@@ -21,24 +23,33 @@
         group_names.add("public");
         group_names.add("private");
 
-        // Get the list of group names and group ids where the user
-        // is either a friend of, or the owner of
-        String sql = ("select g.group_id, g.group_name " +
-                      "from groups g, group_lists gl " +
-                      "where g.group_id = gl.group_id " +
-                      "and (g.user_name = '" + username +
-                      "' or gl.friend_id = '" + username + "')");
+        // Have to separate the following two to handle the case where the group is empty
+        // Get the list of group ids where the user is the group owner
+        sql = "select group_id from groups where user_name='" + username + "'";
         try {
-            Statement stmt = conn.createStatement();
             rset = stmt.executeQuery(sql);
+            while (rset.next())
+                group_ids.add(rset.getString("group_id"));
+        } catch (Exception ex) {
+            out.println("<hr>" + ex.getMessage() + "<hr>");
+        }
+
+        // Get the list of group ids where the user is a friend
+        sql = "select group_id from group_lists where friend_id='" + username + "'";
+        try {
+            rset = stmt.executeQuery(sql);
+            while (rset.next())
+                group_ids.add(rset.getString("group_id"));
         } catch (Exception ex) {
             out.println("<hr>" + ex.getMessage() + "<hr>");
         }
         
-        // Populate the lists of group_ids and group_names with the valid groups
-        while (rset.next()) {
-            group_ids.add(rset.getString("GROUP_ID"));
-            group_names.add(rset.getString("GROUP_NAME"));
+        // Convert the list of group ids into group names
+        for (int i = 2; i < group_ids.size(); i++) {
+            sql = "select group_name from groups where group_id='" + group_ids.get(i) + "'";
+            rset = stmt.executeQuery(sql);
+            while (rset.next())
+                group_names.add(rset.getString("GROUP_NAME"));
         }
     %>
     <%@include file="../util/dbLogout.jsp"%>

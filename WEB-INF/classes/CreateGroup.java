@@ -35,8 +35,8 @@ public class CreateGroup extends HttpServlet {
             DriverManager.registerDriver((Driver) drvClass.newInstance());
             Connection conn = DriverManager.getConnection(dbstring, username, password);
             Statement stmt = conn.createStatement();
-            
-            String sql = ("insert into groups values (group_seq.NEXTVAL,'" + user_name + 
+
+            String sql = ("insert into groups values (group_seq.nextval,'" + user_name + 
                           "','" + group_name + "', DATE'" + date + "')");
 
             // Create the group

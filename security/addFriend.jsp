@@ -1,4 +1,4 @@
-<!-- Script to create a group contained in a jsp.  If successful, 
+<!-- Script to add a friend contained in a jsp.  If successful, 
      redirect to viewFriends.jsp.  If adding a friend produces an error,
      redirect to error/invalidFriend.jsp
 

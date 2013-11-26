@@ -1,5 +1,7 @@
+<!-- Displays the relevant groups for the current user as two tables:
+     one table for the groups that the user has created, and one table
+     for the groups that the user is a part of, but did not create -->
 <!DOCTYPE html>
-<!-- Displays the relevant groups for the current user -->
 <html>
 <head>
     <title>Group Information</title>
@@ -28,15 +30,15 @@
         out.println("<hr>" + ex.getMessage() + "<hr>");
     }
      
-    // Get the group_ids of the groups that the user is a part of
+    // Get the group_names of the groups that the user is a part of
     sql = ("select g.group_name from groups g, group_lists gl " +
            "where g.group_id = gl.group_id " +
            "and friend_id='" + current_user + "'");
     try { 
         Statement stmt = conn.createStatement();
-        ResultSet groupIdSet = stmt.executeQuery(sql);
-        while (groupIdSet.next()) 
-            friend_of_groups.add(groupIdSet.getString(1));
+        ResultSet group_friend_set = stmt.executeQuery(sql);
+        while (group_friend_set.next()) 
+            friend_of_groups.add(group_friend_set.getString(1));
     } catch (Exception ex) {
         out.println("<hr>" + ex.getMessage() + "<hr>");
     }
@@ -100,6 +102,7 @@ function createGroup() {
             <TD><INPUT TYPE='text' NAME='group_field' id='group_field'  MAXLENGTH='24' VALUE='New Group Name'><BR></TD>
         </TR>
     </TABLE>
+    <!-- Selecting this button creates the group using the name found in the group_field text input -->
     <button ID="buttonstyle" onclick="createGroup()">Create Group</button>
     <%@include file="../util/dbLogout.jsp"%>
     </div>

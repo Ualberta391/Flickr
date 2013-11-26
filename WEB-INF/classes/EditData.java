@@ -1,6 +1,7 @@
 /***
-    This EditData servlet is responsible for updating the values associated with a photo
-    when the photo owner submits the new values from the DisplayImage.jsp page.
+    Servlet for editing the meta information associated with the image.
+    This servlet is called when the user presses the Edit Photo Information button
+    in the display/displayImage.jsp and fills out the appropriate information
 ***/
 
 import java.io.*;
@@ -15,7 +16,7 @@ import oracle.jdbc.*;
 public class EditData extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
-        // Change the following parameters to connect to the oracle database
+        // Parameters to connect to the oracle database
         String username = "c391g5";
         String password = "radiohead7";
         String drivername = "oracle.jdbc.driver.OracleDriver";
@@ -30,7 +31,7 @@ public class EditData extends HttpServlet {
         String pic_id = "";
 
         try {
-            // Get the new string values from the ajax call
+            // Get the new photo information values from the ajax call
             description = request.getParameter("description").toString();
             place = request.getParameter("place").toString();
             subject = request.getParameter("subject").toString();
@@ -48,7 +49,7 @@ public class EditData extends HttpServlet {
             Connection conn = DriverManager.getConnection(dbstring, username, password);
             Statement stmt = conn.createStatement();
             
-            // Update the photo
+            // Update the photo information
             stmt.executeQuery("UPDATE images set PLACE='"+place+"', PERMITTED='"+groups+
                               "', DESCRIPTION='"+description+"', TIMING=date'"+sql_date+
                               "', SUBJECT='"+subject+"' WHERE photo_id="+pic_id);

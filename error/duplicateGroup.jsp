@@ -1,3 +1,5 @@
+<!-- Error display for when a user tries to create a group
+     with a name that is already present in the database -->
 <!DOCTYPE html>
 <html>
     <head>

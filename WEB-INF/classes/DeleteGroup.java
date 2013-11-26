@@ -1,4 +1,7 @@
 /***
+    Servlet for deleting a group within the security module.
+    This servlet is called when the user selects the Delete Group button 
+    from the security/viewOrAddFriends.jsp module.
 ***/
 import java.io.*;
 import javax.servlet.*;
@@ -12,7 +15,7 @@ import oracle.jdbc.*;
 public class DeleteGroup extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
-        // Change the following parameters to connect to the oracle database
+        // Parameters to connect to the oracle database
         String username = "c391g5";
         String password = "radiohead7";
         String drivername = "oracle.jdbc.driver.OracleDriver";

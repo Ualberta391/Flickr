@@ -1,3 +1,5 @@
+<!-- This module displays a single image and allows the user to
+     edit/delete the image in the database -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,6 @@
    String username = String.valueOf(session.getAttribute("username"));
 %>
 <%@ page import="java.sql.*, java.text.*, java.util.*" %>
-
 <%@include file="../util/dbLogin.jsp"%>
 <%
    ResultSet rset = null;
@@ -50,6 +51,7 @@
        out.println("<hr>" + ex.getMessage() + "<hr>");
    }
        
+   // Assign the description details to variables
    if (rset.next()) {
        description = rset.getString("DESCRIPTION");
        place = rset.getString("PLACE");
@@ -88,6 +90,7 @@
        out.println("<hr>" + ex.getMessage() + "</hr>");
    }
 
+   // Adds the group names and ids to the running lists
    while (rset3.next()) {
        group_ids.add(rset3.getString("GROUP_ID"));
        group_names.add(rset3.getString("GROUP_NAME"));
@@ -134,6 +137,8 @@
              }
          },
          close: function() {
+             // After closing the modal window, reset the values 
+             // for the next time it opens
              $("#description_field").val('<%= description %>');
              $("#place_field").val('<%= place %>');
              $("#subject_field").val('<%= subject %>');
@@ -161,6 +166,7 @@ function deleteImage() {
                 async: false,
                 type: 'POST'
                });
+        // After a successful delete, go back to the pictureBrowse.jsp module
         window.location.replace("/proj1/display/pictureBrowse.jsp");
     }
 }

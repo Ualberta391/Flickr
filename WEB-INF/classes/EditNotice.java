@@ -1,4 +1,7 @@
 /***
+    Servlet for editing the notice associated with the user in a group.
+    This servlet is called when the user selects the "Submit New Notice" button 
+    from the security/editFriend.jsp module.
 ***/
 import java.io.*;
 import javax.servlet.*;
@@ -12,7 +15,7 @@ import oracle.jdbc.*;
 public class EditNotice extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
-        // Change the following parameters to connect to the oracle database
+        // Parameters to connect to the oracle database
         String username = "c391g5";
         String password = "radiohead7";
         String drivername = "oracle.jdbc.driver.OracleDriver";
@@ -34,7 +37,7 @@ public class EditNotice extends HttpServlet {
             Connection conn = DriverManager.getConnection(dbstring, username, password);
             Statement stmt = conn.createStatement();
             
-            // Edit the notice
+            // Edit the notice in the database
             String sql = ("update group_lists set notice='" + new_notice + 
                           "' where group_id='" + group_id + 
                           "' and friend_id='" + friend + "'");

@@ -1,3 +1,4 @@
+<!-- Module used to handle the registering of a new user -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,11 +12,11 @@
             <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
 	</div>
 	<div id="container">
-	
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*"%>
 	<%@ include file="../util/dbLogin.jsp"%>
 	<% if(request.getParameter("aSubmit") != ""){
+            // Get the register parameters from the request object
             String username = (request.getParameter("username")).trim();
             String password = (request.getParameter("password")).trim();
             String firstName = (request.getParameter("first")).trim();
@@ -37,7 +38,6 @@
                            "','" + firstName + "','" + lastName + "','" + address +
                            "','" + email + "'," + phone + ")");
             
-            
             //Attempting to execute both SQL statements
             //If username or email has been taken, it will notifty the user
             try {
@@ -56,14 +56,14 @@
                     //we will redirect the user to his homepage
                     response.sendRedirect(encode);
                 } catch(Exception ex) { 
-                //Display to the user an error if he provided an email 
-                //or username that has already been taken %>
+                    //Display to the user an error if he provided an email 
+                    //or username that has already been taken %>
                     <div id='error'>
                     <Fieldset>
-                    <legend>Actions</legend>
-                    Sorry, the email you provided have been used.
-                    Please select a different one.
-                    <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
+                        <legend>Actions</legend>
+                        Sorry, the email you provided have been used.
+                        Please select a different one.
+                        <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
                     </Fieldset>
                     </div>
                 <%
@@ -78,10 +78,10 @@
             //username that has already been taken %>
             <div id='error'>
             <Fieldset>
-            <legend>Actions</legend>
-            Sorry, the username you provided have been used.
-            Please select a different one.
-            <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
+                <legend>Actions</legend>
+                Sorry, the username you provided have been used.
+                Please select a different one.
+                <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
             </Fieldset>
             </div>
            <% 

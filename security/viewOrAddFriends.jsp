@@ -1,3 +1,6 @@
+<!-- This module displays the friends associated with the group in table form.
+     If the user accessing this module is the group owner, they can also 
+     delete the group from this page -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +16,7 @@
        String username = String.valueOf(session.getAttribute("username"));
        String sql = "";
 
+       // Encode the redirect URLs
        String encodeGroupInfo = response.encodeURL("/proj1/security/groupInfo.jsp");
        String encodeAddFriend = response.encodeURL("/proj1/security/addFriend.jsp?group=" + group_name);
 
@@ -46,59 +50,60 @@
     %>
     <%@include file="../util/dbLogout.jsp"%>
 
-<script>
-// Javascript for deleting a group, using the DeleteGroup servlet
-function deleteGroup() {
-    if (confirm("Are you sure you want to delete this group?") == true) {
-        $.ajax({url: '/proj1/security/DeleteGroup',
-                data: {"id": <%= group_id %>},
-                async: false,
-                type: 'POST'
-               });
-        window.location.replace("/proj1/security/groupInfo.jsp");
+    <script>
+    // Javascript for deleting a group, using the DeleteGroup servlet
+    function deleteGroup() {
+        if (confirm("Are you sure you want to delete this group?") == true) {
+            $.ajax({url: '/proj1/security/DeleteGroup',
+                    data: {"id": <%= group_id %>},
+                    async: false,
+                    type: 'POST'
+                   });
+            window.location.replace("/proj1/security/groupInfo.jsp");
+        }
     }
-}
-</script>
+    </script>
 </head>
 <body> 
-<%@include file="../util/addHeader.jsp"%>
-<div id="container">
-    <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
-    <div id="subContainer" style="width:300px">
-    <center>
-    Group Name: <%=group_name%>
-    <TABLE border='1'>
-        <TR VALIGN=TOP ALIGN=LEFT>
-            <TD>List of Friends</TD>
-        </TD>
-        <% for (String friend_name : friends) {
-               String edit_friend = ("/proj1/security/editFriend.jsp?friend=" + friend_name + 
-                                     "&groupID=" + group_id);
-               String encodeFriendURL = response.encodeURL(edit_friend); %>
-               <TR VALIGN=TOP ALIGN=LEFT>
-                   <TD><a href='<%=encodeFriendURL%>'><%=friend_name%></a></TD>
-               </TR>
-        <%}%>
-    </TABLE>
-    <form NAME='GroupForm' ACTION='<%=encodeAddFriend%>' METHOD='post'>
-        <table>
+    <%@include file="../util/addHeader.jsp"%>
+    <div id="container">
+        <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
+        <div id="subContainer" style="width:300px">
+        <center>
+        Group Name: <%=group_name%>
+        <TABLE border='1'>
             <TR VALIGN=TOP ALIGN=LEFT>
-                <TD><B>Add a new friend:</B></TD>
-                <TD><INPUT TYPE='text' NAME='friend' MAXLENGTH='24' VALUE=''><BR></TD>
-            </TR>
-             <TR VALIGN=TOP ALIGN=LEFT>
-                <TD><B>Enter a notice:</B></TD>
-                <TD><INPUT TYPE='text' NAME='notice' MAXLENGTH='24' VALUE=''><BR></TD>
-            </TR>
-        </table>
-        <input id="buttonstyle" type='submit' NAME='cSubmit' VALUE='Submit'>
-    </form>
-    <br>
-    <% if (session_user.equals(group_owner)) {%>
-        <button id="buttonstyle" onclick="deleteGroup()">Delete Group</button><br><br>
-    <%}%>
-    <a id='buttonstyle' href='<%=response.encodeURL(encodeGroupInfo)%>'>Back to Groups</a>
+                <TD>List of Friends</TD>
+            </TD>
+            <% for (String friend_name : friends) {
+                   String edit_friend = ("/proj1/security/editFriend.jsp?friend=" + friend_name + 
+                                         "&groupID=" + group_id);
+                   String encodeFriendURL = response.encodeURL(edit_friend); %>
+                   <TR VALIGN=TOP ALIGN=LEFT>
+                       <TD><a href='<%=encodeFriendURL%>'><%=friend_name%></a></TD>
+                   </TR>
+            <%}%>
+        </TABLE>
+        <% if (session_user.equals(group_owner)) {%>
+            <!-- Only allow the group user to delete the group or submit a new notice -->
+            <form NAME='GroupForm' ACTION='<%=encodeAddFriend%>' METHOD='post'>
+                <table>
+                    <TR VALIGN=TOP ALIGN=LEFT>
+                        <TD><B>Add a new friend:</B></TD>
+                        <TD><INPUT TYPE='text' NAME='friend' MAXLENGTH='24' VALUE=''><BR></TD>
+                    </TR>
+                     <TR VALIGN=TOP ALIGN=LEFT>
+                        <TD><B>Enter a notice:</B></TD>
+                        <TD><INPUT TYPE='text' NAME='notice' MAXLENGTH='24' VALUE=''><BR></TD>
+                    </TR>
+                </table>
+                <input id="buttonstyle" type='submit' NAME='cSubmit' VALUE='Submit'>
+            </form>
+            <br>
+            <button id="buttonstyle" onclick="deleteGroup()">Delete Group</button><br><br>
+        <%}%>
+        <a id='buttonstyle' href='<%=response.encodeURL(encodeGroupInfo)%>'>Back to Groups</a>
+        </div>
     </div>
-</div>
 </body>
 </html>

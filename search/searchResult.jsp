@@ -1,3 +1,6 @@
+<!-- Module which handles the logic of searching the database and displaying
+     the appropriate images from the information specified by the user in the 
+     search.jsp form -->
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,3 +1,4 @@
+<!-- Login page for the user to register a new account or login with an existing account -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,7 @@
 <!--Code from http://jsfiddle.net/viralpatel/nSjy7/ -->
 <script>
     function isNumberKey(evt){
+        // Prevents the user from filling the phone number field with non-numbers
         var charCode = (evt.which)? evt.which : event.keyCode
         if(charCode>31 && (charCode < 48 || charCode > 57))
             return false;
@@ -18,7 +20,6 @@
         <marquee behavior="scroll" direction="left"><b><h1>CMPUT 391</h1></b></marquee>
         <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
     </div>
-    
     <div id="container">
         <div id="register">
             <form NAME="RegisterForm" ACTION="/proj1/user_management/register.jsp" METHOD="post">
@@ -77,11 +78,11 @@
                 </Fieldset>
             </form>
         </div>
-        
         <%@ page import="java.sql.*" %>
         <%
-            //Testing for specific attribute (username) in session, if it is a new session or not
-            //If it is not a new session, return the user the home page, the user must log out to login under another us
+            //Testing for specific attribute (username), if it is a new session or not. 
+            //If it is not a new session, return the user the home page, 
+            //the user must log out to login under another user
             if(request.getSession(false).getAttribute("username")!= null){
                 String encode = response.encodeURL("/proj1/home.jsp");
                 response.sendRedirect(encode);  

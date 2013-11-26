@@ -1,3 +1,4 @@
+<!-- Error page for when the user attempts to access an image that does not exist -->
 <!DOCTYPE html>
 <html>
     <head>

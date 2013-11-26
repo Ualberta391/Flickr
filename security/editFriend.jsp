@@ -1,3 +1,4 @@
+<!-- Module for editing a friend notice or deleting a friend from a group. -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,6 +78,7 @@ function editNotice() {
     <b>Notice: <%= notice %></b><br>
     </center>
     <% if (session_user.equals(group_owner)) { %>
+        <!-- Only allow the group owner to edit notices or delete friends -->
         <TABLE>
             <TR VALIGN=TOP ALIGN=LEFT>
                 <TD><B>Enter a new notice:</B></TD>

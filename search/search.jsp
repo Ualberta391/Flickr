@@ -1,9 +1,9 @@
+<!-- Module which displays the search form that the user can find pictures with -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Search</title>
     <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
-
     <!--Got this code from "http://jqueryui.com/datepicker/#date-range" -->    
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>

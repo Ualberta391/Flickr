@@ -1,3 +1,10 @@
+<!-- Error page for when the user attempts to add an invalid user as a friend to a group.
+     An error occurs when the attempted friend is:
+        * The user himself/herself
+        * Already in the group
+        * Does not exist in the database
+        * Null
+-->
 <!DOCTYPE html>
 <html>
     <head>

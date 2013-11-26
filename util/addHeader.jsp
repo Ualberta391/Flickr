@@ -1,4 +1,7 @@
-<!-- Creates a header at the top of the JSP page for logging in -->
+<!-- Creates a header at the top of the JSP page for logging out.
+     This is extracted out to the addHeader.jsp module to reduce
+     code duplication.
+-->
 <div id="header">
     <p>&nbsp;</p>
 <%  

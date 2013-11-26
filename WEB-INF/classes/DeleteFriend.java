@@ -1,4 +1,7 @@
 /***
+    Servlet for deleting a friend in the security module.
+    This servlet is called when Delete Friend button is pressed in 
+    the security/editFriend.jsp module.
 ***/
 import java.io.*;
 import javax.servlet.*;
@@ -12,8 +15,7 @@ import oracle.jdbc.*;
 public class DeleteFriend extends HttpServlet {
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
-        // Change the following parameters to connect to the oracle database
-        System.out.println("hi here");
+        // Parameters to connect to the oracle database
         String username = "c391g5";
         String password = "radiohead7";
         String drivername = "oracle.jdbc.driver.OracleDriver";
@@ -22,7 +24,7 @@ public class DeleteFriend extends HttpServlet {
         String friend = "";
 
         try {
-            // Get the group ID from the ajax call
+            // Get the group ID and friend name from the ajax call
             group_id = request.getParameter("id").toString();
             friend = request.getParameter("friend").toString();
 
@@ -32,12 +34,13 @@ public class DeleteFriend extends HttpServlet {
             Connection conn = DriverManager.getConnection(dbstring, username, password);
             Statement stmt = conn.createStatement();
             
-            // Delete the friend
             String sql = ("delete from group_lists where group_id='" + group_id + 
                           "' and friend_id='" + friend + "'");
 
+            // Delete the friend
             stmt.executeUpdate(sql);
             stmt.executeUpdate("commit");
+
             conn.close();
         } catch(Exception ex) {
             System.out.println(ex.getMessage());

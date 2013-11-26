@@ -123,6 +123,15 @@ body {
   right:5px;
 }
 
+/*The location of the help menu*/
+#userdoc{
+  color: yellow;
+  font-size: 0.75em;
+  position:absolute;
+  top:20px;
+  right:5px;
+}
+
 /*Color of the marquee*/
 h1,h4{
   color:white;

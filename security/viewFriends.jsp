@@ -19,9 +19,7 @@
        // Encode the redirect URLs
        String encodeGroupInfo = response.encodeURL("/proj1/security/groupInfo.jsp");
        String encodeAddFriend = response.encodeURL("/proj1/security/addFriend.jsp?group=" + group_name);
-
-       java.util.Date utilDate = new java.util.Date();
-       java.sql.Date date = new java.sql.Date(utilDate.getTime());
+  
        ArrayList<String> friends = new ArrayList<String>();
 
        // Get the group_id and group owner associated with the group

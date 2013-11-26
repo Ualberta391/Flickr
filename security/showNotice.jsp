@@ -32,7 +32,7 @@
                 if (val != null) 
                     notice = val;
             } %>
-            Notice: <%=notice%>
+            <b>Notice:</b> <%=notice%><br><br>
             <a id='buttonstyle' href='<%=encodeGroup%>'>Back to Group Page</a>
             <%@include file="../util/dbLogout.jsp"%>
         </div>

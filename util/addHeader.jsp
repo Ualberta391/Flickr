@@ -11,10 +11,11 @@
     String session_user = "";
     if(request.getSession(false).getAttribute("username") != null) {
         session_user = String.valueOf(session.getAttribute("username"));
-        String encode = response.encodeURL("/proj1/user_management/logout.jsp"); %>
+        String encode = response.encodeURL("/proj1/user_management/logout.jsp"); 
+        String encode2 = response.encodeURL("/proj1/util/userdoc.jsp"); %>
         <p id='username'>You are logged in as <%= session_user %></p>
-        <A id='signout' href='<%= response.encodeUrl(encode) %>'>(Logout)</a>
-        <A id='userdoc' href='<%= response.encodeUrl(encode2) %>'>Help Menu</a>
+        <a id='signout' href='<%= response.encodeUrl(encode) %>'>(Logout)</a>
+        <a id='userdoc' href='<%= response.encodeUrl(encode2) %>'>Help Menu</a>
 
  <% } else {
         //If user entered this page without logging in or after logging out, 

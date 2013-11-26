@@ -16,7 +16,6 @@
         <p id='username'>You are logged in as <%= session_user %></p>
         <a id='signout' href='<%= response.encodeUrl(encode) %>'>(Logout)</a>
         <a id='userdoc' href='<%= response.encodeUrl(encode2) %>'>Help Menu</a>
-
  <% } else {
         //If user entered this page without logging in or after logging out, 
         //redirect user back to main.jsp

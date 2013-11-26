@@ -82,11 +82,11 @@ function editNotice() {
         <TABLE>
             <TR VALIGN=TOP ALIGN=LEFT>
                 <TD><B>Enter a new notice:</B></TD>
-                <TD><input type='text' id='notice_field' value=''><BR></TD>
+                <TD><input type='text' id='notice_field' value=''><BR><BR></TD>
             </TR>
         </TABLE>
-        <button id="buttonstyle" onclick="editNotice()">Submit New Notice</button>
-        <button id="buttonstyle" onclick="deleteFriend()">Delete Friend</button>
+        <button id="buttonstyle" onclick="editNotice()">Submit New Notice</button><br><br>
+        <button id="buttonstyle" onclick="deleteFriend()">Delete Friend</button><br><br>
     <% } %>
     <a id='buttonstyle' href='<%=response.encodeUrl(encodeGroup)%>'>Back to Group</a>
     </div>

@@ -19,8 +19,8 @@
             5) Open the terminal and run tomcat by typing starttomcat<br>
             6) Open sql plus with the terminal by typing sqlplus<br>
             7) Run the sql script, @exe.sql in sqlplus<br>
-            8) In the browser of your choice (preferably Firefox) type http://ui???.cs.ualberta.ca:<your-first-port-number>/proj1/main.jsp<br>
-                        where ui??? is the computer you are working on. (you can find this information by typing 	hostname in the terminal)<br>
+            8) In the browser of your choice (preferably Firefox) type http://ui???.cs.ualberta.ca:<your-first-port-number>/proj1/user_management/main.jsp<br>
+                        where ui??? is the computer you are working on. (you can find this information by typing hostname in the terminal)<br>
             <h2 style="color:black">User Manual</h2>
             <h3 syle="color:black">User Management Module</h3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you can start uploading and browsing pictures, you must first register an account with us.  Simply type in the required information, such as your first and last name, email address, phone number; and a password and a username so you can log in.  Keep in mind your username and email address must be unique.  Once you've entered the required information, click submit, and if it's successful you will be redirected to your home page.  If you've entered a username or an email address that somebody else already has, you will have to try again. If you're already registered, simply type in your username and password in the log in text fields and you will be redirected to your home page unless your username does not match with the password you entered. </p>

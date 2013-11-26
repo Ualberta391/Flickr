@@ -1,7 +1,7 @@
 /***
     Servlet for deleting a group within the security module.
     This servlet is called when the user selects the Delete Group button 
-    from the security/viewOrAddFriends.jsp module.
+    from the security/viewFriends.jsp module.
 ***/
 import java.io.*;
 import javax.servlet.*;

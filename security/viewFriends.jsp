@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>View Friends</title>
     <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <%@ page import="java.sql.*, java.util.*, java.test.*" %>

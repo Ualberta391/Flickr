@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload images to online storage!</title>
+    <title>Upload Images to Online Storage</title>
     <%@ page import="java.util.*" %>
     <%@ page import="java.sql.*" %>
     <%@include file="../util/dbLogin.jsp"%>

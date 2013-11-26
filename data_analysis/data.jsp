@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Main</title>
+        <title>Data Analysis</title>
         <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
     </head>
     <body>

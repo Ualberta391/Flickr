@@ -36,7 +36,7 @@
         out.println("<hr>" + ex.getMessage() + "</hr>");
     }
 
-    String encodeGroup = response.encodeURL("/proj1/security/viewOrAddFriends.jsp?group=" + group_name);
+    String encodeGroup = response.encodeURL("/proj1/security/viewFriends.jsp?group=" + group_name);
     %>
     <%@include file="../util/dbLogout.jsp"%>
 <script>
@@ -48,7 +48,7 @@ function deleteFriend() {
                 async: false,
                 type: 'POST'
                });
-        window.location.replace("/proj1/security/viewOrAddFriends.jsp?group=<%= group_name %>");
+        window.location.replace("/proj1/security/viewFriends.jsp?group=<%= group_name %>");
     }
 }
 // Javascript for editing the notice of a friend, using the EditNotice servlet

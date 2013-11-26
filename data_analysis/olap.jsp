@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Search Result</title>
+        <title>OLAP</title>
         <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
     </head>
 

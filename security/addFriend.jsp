@@ -1,5 +1,5 @@
 <!-- Script to create a group contained in a jsp.  If successful, 
-     redirect to viewOrAddFriends.jsp.  If adding a friend produces an error,
+     redirect to viewFriends.jsp.  If adding a friend produces an error,
      redirect to error/invalidFriend.jsp
 
      An error occurs when the attempted friend is:
@@ -20,7 +20,7 @@
 
         // If friend_name is null, error out
         if (friend_name.equals("")) {
-            response.sendRedirect("/proj1/security/viewOrAddFriends.jsp?group=" + group_name);
+            response.sendRedirect("/proj1/security/viewFriends.jsp?group=" + group_name);
             return;
         }
 
@@ -77,8 +77,8 @@
             return;
         }
         // If we get to this point, the friend was successfully added, redirect 
-        // to viewOrAddFriends.jsp module
-        response.sendRedirect("/proj1/security/viewOrAddFriends.jsp?group=" + group_name);
+        // to viewFriends.jsp module
+        response.sendRedirect("/proj1/security/viewFriends.jsp?group=" + group_name);
     }
     %>
 <%@include file="../util/dbLogout.jsp"%>

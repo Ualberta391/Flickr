@@ -75,7 +75,7 @@ function createGroup() {
             <TD>List of Groups You Created</TD>
         </TR>
         <% for (String created_group_name : created_groups) {
-               String friends = "/proj1/security/viewOrAddFriends.jsp?group=" + created_group_name;
+               String friends = "/proj1/security/viewFriends.jsp?group=" + created_group_name;
                String encodeAddFriends = response.encodeURL(friends); %>
                <TR VALIGN=TOP ALIGN=LEFT>
                    <TD><a href='<%=encodeAddFriends%>'><%=created_group_name%></a></TD>

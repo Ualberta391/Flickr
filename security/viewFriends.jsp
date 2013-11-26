@@ -25,7 +25,8 @@
        ArrayList<String> friends = new ArrayList<String>();
 
        // Get the group_id and group owner associated with the group
-       sql = "select group_id, user_name from groups where group_name='" + group_name + "'";
+       sql = ("select group_id, user_name from groups where group_name='" + group_name +
+              "' and user_name='" + username + "'");
        try {
            Statement stmt = conn.createStatement();
            ResultSet group_id_rset = stmt.executeQuery(sql);

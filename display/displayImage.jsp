@@ -200,7 +200,7 @@
 
         <!-- HTML for the Edit-Data form -->
         <div id="edit-form" title="Edit Photo Information">
-            <p class="intro">Edit any of the fields and click 'submit'.</p>
+            <p class="intro">Edit any subset of the fields and click 'submit'.</p>
             <form method="POST" action=<%=encodeEdit%>>
                 <fieldset>
                     <TABLE>

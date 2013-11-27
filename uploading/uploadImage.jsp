@@ -71,7 +71,7 @@
 <body>
 <%@include file="../util/addHeader.jsp"%>
     <div id="container">
-        <div id="subContainer" style="width:400px">
+        <div id="subContainer" style="width:450px">
             <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
             <Fieldset>
                 <legend>Upload Image(s)</legend>

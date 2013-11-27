@@ -9,7 +9,7 @@
     <body> 
     <%@include file="util/addHeader.jsp"%>
     <div id="container">
-        <div id="subContainer">
+        <div id="subContainer" style="width:185px">
         <Fieldset>
         <legend>Actions</legend>
         

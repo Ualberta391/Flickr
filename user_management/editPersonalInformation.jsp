@@ -22,7 +22,6 @@
     <%@include file="../util/addHeader.jsp"%>
     <div id="container">
         <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
-    <div id="subContainer" style="width:400px">
         <%@include file="../util/dbLogin.jsp"%>
         <% 
            String firstName = "";
@@ -47,11 +46,13 @@
                out.println("<hr>" + ex.getMessage() + "<hr>");
            }
            String encodeUpdateInfo = response.encodeURL("/proj1/user_management/updateInfo.jsp");
+           String encodeChangePwd = response.encodeURL("/proj1/user_management/changePassword.jsp");
        %>
+    <%@include file="../util/dbLogout.jsp"%>
 
-    <div id="container">
+    <div id="subContainer" style="width:350px">
         <div id="edit">
-            <form NAME="EditForm" ACTION=<%=encodeUpdateInfo%> METHOD="post">
+            <form NAME="EditForm" ACTION="<%=encodeUpdateInfo%>" METHOD="post">
             <Fieldset>
             <legend>Edit Your Personal Information</legend>
             <TABLE>
@@ -76,11 +77,34 @@
                     <TD><INPUT TYPE="number" NAME="phone" MAXLENGTH="128" VALUE="<%=phone%>" onkeypress="return isNumberKey(event)"></TD>
                 </TR>
             </TABLE>
-                <INPUT TYPE="submit" ID="buttonstyle" NAME="updateSubmit" VALUE="Update">
+                <INPUT TYPE="submit" ID="buttonstyle" NAME="updateSubmit" VALUE="Update Information">
             </Fieldset>
             </form>
         </div>
-    <%@include file="../util/dbLogout.jsp"%>
+    </div>
+    <div id="subContainer" style="width:350px">
+        <div id="edit">
+        <form NAME="PasswordForm" ACTION='<%=encodeChangePwd%>' METHOD="post">
+        <Fieldset>
+        <legend>Change Your Password</legend>
+        <table>
+            <TR VALIGN=TOP ALIGN=LEFT>
+                <TD><B>Current Password:</B></TD>
+                <TD><INPUT TYPE="password" NAME="current_pwd" MAXLENGTH="24" VALUE=""></TD>
+            </TR>
+            <TR VALIGN=TOP ALIGN=LEFT>
+                <TD><B>New Password:</B></TD>
+                <TD><INPUT TYPE="password" NAME="new_pwd" MAXLENGTH="24" VALUE=""></TD>
+            </TR>
+            <TR VALIGN=TOP ALIGN=LEFT>
+                <TD><B>Confirm Password:</B></TD>
+                <TD><INPUT TYPE="password" NAME="confirm_pwd" MAXLENGTH="24" VALUE=""></TD>
+            </TR>
+        </table>
+            <INPUT TYPE="submit" ID="buttonstyle" NAME="updatePassword" VALUE="Update Password">
+        </Fieldset>
+        </form>
+    </div>
     </div>
     </div>
 </BODY>

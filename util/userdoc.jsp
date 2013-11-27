@@ -4,12 +4,15 @@
     <head>
         <title>User Documentation</title>
         <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
+        <% String encodeHome = response.encodeURL("/proj1/home.jsp"); %>
     </head>
     <body> 
     <div id="container">
         <div id="subContainer" style="width:1000px;text-align:left">
+            <a href='<%= encodeHome %>' id='buttonstyle'>Back to Home</a> 
             <h1 style="color:black">User Documentation</h1>
-            <h2 style="color:black">Installation Guideline</h2>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome to Thumbs-Up Storage! We are a fast, easy to learn, light-weight image hosting website where you can store all of your life's memories. Thumbs-Up Storage is your one stop location for easily storing photos and sharing them with your friends! 
+            <h2 style="color:black">Installation Guide</h2>
             1) Download the installation package and extract the files to the base website directory (e.g. ~/catalina/webapps/proj1)<br> 
             2) Inside a terminal, execute the following commands, in order:<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>cd ~/catalina/webapps/proj1/</i><br>
@@ -43,8 +46,7 @@
             <h3 syle="color:black">Search Module</h3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By clicking on the Search Pictures button from the home page, you can search for certain images.  Simply type in one or more key words in the Search text field. Multiple keywords should specified by a comma and a space, such as "animals, Edmonton". You can also search for images between a certain date.  To do this, click on the 'from' and 'to' buttons and select the dates to search between.  You can also decide to view the pictures either from most recent first or most recent last by choosing the respective button. If you choose the default option, the ranking will be determined by the following formula:  Rank(photo_id) = 6*frequency(subject) + 3*frequency(place) + frequency(description).  As you can see, the key words are checked against the description, subject, and location data associated with each image that the user is allowed to view.</p>  
 
-        <% String encodeHome = response.encodeURL("/proj1/home.jsp");
-           if (request.getSession(false).getAttribute("username") != null) {
+        <% if (request.getSession(false).getAttribute("username") != null) {
             if (String.valueOf(session.getAttribute("username")).equals("admin")) { %>
             <h3 syle="color:black">Data Analysis Module</h3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As the admin, you can select the View Data button at the main page to utilize the Data Analysis Module, in order to generate and display an OLAP report of the website's usage. Here you can see the number of images uploaded for each subject, date, and user.  You can narrow down your data display by specifying any of these fields to track more specific data.  For example, the admin can figure out how many pictures of animals were uploaded by a user 'johnny' in the year 2013. At the bottom of the page, the admin can specify the subject, user and time period to query the database for. Each of the search criteria also has an "ALL" category, which indicates that the admin wants to see all images regardless of the value in that criteria.</p>

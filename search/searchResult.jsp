@@ -17,6 +17,7 @@
         List<String> valid_ids = new ArrayList<String>();
         String pic_id="";
         String owner_name="";
+        String group_owner="";
         boolean is_friend=false;
         int permitted =0;
         
@@ -172,8 +173,19 @@
                                 is_friend = true;
                             }
                         }
+
+                        //Determine if you're the owner of the group
+                        ResultSet rset5 = stmt2.executeQuery("select user_name from groups where group_id=" + permitted;
+                        if (rset5.next()) {
+                            group_owner = rset5.getString(1);
+                            if (group_owner == null)
+                                //Happens if the group is public or private
+                                group_owner = "";
+                        }
                         
-                        if (owner_name.equals(username) || permitted == 1 || username.equals("admin") || is_friend){
+                        if (owner_name.equals(username) || permitted == 1 || 
+                            username.equals("admin") || is_friend ||
+                            group_owner.equals(username)) {
                             valid_ids.add(pic_id);
                         }
                     }

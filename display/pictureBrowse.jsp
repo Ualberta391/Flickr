@@ -50,11 +50,12 @@
                 // Get the group owner
                 sql = "select user_name from groups where group_id=" + permitted;
                 ResultSet rset4 = access_control_stmt.executeQuery(sql);
-                if (rset4.next()) 
+                if (rset4.next()) {
                     group_owner = rset4.getString(1);
                     if (group_owner == null)
                         // Happens if the group is public or private
                         group_owner = "";
+                }
                     
                 // If I'm the owner, or the photo is public, or I'm a friend, or I'm the
                 // creator of the group, I should be able to see the image

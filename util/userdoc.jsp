@@ -24,7 +24,7 @@
             4) Connect a session to the database by running the sqlplus command, and logging in with the appropriate credentials<br>
             5) At the sqlplus command line, enter the following command to initialize the database:<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>@exe.sql</i><br>
-            7) In the browser of your choice (preferably Firefox) enter http://u???.cs.ualberta.ca:<your-first-port-number>/proj1/user_management/main.jsp into the URL address bar, where u??? is the computer you are working on. (<i>You can find this information by typing hostname in a terminal</i>)<br>
+            6) In the browser of your choice (preferably Firefox) enter http://u???.cs.ualberta.ca:<your-first-port-number>/proj1/user_management/main.jsp into the URL address bar, where u??? is the computer you are working on. (<i>You can find this information by typing hostname in a terminal</i>)<br>
             <h2 style="color:black">User Manual</h2>
 
             <h3 syle="color:black">User Management Module</h3>

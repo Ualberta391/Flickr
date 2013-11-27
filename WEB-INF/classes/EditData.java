@@ -53,7 +53,7 @@ public class EditData extends HttpServlet {
             stmt.executeQuery("UPDATE images set PLACE='"+place+"', PERMITTED='"+groups+
                               "', DESCRIPTION='"+description+"', TIMING=date'"+sql_date+
                               "', SUBJECT='"+subject+"' WHERE photo_id="+pic_id);
-            stmt.executeQuery("commit");
+            stmt.executeUpdate("commit");
             conn.close();
         } catch(Exception ex) {
             System.out.println(ex.getMessage());

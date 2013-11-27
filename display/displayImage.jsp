@@ -8,6 +8,11 @@
         <% // Get the current photo_id and session username
            String photo_id = request.getParameter("id");
            String username = String.valueOf(session.getAttribute("username"));
+
+           // Outgoing link encodes
+           String encodeEdit = response.encodeURL("/proj1/display/EditData");
+           String encodePic = response.encodeURL("/proj1/display/pictureBrowse.jsp");
+           String imgNotFoundEncode = response.encodeURL("/proj1/error/imgNotFound.jsp");
         %>
         <%@ page import="java.sql.*, java.text.*, java.util.*" %>
         <%@include file="../util/dbLogin.jsp"%>
@@ -63,7 +68,7 @@
                group_id = rset.getString("PERMITTED");
            }
            else // User manually tried to access an image that doesn't exist
-               response.sendRedirect("/proj/error/imgNotFound.jsp");
+               response.sendRedirect(imgNotFoundEncode);
 
            // Translate the group_id to a group_name for display
            try { 
@@ -178,7 +183,7 @@
                         type: 'POST'
                        });
                 // After a successful delete, go back to the pictureBrowse.jsp module
-                window.location.replace("/proj1/display/pictureBrowse.jsp");
+                window.location.replace("<%= encodePic %>");
             }
         }
         </script>
@@ -198,8 +203,6 @@
                 <br>Time photo taken: <%= timing %></p>
             </div>
            <%
-           String encodeEdit = response.encodeURL("/proj1/display/EditData");
-           String encodePic = response.encodeURL("/proj1/display/pictureBrowse.jsp");
            if(username.equals(owner_name)) { %>
                <button id=edit-info>Edit Photo Information</button>
                <button id="buttonstyle" onclick="deleteImage()">Delete Photo</button>

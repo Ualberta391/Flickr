@@ -58,7 +58,7 @@
                     async: false,
                     type: 'POST'
                    });
-            window.location.replace("/proj1/security/groupInfo.jsp");
+            window.location.replace("<%= encodeGroupInfo %>");
         }
     }
     </script>

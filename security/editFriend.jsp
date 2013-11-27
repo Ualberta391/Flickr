@@ -36,7 +36,13 @@
         out.println("<hr>" + ex.getMessage() + "</hr>");
     }
 
-    String encodeGroup = response.encodeURL("/proj1/security/viewFriends.jsp?group=" + group_name);
+    // Encode the exit URLs
+    String viewFriends = "/proj1/security/viewFriends.jsp?group=" + group_name;
+    String encodeViewFriends = response.encodeURL(viewFriends);
+
+    String editFriend = ("/proj1/security/editFriend.jsp?groupID=" + group_id +
+                         "&friend=" + friend);
+    String encodeEditFriend = response.encodeURL(editFriend);
     %>
     <%@include file="../util/dbLogout.jsp"%>
 <script>
@@ -48,7 +54,7 @@ function deleteFriend() {
                 async: false,
                 type: 'POST'
                });
-        window.location.replace("/proj1/security/viewFriends.jsp?group=<%= group_name %>");
+        window.location.replace("<%= encodeViewFriends %>");
     }
 }
 // Javascript for editing the notice of a friend, using the EditNotice servlet
@@ -62,7 +68,7 @@ function editNotice() {
                 async: false,
                 type: 'POST'
                });
-        window.location.replace("/proj1/security/editFriend.jsp?friend=<%= friend %>&groupID=<%= group_id %>")
+        window.location.replace("<%= encodeEditFriend %>");
     }
 }
 </script>
@@ -88,7 +94,7 @@ function editNotice() {
         <button id="buttonstyle" onclick="editNotice()">Submit New Notice</button><br><br>
         <button id="buttonstyle" onclick="deleteFriend()">Delete Friend</button><br><br>
     <% } %>
-    <a id='buttonstyle' href='<%=response.encodeUrl(encodeGroup)%>'>Back to Group</a>
+    <a id='buttonstyle' href='<%=response.encodeUrl(encodeViewFriends)%>'>Back to Group</a>
     </div>
 </div>
 </body>

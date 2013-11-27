@@ -15,7 +15,9 @@
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*"%>
 	<%@ include file="../util/dbLogin.jsp"%>
-	<% if(request.getParameter("aSubmit") != ""){
+	<% String encodeMain = response.encodeURL("/proj1/user_management/main.jsp");
+        
+        if(request.getParameter("aSubmit") != ""){
             // Get the register parameters from the request object
             String username = (request.getParameter("username")).trim();
             String password = (request.getParameter("password")).trim();
@@ -63,7 +65,7 @@
                         <legend>Actions</legend>
                         Sorry, the email you provided have been used.
                         Please select a different one.
-                        <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
+                        <br><a href='<%= encodeMain %>' id="buttonstyle">Back to Login</a>
                     </Fieldset>
                     </div>
                 <%
@@ -81,7 +83,7 @@
                 <legend>Actions</legend>
                 Sorry, the username you provided have been used.
                 Please select a different one.
-                <br><a href='/proj1/user_management/main.jsp' id="buttonstyle">Back to Login</a>
+                <br><a href='<%= encodeMain %>' id="buttonstyle">Back to Login</a>
             </Fieldset>
             </div>
            <% 

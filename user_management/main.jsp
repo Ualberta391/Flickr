@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<% String encodeHelp = response.encodeURL("/proj1/util/userdoc.jsp"); %>
 <title>Main</title>
 <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
 <!--Code from http://jsfiddle.net/viralpatel/nSjy7/ -->
@@ -22,6 +23,7 @@
         <marquee behavior="scroll" direction="left"><h4>Creators: Scott Vig, Valerie Sawyer, Zhan Yap</h4></marquee>
     </div>
     <div id="container">
+        <a id='userdoc' href='<%= response.encodeUrl(encodeHelp) %>'>Help Menu</a>
         <div id="register">
             <form NAME="RegisterForm" ACTION="/proj1/user_management/register.jsp" METHOD="post">
                 <Fieldset>

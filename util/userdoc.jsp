@@ -6,9 +6,7 @@
         <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
     </head>
     <body> 
-    <%@include file="addHeader.jsp"%>
     <div id="container">
-        <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
         <div id="subContainer" style="width:1000px;text-align:left">
             <h1 style="color:black">User Documentation</h1>
             <h2 style="color:black">Installation Guideline</h2>
@@ -23,7 +21,7 @@
             4) Connect a session to the database by running the sqlplus command, and logging in with the appropriate credentials<br>
             5) At the sqlplus command line, enter the following command to initialize the database:<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>@exe.sql</i><br>
-            7) In the browser of your choice (preferably Firefox) enter http://ui???.cs.ualberta.ca:<your-first-port-number>/proj1/user_management/main.jsp into the URL address bar, where ui??? is the computer you are working on. (<i>You can find this information by typing hostname in a terminal</i>)<br>
+            7) In the browser of your choice (preferably Firefox) enter http://u???.cs.ualberta.ca:<your-first-port-number>/proj1/user_management/main.jsp into the URL address bar, where u??? is the computer you are working on. (<i>You can find this information by typing hostname in a terminal</i>)<br>
             <h2 style="color:black">User Manual</h2>
 
             <h3 syle="color:black">User Management Module</h3>
@@ -45,10 +43,13 @@
             <h3 syle="color:black">Search Module</h3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By clicking on the Search Pictures button from the home page, you can search for certain images.  Simply type in one or more key words in the Search text field. Multiple keywords should specified by a comma and a space, such as "animals, Edmonton". You can also search for images between a certain date.  To do this, click on the 'from' and 'to' buttons and select the dates to search between.  You can also decide to view the pictures either from most recent first or most recent last by choosing the respective button. If you choose the default option, the ranking will be determined by the following formula:  Rank(photo_id) = 6*frequency(subject) + 3*frequency(place) + frequency(description).  As you can see, the key words are checked against the description, subject, and location data associated with each image that the user is allowed to view.</p>  
 
-        <% if (session_user.equals("admin")) { %>
+        <% String encodeHome = response.encodeURL("/proj1/home.jsp");
+           if (request.getSession(false).getAttribute("username") != null) {
+            if (String.valueOf(session.getAttribute("username")).equals("admin")) { %>
             <h3 syle="color:black">Data Analysis Module</h3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As the admin, you can select the View Data button at the main page to utilize the Data Analysis Module, in order to generate and display an OLAP report of the website's usage. Here you can see the number of images uploaded for each subject, date, and user.  You can narrow down your data display by specifying any of these fields to track more specific data.  For example, the admin can figure out how many pictures of animals were uploaded by a user 'johnny' in the year 2013. At the bottom of the page, the admin can specify the subject, user and time period to query the database for. Each of the search criteria also has an "ALL" category, which indicates that the admin wants to see all images regardless of the value in that criteria.</p>
-        <% } %>
+        <% }} %>
+        <a href='<%= encodeHome %>' id='buttonstyle'>Back to Home</a> 
         </div>
     </div>
     </body>

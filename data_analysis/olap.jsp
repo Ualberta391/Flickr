@@ -159,7 +159,7 @@
             
             out.println("<div id='data'>");
             out.println("<div id='subContainer' style='width:350px'>");
-            out.println("<form action='"+response.encodeURL("data2.jsp")+"' method='post'>");
+            out.println("<form action='"+response.encodeURL("data.jsp")+"' method='post'>");
             
             //This gives the admin the option of selecting what data he/she wants to see
             out.println("<B>Display the number of images for</B>");

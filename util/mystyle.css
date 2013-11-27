@@ -51,12 +51,18 @@ body {
   margin: 5%;
   width: 150px;
   padding: 10px;
-  
+  display:inline-block;
   text-align: center;
   /* Creating the rounded edges*/
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+
+#data{
+  position:absolute;
+  top:100px;
+  right:200px;
 }
 
 /*Location of login division*/
@@ -165,11 +171,11 @@ input[type=submit]{
 
 #edit-form{
     font-size: 62.5%;
-    display:block; 
-   margin-bottom:12px; width:95%; padding: .4em; 
-   padding:0; border:0; margin-top:25px; 
-    font-size: 1.2em; margin: .6em 0; 
-   padding: .3em; 
+    display:block;
+   margin-bottom:12px; width:95%; padding: .4em;
+   padding:0; border:0; margin-top:25px;
+    font-size: 1.2em; margin: .6em 0;
+   padding: .3em;
     border: 1px solid transparent; padding: 0.3em;
 }
 
@@ -186,7 +192,6 @@ input[type=submit]{
   border-radius: 5px;
 }
 
-/* The following buttonstyle code taken from http://www.cssbuttongenerator.com */
 #buttonstyle {
     -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
     -webkit-box-shadow: 0px 1px 0px 0px #f0f7fa;

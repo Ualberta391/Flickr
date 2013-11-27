@@ -175,7 +175,7 @@
                         }
 
                         //Determine if you're the owner of the group
-                        ResultSet rset5 = stmt2.executeQuery("select user_name from groups where group_id=" + permitted;
+                        ResultSet rset5 = stmt2.executeQuery("select user_name from groups where group_id=" + permitted);
                         if (rset5.next()) {
                             group_owner = rset5.getString(1);
                             if (group_owner == null)
@@ -195,12 +195,12 @@
                     for(String p_id : valid_ids){  
                         //Encode display.jsp link
                         String encodeDisplay1 = response.encodeURL("/proj1/display/displayImage.jsp");
-                        String encodeDisplay2 = "/proj1/"+encodeDisplay1+"?id="+p_id;
+                        String encodeDisplay2 = encodeDisplay1+"?id="+p_id;
                         out.println("<a href='"+encodeDisplay2+"'>");
                         
                         //Encode the servlet GetOnePic
                         String encodeOne1 = response.encodeURL("/proj1/display/GetOnePic");
-                        String encodeOne2 = "/proj1/"+encodeOne1+"?"+p_id;
+                        String encodeOne2 = encodeOne1+"?"+p_id;
                         out.println("<img src='"+encodeOne2+"'></a>");
                     }
                     out.println("</center>");

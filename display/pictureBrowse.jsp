@@ -103,7 +103,7 @@
                 <input type="submit" id="buttonstyle" value="Add More Photos">
             </form>
             <center>
-                <h3 style="color:white;font-size:30px"> Top 5 Images </h3>
+                <h3 style="color:white;font-size:30px"> Top Images </h3>
                 <% for (String top_id : top_ids) {
                      // Encode DisplayImage.jsp link
                     String encodeDisplay2 = encodeDisplay1+"?id="+top_id;

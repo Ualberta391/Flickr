@@ -46,6 +46,7 @@
                 stmt = conn.createStatement();
                 //Update the table Users
                 stmt.executeUpdate(sql1);
+                stmt.executeUpdate("commit");
                 try {
                     //Update the table Persons
                     stmt.executeUpdate(sql2);

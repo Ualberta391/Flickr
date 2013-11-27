@@ -28,7 +28,7 @@
             <h2 style="color:black">User Manual</h2>
 
             <h3 syle="color:black">User Management Module</h3>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you can start uploading and browsing pictures, you must first register an account with us.  Simply submit the required information, such as your first and last name, email address, phone number, username, and password.  Keep in mind that your username and email address must be unique. If you succesfully register, you will be redirected to your home page.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you can start uploading and browsing pictures, you must first register an account with us.  Simply submit the required information, such as your first and last name, email address, phone number, username, and password.  Keep in mind that your username and email address must be unique. If you successfully register, you will be redirected to your home page.</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you've already registered an account with us, simply type in your username and password in the login text fields and you will be redirected to your home page, unless your username and password do not match the login credentials that you previously registered with. </p>
 
             <h3 syle="color:black">Security Module</h3>  

@@ -74,5 +74,5 @@ CREATE TABLE images (
 CREATE table picture_hits (
    photo_id int,
    viewer_name varchar(24),
-   PRIMARY KEY(int, viewer_name)
+   PRIMARY KEY(photo_id, viewer_name)
 );

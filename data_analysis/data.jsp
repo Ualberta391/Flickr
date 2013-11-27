@@ -1,14 +1,17 @@
+<!-- This module displays the -->
 <!DOCTYPE html>
 <html>
     <head>
         <title>Main</title>
-        <link rel="stylesheet" type="text/css" href="mystyle.css">
+        <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
     </head>
     <body>
+        <%@include file="../util/addHeader.jsp"%>
         <div id="container">
+            <p class="homePage">Go back to <A class="homePage" href=<%=encodeHomePage%>>Home Page</a></p>
             <div id="subContainer" style="width:300px">
             <%@ page import="java.sql.*, java.text.*, java.util.*" %>
-            <%@include file="db_login.jsp"%>
+            <%@include file="../util/dbLogin.jsp"%>
             <%
                 String user="";
                 String subject="";
@@ -247,140 +250,67 @@
                     //Actualy query processing
                     PreparedStatement doSearch= conn.prepareStatement(query);
                     
-                    //Start printing results in a table
-                    out.println("<TABLE border='1'>");
-                    out.println("<TR VALIGN=TOP ALIGN=LEFT>");
+                    //Start printing results in a table %>
+                    <TABLE border='1'>
+                        <TR VALIGN=TOP ALIGN=LEFT>
+                    <% if(startEndFlag==1){ %>
+                        <TD><p>Time Period</p></TD>
+                    <% }else if(startEndFlag==2 || startEndFlag==7){ %>
+                        <TD><p>Year</p></TD>
+                    <% }else if(startEndFlag==3 || startEndFlag==5 || startEndFlag==8){ %>
+                        <TD><p>Month</p> </TD>
+                    <% }else if(startEndFlag==4 || startEndFlag==6 || startEndFlag==9){ %>
+                        <TD><p>Week</p></TD>
+                    <%}
                     
-                    if(startEndFlag==1){
-                        out.println("<TD>");
-                        out.println("<p>Time Period</p>");
-                        out.println("</TD>");
-                    }else if(startEndFlag==2 || startEndFlag==7){
-                        out.println("<TD>");
-                        out.println("<p>Year</p>");
-                        out.println("</TD>");
-                    }else if(startEndFlag==3 || startEndFlag==5 || startEndFlag==8){
-                        out.println("<TD>");
-                        out.println("<p>Month</p>");
-                        out.println("</TD>");
-                    }else if(startEndFlag==4 || startEndFlag==6 || startEndFlag==9){
-                        out.println("<TD>");
-                        out.println("<p>Week</p>");
-                        out.println("</TD>");
-                    }
+                    if(userFlag!=0){ %>
+                        <TD><p>User</p></TD>
+                    <%}
+                    if(subjectFlag!=0){ %>
+                        <TD><p>Subject</p></TD>
+                    <%}%>
+                    <TD><p>Number of Images</p></TD>
+                    </TR>
                     
-                    if(userFlag!=0){
-                        out.println("<TD>");
-                        out.println("<p>User</p>");
-                        out.println("</TD>");
-                    }
-                    if(subjectFlag!=0){
-                        out.println("<TD>");
-                        out.println("<p>Subject</p>");
-                        out.println("</TD>");
-                    }
-                    
-                    out.println("<TD>");
-                    out.println("<p>Number of Images</p>");
-                    out.println("</TD>");
-                    out.println("</TR>");
-                    
-                    try{
+                    <%try{
                         ResultSet rset = doSearch.executeQuery();
                         while(rset.next()){
                             out.println("<TR VALIGN=TOP ALIGN=LEFT>");
-                            if(startEndFlag!=0 && userFlag==0 && subjectFlag==0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getDate(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag==0 && userFlag!=0 && subjectFlag==0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag==0 && userFlag==0 && subjectFlag!=0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag!=0 && userFlag!=0 && subjectFlag==0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getDate(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(3)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag==0 && userFlag!=0 && subjectFlag!=0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(3)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag!=0 && userFlag==0 && subjectFlag!=0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getDate(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(3)+"</p>");
-                                out.println("</TD>");
-                            }
-                            else if(startEndFlag!=0 && userFlag!=0 && subjectFlag!=0){
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getDate(1)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(2)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(3)+"</p>");
-                                out.println("</TD>");
-                                
-                                out.println("<TD>");
-                                out.println("<p>"+rset.getString(4)+"</p>");
-                                out.println("</TD>");
-                            }
+                            if(startEndFlag!=0 && userFlag==0 && subjectFlag==0){ %>
+                                <TD><p><%=rset.getDate(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                            <%} else if(startEndFlag==0 && userFlag!=0 && subjectFlag==0){ %>
+                                <TD><p><%=rset.getString(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                            <%} else if(startEndFlag==0 && userFlag==0 && subjectFlag!=0){ %>
+                                <TD><p><%=rset.getString(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                            <%} else if(startEndFlag!=0 && userFlag!=0 && subjectFlag==0){ %>
+                                <TD><p><%=rset.getDate(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                                <TD><p><%=rset.getString(3)%></p></TD>
+                            <%} else if(startEndFlag==0 && userFlag!=0 && subjectFlag!=0){ %>
+                                <TD><p><%=rset.getString(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                                <TD><p><%=rset.getString(3)%></p></TD>
+                            <%} else if(startEndFlag!=0 && userFlag==0 && subjectFlag!=0){ %>
+                                <TD><p><%=rset.getDate(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                                <TD><p><%=rset.getString(3)%></p></TD>
+                            <%} else if(startEndFlag!=0 && userFlag!=0 && subjectFlag!=0){ %>
+                                <TD><p><%=rset.getDate(1)%></p></TD>
+                                <TD><p><%=rset.getString(2)%></p></TD>
+                                <TD><p><%=rset.getString(3)%></p></TD>
+                                <TD><p><%=rset.getString(4)%></p></TD>
+                            <%} 
                             out.println("</TR>");
                         }
                     }catch(Exception ex){
                         out.println("SQLException: "+ex.getMessage());
                     }
-                    
                 }
             %>
-            <%@include file="db_logout.jsp"%>
+            <%@include file="../util/dbLogout.jsp"%>
             </div>
         </div>
     </body>

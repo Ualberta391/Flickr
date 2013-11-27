@@ -31,6 +31,7 @@
            Statement stmt = conn.createStatement();
            //Update the table persons
            stmt.executeUpdate(sql);
+           stmt.executeUpdate("commit");
            //After the user has successfully registered an account with us, 
            //we will redirect the user to his homepage
            response.sendRedirect(encodeHomePage);

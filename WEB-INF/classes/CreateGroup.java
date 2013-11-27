@@ -41,7 +41,7 @@ public class CreateGroup extends HttpServlet {
 
             // Create the group
             stmt.executeUpdate(sql);
-
+	    stmt.executeUpdate("commit");
             conn.close();
         } catch (Exception ex) {
             // Probably a duplicate group name, send a failure back through the AJAX call.

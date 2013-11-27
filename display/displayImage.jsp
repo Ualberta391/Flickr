@@ -1,5 +1,7 @@
 <!-- This module displays a single image and allows the user to
-     edit/delete the image in the database -->
+     edit/delete the image in the database.
+     A lot of the code for the Edit Photo Information modal form was taken
+     from http://jqueryui.com/dialog/#modal-form -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -120,6 +122,7 @@
         <link rel="stylesheet" type="text/css" href="/proj1/util/mystyle.css">
         <script>
         // Javascript for displaying the Edit Image Data modal form
+        // Lots of the code was inspired from http://jqueryui.com/dialog/#modal-form
          $(function() {
              $( "#edit-form" ).dialog({
                  autoOpen: false,

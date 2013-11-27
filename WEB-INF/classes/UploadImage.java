@@ -121,8 +121,8 @@ public class UploadImage extends HttpServlet {
                 OutputStream p_outstream = photo_blob.getBinaryOutputStream();
                 
                 // Write the image to the output stream
-                ImageIO.write(thumbNail, "jpg", t_outstream);
-                ImageIO.write(img, "jpg", p_outstream);
+                ImageIO.write(img, "gif", p_outstream);
+                ImageIO.write(thumbNail, "gif", t_outstream);
                 
                 instream.close();
                 t_outstream.close();

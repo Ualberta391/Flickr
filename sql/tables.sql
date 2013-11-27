@@ -9,6 +9,7 @@ DROP TABLE group_lists;
 DROP TABLE groups;
 DROP TABLE persons;
 DROP TABLE users;
+DROP TABLE picture_hits;
 
 
 CREATE TABLE users (

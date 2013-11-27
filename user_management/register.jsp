@@ -49,7 +49,7 @@
                 try {
                     //Update the table Persons
                     stmt.executeUpdate(sql2);
-                    
+                    stmt.executeUpdate("commit");
                     //Set username attribute to session
                     session.setAttribute("username",username);
                     String encode = response.encodeURL("/proj1/home.jsp");
@@ -74,6 +74,7 @@
                 // values being incorrectly entered in the database
                     sql1 = "Delete from Users where user_name='"+username+"'";
                     stmt.executeUpdate(sql1);
+                    stmt.executeUpdate("commit");
                 }
             } catch(Exception ex) {
             //Display to the user an error if he provided an email or 

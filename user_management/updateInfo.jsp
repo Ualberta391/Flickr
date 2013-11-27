@@ -13,7 +13,7 @@
 <div id="subContainer" style="width:400px">
 <%@include file="../util/dbLogin.jsp"%>
 <% 
-   String encode = response.encodeURL("/proj1/home.jsp");
+   String encodeEditInfo = response.encodeURL("/proj1/user_management/editPersonalInformation.jsp");
    if(request.getParameter("updateSubmit") != ""){
        //Get the user input from the EditPersonalInformation page
        String first_name = (request.getParameter("first")).trim();
@@ -33,7 +33,7 @@
            stmt.executeUpdate(sql);
            //After the user has successfully registered an account with us, 
            //we will redirect the user to his homepage
-           response.sendRedirect(encode);
+           response.sendRedirect(encodeHomePage);
        } catch(Exception ex) {
         //Display to the user an error if he provided an email
         //that has already been taken %>
@@ -43,7 +43,7 @@
                 Sorry, the email you provided has been used.
                 <br>Email: <%=email%>
                 <br>Please select a different one.
-                <br><a id="buttonstyle" href=<%=encode %>>Back to Home</a>
+                <br><a id="buttonstyle" href="<%=encodeEditInfo%>">Back to Edit</a>
             </Fieldset>
         </div>
     <%}}%>

@@ -16,6 +16,7 @@
 
             String pic_id = "";
             String owner_name = "";
+            String group_owner = "";
             String sql = "";
             int permitted = 0;
             boolean is_friend = false;
@@ -29,6 +30,8 @@
             while (ids_rset.next()) {
                 is_friend = false;
                 pic_id = ids_rset.getObject(1).toString();
+                
+                // Get the picture owner and group id
                 sql = "select owner_name, permitted from images where photo_id=" + pic_id;
                 ResultSet ctrl_rset = access_control_stmt.executeQuery(sql);
                 if (ctrl_rset.next()) {
@@ -36,14 +39,28 @@
                     permitted = ctrl_rset.getInt(2);
                 }
                 
+                // Get the friends in the group
                 sql = "select friend_id from group_lists where group_id=" + permitted;
                 ResultSet rset3 = access_control_stmt.executeQuery(sql);
                 while (rset3.next()) {
                     if (rset3.getString(1).equals(username))
                         is_friend = true;
                 }
+
+                // Get the group owner
+                sql = "select user_name from groups where group_id=" + permitted;
+                ResultSet rset4 = access_control_stmt.executeQuery(sql);
+                if (rset4.next()) 
+                    group_owner = rset4.getString(1);
+                    if (group_owner == null)
+                        // Happens if the group is public or private
+                        group_owner = "";
+                    
+                // If I'm the owner, or the photo is public, or I'm a friend, or I'm the
+                // creator of the group, I should be able to see the image
                 if (owner_name.equals(username) || permitted == 1 || 
-                    username.equals("admin") || is_friend)
+                    username.equals("admin") || is_friend ||
+                    group_owner.equals(username))
                     valid_ids.add(pic_id);
             }
             photo_id_stmt.close();

@@ -43,7 +43,7 @@ public class EditNotice extends HttpServlet {
                           "' and friend_id='" + friend + "'");
 
             stmt.executeUpdate(sql);
-
+	    stmt.executeUpdate("commit");
             conn.close();
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
